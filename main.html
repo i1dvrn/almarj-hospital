@@ -108,10 +108,16 @@
 </nav>
 <main>
 <!-- Hero Section -->
+
 <section class="relative h-[600px] flex items-center overflow-hidden bg-surface">
+  <!-- الصورة كخلفية -->
+<img src="images/new-image.png" 
+class="absolute inset-0 w-full h-full object-cover">
+
 <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center z-10">
 <div class="space-y-6">
 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-fixed text-primary font-bold text-xs uppercase tracking-wider">
+  
 <span class="material-symbols-outlined text-sm">verified_user</span>
                     رعاية طبية متميزة
                 </div>
@@ -128,21 +134,7 @@
 <button class="bg-white text-primary-container border-2 border-primary-container px-8 py-4 rounded-xl font-bold text-lg hover:bg-primary-fixed/30 transition-all">
                         تواصل معنا
                     </button>
-</div>
-</div>
-<div class="relative hidden lg:block">
-<div class="absolute -top-12 -right-12 w-64 h-64 bg-primary-fixed-dim rounded-full blur-3xl opacity-30"></div>
-<img class="relative z-10 rounded-3xl shadow-2xl w-full h-[500px] object-cover transition-transform duration-700" data-alt="مستشفى المرج التخصصي" src="images/hospital.jpg"><div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl z-20 flex items-center gap-4">
-<div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-white">
-<span class="material-symbols-outlined">emergency</span>
-</div>
-<div>
-<p class="text-xs text-secondary font-bold">طوارئ 24/7</p>
-<p class="text-lg font-extrabold text-on-background">0123456789</p>
-</div>
-</div>
-</div>
-</div>
+
 </section>
 <!-- Clinic Schedules Section -->
 <section class="py-24 bg-surface-container-low">
@@ -240,61 +232,47 @@
 <!-- Elite Doctors Section -->
 <section class="py-24 bg-surface">
 <div class="max-w-7xl mx-auto px-6">
-<div class="text-center mb-16">
-<h2 class="text-4xl font-extrabold text-on-background font-headline">نخبة من الأطباء</h2>
-<p class="text-secondary mt-4 max-w-2xl mx-auto">تضم مستشفى المرج فريقاً طبياً من أكفأ الاستشاريين والأخصائيين في مختلف المجالات الطبية</p>
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="text-3xl font-extrabold text-on-background font-headline">نخبة من الأطباء</h2>
+<p class="text-secondary mt-2">تضم مستشفى المرج فريقاً طبياً من أكفأ الاستشاريين والأخصائيين في مختلف المجالات الطبية</p>
+</div>
+<a class="text-primary-container font-bold flex items-center gap-1 hover:underline" href="doctors.html">
+                    عرض جميع الأطباء
+                    <span class="material-symbols-outlined">arrow_back</span>
+</a>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 <!-- Doctor Card 1 -->
 <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group p-6">
 <span class="text-primary-container text-xs font-bold uppercase tracking-widest">استشاري جراحة قلب</span>
 <h4 class="text-xl font-bold mt-1">د. أحمد محمود</h4>
-<p class="text-secondary text-sm mt-2 line-clamp-3">خبير في جراحات القلب المفتوح والقسطرة التداخلية لأكثر من 20 عاماً.</p>
-<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-between">
-<div class="flex items-center text-yellow-500">
-<span class="material-symbols-outlined text-sm">star</span>
-<span class="text-xs font-bold mr-1">4.9</span>
-</div>
-<button class="text-primary-container text-sm font-bold">الملف الشخصي</button>
+<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-end">
+<button class="text-primary-container text-sm font-bold">عرض المواعيد</button>
 </div>
 </div>
 <!-- Doctor Card 2 -->
 <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group p-6">
 <span class="text-primary-container text-xs font-bold uppercase tracking-widest">أخصائية طب الأطفال</span>
 <h4 class="text-xl font-bold mt-1">د. سارة التونسي</h4>
-<p class="text-secondary text-sm mt-2 line-clamp-3">متخصصة في رعاية حديثي الولادة ومتابعة النمو والتطور الحركي للأطفال.</p>
-<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-between">
-<div class="flex items-center text-yellow-500">
-<span class="material-symbols-outlined text-sm">star</span>
-<span class="text-xs font-bold mr-1">5.0</span>
-</div>
-<button class="text-primary-container text-sm font-bold">الملف الشخصي</button>
+<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-end">
+<button class="text-primary-container text-sm font-bold">عرض المواعيد</button>
 </div>
 </div>
 <!-- Doctor Card 3 -->
 <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group p-6">
 <span class="text-primary-container text-xs font-bold uppercase tracking-widest">استشاري جراحة عظام</span>
 <h4 class="text-xl font-bold mt-1">د. خالد الرشيدي</h4>
-<p class="text-secondary text-sm mt-2 line-clamp-3">متخصص في جراحات المفاصل الصناعية والطب الرياضي وإصابات الملاعب.</p>
-<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-between">
-<div class="flex items-center text-yellow-500">
-<span class="material-symbols-outlined text-sm">star</span>
-<span class="text-xs font-bold mr-1">4.8</span>
-</div>
-<button class="text-primary-container text-sm font-bold">الملف الشخصي</button>
+<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-end">
+<button class="text-primary-container text-sm font-bold">عرض المواعيد</button>
 </div>
 </div>
 <!-- Doctor Card 4 -->
 <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group p-6">
 <span class="text-primary-container text-xs font-bold uppercase tracking-widest">أخصائي الطب الباطني</span>
 <h4 class="text-xl font-bold mt-1">د. يوسف علي</h4>
-<p class="text-secondary text-sm mt-2 line-clamp-3">تشخيص وعلاج الأمراض المزمنة ومتابعة الحالات المعقدة باحترافية عالية.</p>
-<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-between">
-<div class="flex items-center text-yellow-500">
-<span class="material-symbols-outlined text-sm">star</span>
-<span class="text-xs font-bold mr-1">4.7</span>
-</div>
-<button class="text-primary-container text-sm font-bold">الملف الشخصي</button>
+<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-end">
+<button class="text-primary-container text-sm font-bold">عرض المواعيد</button>
 </div>
 </div>
 </div>
@@ -302,7 +280,7 @@
 </section>
 <!-- Location Map Section -->
 <section class="py-24 bg-surface-container-low overflow-hidden">
-<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden shadow-2xl">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden shadow-l">
 <div class="bg-white p-12 lg:p-16 flex flex-col justify-center rounded-r-2xl">
 <h2 class="text-3xl font-extrabold text-on-background font-headline mb-6">تواصل معنا</h2>
 <div class="space-y-8">
@@ -312,7 +290,7 @@
 </div>
 <div>
 <h4 class="font-bold text-lg">الموقع</h4>
-<p class="text-secondary">حي المرج، الشارع الرئيسي بجوار المركز التجاري، القاهرة</p>
+<p class="text-secondary">المرج / حي الـ700 مقابل مسجد ابوبكر الصديق</p>
 </div>
 </div>
 <div class="flex items-start gap-4">
@@ -321,7 +299,7 @@
 </div>
 <div>
 <h4 class="font-bold text-lg">الهاتف</h4>
-<p class="text-secondary">012 3456 7890<br/>02 2345 6789</p>
+<p class="text-secondary">092-8667081<br/>092-2625986</p>
 </div>
 </div>
 <div class="flex items-start gap-4">
@@ -329,62 +307,43 @@
 <span class="material-symbols-outlined">mail</span>
 </div>
 <div>
-<h4 class="font-bold text-lg">البريد الإلكتروني</h4>
-<p class="text-secondary">info@almarj-hospital.com</p>
+<h4 class="font-bold text-lg">فيسبوك</h4>
+<p class="text-secondary">https://www.facebook.com/AlmarjHospital</p>
 </div>
 </div>
 </div>
 </div>
 <div class="h-[400px] lg:h-auto rounded-l-2xl overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="detailed clean street map showing the hospital location in a central city district with landmarks highlighted" data-location="Cairo, Egypt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCowXXMxgYADvO7F8309qu8u1tEM3JaVyKnhkY8LcknMOgX28KtNvGV1KS668PzSAIhFhE85dSa6KKmGDMpT8q0k5DKc42ErApy7dz1kuc4R7Fc7uuALNUTTvfcJxcATYRHWmoKNM9jKkos_xSlwGdvyUw9_DBep8mfYdXG2NBNu83TXNFJD4oC-gtn39c2EgdWW7TD_MPy7KCbkYOGO1Pxm0fOH__LsDwvacQpAQEpjY8B3MLZ0DzeFDfO03K10yhWhy89bwsVCY-"/>
-</div>
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1169.4510415770053!2d20.837573096953804!3d32.49319773590454!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x138211122418410b%3A0xe31667a410a3a5c9!2z2YXYs9iq2LTZgdmJINin2YTZhdix2Kwg2KfZhNiq2K7Ytdi12Yo!5e0!3m2!1sen!2sly!4v1775728449470!5m2!1sen!2sly"
+    class="w-full h-full border-0"
+    style="border:0;"
+    allowfullscreen
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade">
+  </iframe>
 </div>
 </section>
 </main>
 <!-- Footer -->
-<footer class="bg-[#f8f9fa] dark:bg-slate-950 full-width py-12 px-6">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-7xl mx-auto font-['Work_Sans','Tajawal'] text-sm leading-relaxed">
-<div class="space-y-4">
-<div class="text-lg font-bold text-gray-900 dark:text-white">مستشفى المرج التخصصي</div>
-<p class="text-gray-500 dark:text-gray-400">نحن ملتزمون بتقديم أعلى مستويات الرعاية الصحية لمجتمعنا، مع التركيز على الابتكار والتعاطف والتميز الطبي.</p>
-<div class="flex gap-4 pt-2">
-<a class="w-10 h-10 bg-white shadow-sm rounded-full flex items-center justify-center text-[#A31D1D] hover:bg-primary-container hover:text-white transition-all" href="#">
-<span class="material-symbols-outlined">social_leaderboard</span>
-</a>
-<a class="w-10 h-10 bg-white shadow-sm rounded-full flex items-center justify-center text-[#A31D1D] hover:bg-primary-container hover:text-white transition-all" href="#">
-<span class="material-symbols-outlined">share</span>
-</a>
-</div>
-</div>
-<div class="space-y-4">
-<h4 class="font-bold text-gray-900 dark:text-white text-lg">روابط سريعة</h4>
-<ul class="space-y-2">
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">من نحن</a></li>
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">الأطباء</a></li>
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">العيادات</a></li>
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">الخدمات</a></li>
-</ul>
-</div>
-<div class="space-y-4">
-<h4 class="font-bold text-gray-900 dark:text-white text-lg">المعلومات القانونية</h4>
-<ul class="space-y-2">
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">Legal</a></li>
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">Privacy Policy</a></li>
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">Patient Rights</a></li>
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">Contact Us</a></li>
-</ul>
-</div>
-<div class="space-y-4">
-<h4 class="font-bold text-gray-900 dark:text-white text-lg">النشرة البريدية</h4>
-<p class="text-gray-500 dark:text-gray-400">اشترك للحصول على آخر التحديثات والنصائح الصحية.</p>
-<div class="flex gap-2">
-<input class="flex-1 bg-white border-none rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary-container" placeholder="بريدك الإلكتروني" type="email"/>
-<button class="bg-primary-container text-white px-4 py-2 rounded-lg font-bold">اشترك</button>
-</div>
-</div>
-</div>
-<div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 text-center">
-<p class="text-gray-500 dark:text-gray-400 text-sm">© 2024 مستشفى المرج التخصصي. جميع الحقوق محفوظة.</p>
-</div>
+<footer class="bg-[#f8f9fa] py-10 px-6">
+  <div class="max-w-7xl mx-auto text-center space-y-6">
+
+    <!-- الاسم + الشعار -->
+    <div class="flex items-center justify-center gap-3">
+      <h2 class="text-2xl font-extrabold text-gray-900">
+        مستشفى المرج التخصصي
+      </h2>
+      <img src="images/footerlogo.jpg" alt="logo" class="w-10 h-10 object-contain" style="border-radius: 100%;">
+    </div>
+
+    <!-- النص -->
+    <p class="text-gray-600 text-lg">
+      من أجل رعاية طبية متميزة بكل حب واحترافية
+    </p>
+
+  </div>
+  <div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 text-center"> <p class="text-gray-500 dark:text-gray-400 text-sm">©  تم التطوير بواسطة <a href="" style="color: brown;" > منتصر العقيلي </a></p>
+  
 </footer>
 </body></html>

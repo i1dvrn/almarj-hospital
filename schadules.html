@@ -1,313 +1,826 @@
 <!DOCTYPE html>
 
-<html dir="rtl" lang="ar"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>مستشفى المرج التخصصي</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "on-tertiary-fixed-variant": "#004b73",
-                    "surface-dim": "#d9dadb",
-                    "primary": "#80000a",
-                    "on-background": "#191c1d",
-                    "inverse-surface": "#2e3132",
-                    "on-error": "#ffffff",
-                    "surface-container": "#edeeef",
-                    "on-secondary-fixed-variant": "#36485b",
-                    "on-secondary-container": "#526478",
-                    "on-tertiary-container": "#96cdff",
-                    "error-container": "#ffdad6",
-                    "error": "#ba1a1a",
-                    "on-tertiary": "#ffffff",
-                    "secondary-fixed": "#d1e4fb",
-                    "outline-variant": "#e2beba",
-                    "on-surface": "#191c1d",
-                    "on-error-container": "#93000a",
-                    "tertiary-fixed-dim": "#93ccff",
-                    "surface-variant": "#e1e3e4",
-                    "on-secondary-fixed": "#091d2e",
-                    "tertiary": "#004064",
-                    "inverse-primary": "#ffb4ac",
-                    "tertiary-container": "#005887",
-                    "tertiary-fixed": "#cce5ff",
-                    "surface": "#f8f9fa",
-                    "primary-fixed": "#ffdad6",
-                    "primary-fixed-dim": "#ffb4ac",
-                    "surface-container-lowest": "#ffffff",
-                    "secondary-container": "#cfe2f9",
-                    "surface-container-high": "#e7e8e9",
-                    "surface-container-low": "#f3f4f5",
-                    "on-primary": "#ffffff",
-                    "inverse-on-surface": "#f0f1f2",
-                    "primary-container": "#a31d1d",
-                    "surface-tint": "#b22926",
-                    "surface-bright": "#f8f9fa",
-                    "surface-container-highest": "#e1e3e4",
-                    "on-primary-fixed-variant": "#900c12",
-                    "on-tertiary-fixed": "#001d31",
-                    "background": "#f8f9fa",
-                    "on-secondary": "#ffffff",
-                    "secondary": "#4e6073",
-                    "on-surface-variant": "#5a413e",
-                    "on-primary-container": "#ffb6ae",
-                    "on-primary-fixed": "#410002",
-                    "secondary-fixed-dim": "#b5c8df",
-                    "outline": "#8e706d"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-            },
-            "fontFamily": {
-                    "headline": ["Plus Jakarta Sans", "Tajawal"],
-                    "body": ["Work Sans", "Tajawal"],
-                    "label": ["Work Sans", "Tajawal"]
-            }
+<html dir="rtl" lang="ar">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>مستشفى المرج التخصصي</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-fixed-variant": "#004b73",
+            "surface-dim": "#d9dadb",
+            "primary": "#80000a",
+            "on-background": "#191c1d",
+            "inverse-surface": "#2e3132",
+            "on-error": "#ffffff",
+            "surface-container": "#edeeef",
+            "on-secondary-fixed-variant": "#36485b",
+            "on-secondary-container": "#526478",
+            "on-tertiary-container": "#96cdff",
+            "error-container": "#ffdad6",
+            "error": "#ba1a1a",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed": "#d1e4fb",
+            "outline-variant": "#e2beba",
+            "on-surface": "#191c1d",
+            "on-error-container": "#93000a",
+            "tertiary-fixed-dim": "#93ccff",
+            "surface-variant": "#e1e3e4",
+            "on-secondary-fixed": "#091d2e",
+            "tertiary": "#004064",
+            "inverse-primary": "#ffb4ac",
+            "tertiary-container": "#005887",
+            "tertiary-fixed": "#cce5ff",
+            "surface": "#f8f9fa",
+            "primary-fixed": "#ffdad6",
+            "primary-fixed-dim": "#ffb4ac",
+            "surface-container-lowest": "#ffffff",
+            "secondary-container": "#cfe2f9",
+            "surface-container-high": "#e7e8e9",
+            "surface-container-low": "#f3f4f5",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#f0f1f2",
+            "primary-container": "#a31d1d",
+            "surface-tint": "#b22926",
+            "surface-bright": "#f8f9fa",
+            "surface-container-highest": "#e1e3e4",
+            "on-primary-fixed-variant": "#900c12",
+            "on-tertiary-fixed": "#001d31",
+            "background": "#f8f9fa",
+            "on-secondary": "#ffffff",
+            "secondary": "#4e6073",
+            "on-surface-variant": "#5a413e",
+            "on-primary-container": "#ffb6ae",
+            "on-primary-fixed": "#410002",
+            "secondary-fixed-dim": "#b5c8df",
+            "outline": "#8e706d"
           },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline": ["Plus Jakarta Sans", "Tajawal"],
+            "body": ["Work Sans", "Tajawal"],
+            "label": ["Work Sans", "Tajawal"]
+          }
         },
-      }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        body { font-family: 'Tajawal', 'Work Sans', sans-serif; }
-        h1, h2, h3 { font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    body {
+      font-family: 'Tajawal', 'Work Sans', sans-serif;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
 </head>
+
 <body class="bg-surface text-on-surface">
-<!-- TopNavBar Shell -->
-<header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-sm dark:shadow-none docked full-width top-0 sticky z-50">
-<div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
-<span class="material-symbols-outlined text-white" data-icon="hospital">health_and_safety</span>
-</div>
-<div class="text-xl font-bold text-gray-900 dark:text-white flex flex-col leading-tight">
-<span class="text-primary-container">مستشفى المرج</span>
-<span class="text-xs font-medium tracking-widest uppercase opacity-70">التخصصي</span>
-</div>
-</div>
-<nav class="hidden md:flex gap-8 font-['Tajawal'] font-bold text-sm">
-<a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors" href="main.html">الرئيسية</a>
-<a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1" href="schadules.html">الجداول</a>
-<a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors" href="doctors.html">الأطباء</a>
-</nav>
-<button class="bg-primary-container text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:opacity-90 transition-all duration-200 active:opacity-80">
-            حجز موعد
+  <!-- TopNavBar Shell -->
+  <header
+    class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-sm dark:shadow-none docked full-width top-0 sticky z-50">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex justify-between items-center">
+      <div class="flex items-center gap-2 md:gap-3">
+        <div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+          <span class="material-symbols-outlined text-white" data-icon="hospital">health_and_safety</span>
+        </div>
+        <div class="text-lg md:text-xl font-bold text-gray-900 dark:text-white flex flex-col leading-tight">
+          <span class="text-primary-container">مستشفى المرج</span>
+          <span class="text-xs font-medium tracking-widest uppercase opacity-70">التخصصي</span>
+        </div>
+      </div>
+      <nav class="hidden lg:flex gap-8 font-['Tajawal'] font-bold text-sm">
+        <a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors" href="main.html">الرئيسية</a>
+        <a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1" href="schadules.html">الجداول</a>
+        <a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors"
+          href="doctors.html">الأطباء</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <button
+          class="hidden sm:block bg-primary-container text-white px-6 py-3 lg:py-2.5 rounded-lg font-bold text-sm hover:opacity-90 transition-all duration-200 active:opacity-80">
+          حجز موعد
         </button>
-</div>
-</header>
-<main class="min-h-screen">
-<!-- Hero Section -->
-<section class="bg-surface py-12">
-<div class="max-w-7xl mx-auto px-6">
-<div class="flex flex-col md:flex-row justify-between items-end gap-6 border-r-4 border-primary-container pr-6 mb-12">
-<div>
-<h1 class="text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight leading-tight">
-                        جدول مواعيد العيادات الخارجية
-                    </h1>
-<p class="text-lg font-medium text-secondary mt-2">
-                        نخبة من الاستشاريين والأخصائيين في خدمتكم طوال الأسبوع
-                    </p>
-</div>
-<div class="text-secondary font-medium text-sm flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-full">
-<span class="material-symbols-outlined text-primary" data-icon="calendar_month">calendar_month</span>
-<span>عرض الأسبوع الطبي: 26 أكتوبر - 31 أكتوبر</span>
-</div>
-</div>
-<!-- Date Selection Tabs -->
-<div class="flex overflow-x-auto pb-4 gap-3 no-scrollbar">
-<button class="flex-none min-w-[120px] bg-primary-container text-white p-4 rounded-xl shadow-lg transition-all duration-200">
-<span class="block text-lg font-bold">السبت</span>
-<span class="block text-xs opacity-80 mt-1">Saturday</span>
-</button>
-<button class="flex-none min-w-[120px] bg-surface-container-lowest text-on-surface p-4 rounded-xl hover:bg-surface-container transition-all duration-200">
-<span class="block text-lg font-bold">الأحد</span>
-<span class="block text-xs opacity-60 mt-1">Sunday</span>
-</button>
-<button class="flex-none min-w-[120px] bg-surface-container-lowest text-on-surface p-4 rounded-xl hover:bg-surface-container transition-all duration-200">
-<span class="block text-lg font-bold">الاثنين</span>
-<span class="block text-xs opacity-60 mt-1">Monday</span>
-</button>
-<button class="flex-none min-w-[120px] bg-surface-container-lowest text-on-surface p-4 rounded-xl hover:bg-surface-container transition-all duration-200">
-<span class="block text-lg font-bold">الثلاثاء</span>
-<span class="block text-xs opacity-60 mt-1">Tuesday</span>
-</button>
-<button class="flex-none min-w-[120px] bg-surface-container-lowest text-on-surface p-4 rounded-xl hover:bg-surface-container transition-all duration-200">
-<span class="block text-lg font-bold">الأربعاء</span>
-<span class="block text-xs opacity-60 mt-1">Wednesday</span>
-</button>
-<button class="flex-none min-w-[120px] bg-surface-container-lowest text-on-surface p-4 rounded-xl hover:bg-surface-container transition-all duration-200">
-<span class="block text-lg font-bold">الخميس</span>
-<span class="block text-xs opacity-60 mt-1">Thursday</span>
-</button>
-</div>
-</div>
-</section>
-<!-- Schedule Table -->
-<section class="pb-24">
-<div class="max-w-7xl mx-auto px-6">
-<div class="overflow-hidden rounded-2xl bg-surface-container-lowest shadow-sm border border-surface-container">
-<table class="w-full text-right border-collapse">
-<thead>
-<tr class="bg-primary-container text-white font-headline">
-<th class="p-6 text-right font-bold text-lg">العيادة</th>
-<th class="p-6 text-center font-bold text-lg">الفترة الصباحية<br/><span class="text-xs font-normal opacity-80">(09:00 - 14:00)</span></th>
-<th class="p-6 text-center font-bold text-lg">الفترة المسائية<br/><span class="text-xs font-normal opacity-80">(16:00 - 21:00)</span></th>
-</tr>
-</thead>
-<tbody class="divide-y divide-surface-container">
-<!-- Heart Clinic -->
-<tr class="hover:bg-surface transition-colors">
-<td class="p-6">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
-<span class="material-symbols-outlined text-primary" data-icon="cardiology">cardiology</span>
-</div>
-<div>
-<div class="font-bold text-on-surface text-lg">عيادة القلب</div>
-<div class="text-sm text-secondary">أمراض القلب والأوعية الدموية</div>
-</div>
-</div>
-</td>
-<td class="p-6 text-center">
-<div class="font-bold text-primary">د. أحمد الشريف</div>
-<div class="text-xs text-secondary mt-1">استشاري القلب والقسطرة التداخلية</div>
-</td>
-<td class="p-6 text-center">
-<div class="font-bold text-primary">د. سارة منصور</div>
-<div class="text-xs text-secondary mt-1">أخصائي أول قلب</div>
-</td>
-</tr>
-<!-- Bones Clinic -->
-<tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
-<td class="p-6">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
-<span class="material-symbols-outlined text-tertiary" data-icon="orthopedics">orthopedics</span>
-</div>
-<div>
-<div class="font-bold text-on-surface text-lg">عيادة العظام</div>
-<div class="text-sm text-secondary">جراحة العظام والمفاصل</div>
-</div>
-</div>
-</td>
-<td class="p-6 text-center">
-<div class="font-bold text-primary">د. محمود زكي</div>
-<div class="text-xs text-secondary mt-1">استشاري جراحة العظام</div>
-</td>
-<td class="p-6 text-center text-secondary-fixed-dim italic">
-                                غير متاح
-                            </td>
-</tr>
-<!-- Pediatric Clinic -->
-<tr class="hover:bg-surface transition-colors">
-<td class="p-6">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
-<span class="material-symbols-outlined text-green-700" data-icon="child_care">child_care</span>
-</div>
-<div>
-<div class="font-bold text-on-surface text-lg">عيادة الأطفال</div>
-<div class="text-sm text-secondary">طب الأطفال وحديثي الولادة</div>
-</div>
-</div>
-</td>
-<td class="p-6 text-center">
-<div class="font-bold text-primary">د. ليلى حسن</div>
-<div class="text-xs text-secondary mt-1">استشاري الأطفال والمبتسرين</div>
-</td>
-<td class="p-6 text-center">
-<div class="font-bold text-primary">د. يوسف علي</div>
-<div class="text-xs text-secondary mt-1">أخصائي طب الأطفال</div>
-</td>
-</tr>
-<!-- Eye Clinic -->
-<tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
-<td class="p-6">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center">
-<span class="material-symbols-outlined text-amber-700" data-icon="visibility">visibility</span>
-</div>
-<div>
-<div class="font-bold text-on-surface text-lg">عيادة العيون</div>
-<div class="text-sm text-secondary">طب وجراحة العيون</div>
-</div>
-</div>
-</td>
-<td class="p-6 text-center">
-<div class="font-bold text-primary">د. منى فريد</div>
-<div class="text-xs text-secondary mt-1">استشاري طب العيون</div>
-</td>
-<td class="p-6 text-center">
-<div class="font-bold text-primary">د. خالد سامي</div>
-<div class="text-xs text-secondary mt-1">جراح الشبكية والجسم الزجاجي</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- Notes -->
-<div class="mt-8 flex items-start gap-4 p-6 bg-surface-container-low rounded-xl text-sm text-secondary leading-relaxed border-r-4 border-tertiary">
-<span class="material-symbols-outlined text-tertiary shrink-0" data-icon="info">info</span>
-<div>
-<p class="font-bold text-on-surface mb-2">ملاحظات هامة:</p>
-<ul class="list-disc pr-5 space-y-1">
-<li>الحجز المسبق ضروري لجميع العيادات التخصصية لضمان تقديم الخدمة الأمثل.</li>
-<li>الجداول عرضة للتغيير بناءً على توفر الاستشاريين وحالات الطوارئ.</li>
-<li>للحالات الحرجة والطارئة، يرجى التوجه فوراً لقسم الطوارئ المتاح على مدار 24 ساعة.</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-</main>
-<!-- Footer Shell -->
-<footer class="bg-[#f8f9fa] dark:bg-slate-950 full-width py-12 px-6">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-7xl mx-auto font-['Tajawal'] text-sm leading-relaxed">
-<div class="space-y-4">
-<div class="text-lg font-bold text-gray-900 dark:text-white">مستشفى المرج التخصصي</div>
-<p class="text-gray-500 dark:text-gray-400">منشأة طبية رائدة تقدم رعاية صحية عالمية المستوى مع التركيز على التميز الجراحي والرعاية الرحيمة بالمرضى.</p>
-</div>
-<div>
-<h4 class="font-semibold text-[#A31D1D] mb-4">روابط سريعة</h4>
-<div class="flex flex-col gap-2">
-<a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200" href="#">البحث عن طبيب</a>
-<a class="font-semibold text-[#A31D1D]" href="#">جداول العيادات</a>
-<a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200" href="#">الخدمات الطبية</a>
-</div>
-</div>
-<div>
-<h4 class="font-semibold text-[#A31D1D] mb-4">رعاية المرضى</h4>
-<div class="flex flex-col gap-2">
-<a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200" href="#">حقوق المريض</a>
-<a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200" href="#">سياسة الخصوصية</a>
-<a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200" href="#">الأحكام والقوانين</a>
-</div>
-</div>
-<div>
-<h4 class="font-semibold text-[#A31D1D] mb-4">اتصل بنا</h4>
-<div class="flex flex-col gap-2 text-gray-500 dark:text-gray-400">
-<p class="flex items-center gap-2"><span class="material-symbols-outlined text-xs" data-icon="call">call</span> +20 (02) 1234 5678</p>
-<p class="flex items-center gap-2"><span class="material-symbols-outlined text-xs" data-icon="location_on">location_on</span> القاهرة، مصر</p>
-<a class="text-[#A31D1D] font-bold mt-2" href="#">تواصل معنا الآن</a>
-</div>
-</div>
-</div>
-<div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 text-center text-gray-500 dark:text-gray-400">
-        © 2024 جميع الحقوق محفوظة لمستشفى المرج التخصصي.
+        <button class="block lg:hidden text-gray-900 dark:text-white p-2 flex items-center justify-center">
+            <span class="material-symbols-outlined text-3xl">menu</span>
+        </button>
+      </div>
     </div>
-</footer>
-</body></html>
+  </header>
+  <main class="min-h-screen">
+    <!-- Hero Section -->
+    <section class="bg-surface py-8 md:py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div
+          class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-r-4 border-primary-container pr-4 md:pr-6 mb-8 md:mb-12">
+          <div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight leading-tight">
+              جدول مواعيد العيادات الخارجية
+            </h1>
+            <p class="text-base md:text-lg font-medium text-secondary mt-2">
+              نخبة من الاستشاريين والأخصائيين في خدمتكم طوال الأسبوع
+            </p>
+          </div>
+          <div
+            class="text-secondary font-medium text-xs md:text-sm flex items-center gap-2 bg-surface-container-low px-4 py-3 md:py-2 rounded-full w-full sm:w-auto">
+            <span class="material-symbols-outlined text-primary" data-icon="calendar_month">calendar_month</span>
+            <span>عرض الأسبوع الطبي: 26 أكتوبر - 31 أكتوبر</span>
+          </div>
+        </div>
+        <!-- Date Selection Tabs -->
+        <div class="flex overflow-x-auto pb-4 gap-3 no-scrollbar">
+          <button
+            class="flex-none min-w-[120px] bg-primary-container text-white p-4 rounded-xl shadow-lg transition-all duration-200">
+            <span class="block text-lg font-bold">السبت</span>
+            <span class="block text-xs opacity-80 mt-1">Saturday</span>
+          </button>
+          <button
+            class="flex-none min-w-[120px] bg-surface-container-lowest text-on-surface p-4 rounded-xl hover:bg-surface-container transition-all duration-200">
+            <span class="block text-lg font-bold">الأحد</span>
+            <span class="block text-xs opacity-60 mt-1">Sunday</span>
+          </button>
+          <button
+            class="flex-none min-w-[120px] bg-surface-container-lowest text-on-surface p-4 rounded-xl hover:bg-surface-container transition-all duration-200">
+            <span class="block text-lg font-bold">الاثنين</span>
+            <span class="block text-xs opacity-60 mt-1">Monday</span>
+          </button>
+          <button
+            class="flex-none min-w-[120px] bg-surface-container-lowest text-on-surface p-4 rounded-xl hover:bg-surface-container transition-all duration-200">
+            <span class="block text-lg font-bold">الثلاثاء</span>
+            <span class="block text-xs opacity-60 mt-1">Tuesday</span>
+          </button>
+          <button
+            class="flex-none min-w-[120px] bg-surface-container-lowest text-on-surface p-4 rounded-xl hover:bg-surface-container transition-all duration-200">
+            <span class="block text-lg font-bold">الأربعاء</span>
+            <span class="block text-xs opacity-60 mt-1">Wednesday</span>
+          </button>
+          <button
+            class="flex-none min-w-[120px] bg-surface-container-lowest text-on-surface p-4 rounded-xl hover:bg-surface-container transition-all duration-200">
+            <span class="block text-lg font-bold">الخميس</span>
+            <span class="block text-xs opacity-60 mt-1">Thursday</span>
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Schedule Table -->
+    <section class="pb-16 md:pb-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <!-- Page 1 Container -->
+        <div id="page-1" class="schedule-page block">
+          <div
+            class="overflow-x-auto rounded-2xl bg-surface-container-lowest shadow-sm border border-surface-container">
+            <table class="w-full min-w-[600px] md:min-w-full text-right border-collapse">
+              <thead>
+                <tr class="bg-primary-container text-white font-headline">
+                  <th class="p-6 text-right font-bold text-lg">العيادة</th>
+                  <th class="p-6 text-center font-bold text-lg">الفترة الصباحية<br /><span
+                      class="text-xs font-normal opacity-80">(09:00 - 14:00)</span></th>
+                  <th class="p-6 text-center font-bold text-lg">الفترة المسائية<br /><span
+                      class="text-xs font-normal opacity-80">(16:00 - 21:00)</span></th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-surface-container">
+
+                <!-- 1. عيادة الباطنة (1) -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-blue-700" data-icon="stethoscope">stethoscope</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة الباطنة (1)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 2. عيادة الباطنة (1) -->
+                <tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-blue-700" data-icon="stethoscope">stethoscope</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة الباطنة (1)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 3. عيادة الجراحة (1) -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-red-700"
+                          data-icon="medical_services">medical_services</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة الجراحة (1)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 4. عيادة الجراحة (2) -->
+                <tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-red-700"
+                          data-icon="medical_services">medical_services</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة الجراحة (2)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 5. عيادة العظام (1) -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-slate-700"
+                          data-icon="orthopedics">orthopedics</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة العظام (1)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 6. عيادة العظام (2) -->
+                <tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-slate-700"
+                          data-icon="orthopedics">orthopedics</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة العظام (2)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 7. نساء وولادة (1) -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-pink-700"
+                          data-icon="pregnant_woman">pregnant_woman</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">نساء وولادة (1)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 8. نساء وولادة (2) -->
+                <tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-pink-700"
+                          data-icon="pregnant_woman">pregnant_woman</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">نساء وولادة (2)</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 9. عيادة العيون -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-amber-700" data-icon="visibility">visibility</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة العيون</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 10. عيادة الجلدية -->
+                <tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-orange-700"
+                          data-icon="dermatology">dermatology</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة الجلدية</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Page 2 Container -->
+        <div id="page-2" class="schedule-page hidden">
+          <div
+            class="overflow-x-auto rounded-2xl bg-surface-container-lowest shadow-sm border border-surface-container">
+            <table class="w-full min-w-[600px] md:min-w-full text-right border-collapse">
+              <thead>
+                <tr class="bg-primary-container text-white font-headline">
+                  <th class="p-6 text-right font-bold text-lg">العيادة</th>
+                  <th class="p-6 text-center font-bold text-lg">الفترة الصباحية<br /><span
+                      class="text-xs font-normal opacity-80">(09:00 - 14:00)</span></th>
+                  <th class="p-6 text-center font-bold text-lg">الفترة المسائية<br /><span
+                      class="text-xs font-normal opacity-80">(16:00 - 21:00)</span></th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-surface-container">
+
+                <!-- 11. الأشعة والتصوير التلفزيوني -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-indigo-700" data-icon="radiology">radiology</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">الأشعة والتصوير التلفزيوني</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 12. أذن وأنف وحنجرة -->
+                <tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-cyan-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-cyan-700" data-icon="hearing">hearing</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">أذن وأنف وحنجرة</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 13. عيادة المسالك -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-teal-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-teal-700" data-icon="water_drop">water_drop</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة المسالك</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 14. باطنة مخ وأعصاب -->
+                <tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-violet-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-violet-700" data-icon="neurology">neurology</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">باطنة مخ وأعصاب</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 15. جراحة مخ واعصاب -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-violet-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-violet-700" data-icon="neurology">neurology</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">جراحة مخ واعصاب</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 16. عيادة الأطفال -->
+                <tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-green-700" data-icon="child_care">child_care</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة الأطفال</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 17. قلب وإيكو أطفال -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-rose-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-rose-700"
+                          data-icon="monitor_heart">monitor_heart</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">قلب وإيكو أطفال</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 18. عيادة القلب والايكو -->
+                <tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-red-700" data-icon="cardiology">cardiology</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة القلب والايكو</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 19. عيادة الأمراض النفسية -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-blue-700" data-icon="psychiatry">psychiatry</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة الأمراض النفسية</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                  <td class="p-6 text-center">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Page 3 Container -->
+        <div id="page-3" class="schedule-page hidden">
+          <div
+            class="overflow-x-auto rounded-2xl bg-surface-container-lowest shadow-sm border border-surface-container">
+            <table class="w-full min-w-[600px] md:min-w-full text-right border-collapse">
+              <thead>
+                <tr class="bg-primary-container text-white font-headline">
+                  <th class="p-6 text-right font-bold text-lg w-1/3">العيادة</th>
+                  <th class="p-6 text-center font-bold text-lg w-2/3" colspan="2">المناوبة الليلية من الـ9 مساء إلى الـ9 صباحاً</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-surface-container">
+                <!-- 1. نساء وولادة -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-pink-700" data-icon="pregnant_woman">pregnant_woman</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">نساء وولادة</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center" colspan="2">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 2. عيادة الباطنة -->
+                <tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-blue-700" data-icon="stethoscope">stethoscope</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة الباطنة</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center" colspan="2">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 3. عيادة الأطفال -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-green-700" data-icon="child_care">child_care</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة الأطفال</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center" colspan="2">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 4. أذن وأنف وحنجرة -->
+                <tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-cyan-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-cyan-700" data-icon="hearing">hearing</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">أذن وأنف وحنجرة</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center" colspan="2">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 5. عيادة العظام -->
+                <tr class="hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-slate-700" data-icon="orthopedics">orthopedics</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة العظام</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center" colspan="2">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+
+                <!-- 6. عيادة الجراحة -->
+                <tr class="bg-surface-container-low/30 hover:bg-surface transition-colors">
+                  <td class="p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-red-700" data-icon="medical_services">medical_services</span>
+                      </div>
+                      <div>
+                        <div class="font-bold text-on-surface text-lg">عيادة الجراحة</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-6 text-center" colspan="2">
+                    <div class="font-bold text-primary">-</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="flex justify-center items-center gap-3 mt-8 hide-print">
+          <button
+            onclick="document.getElementById('page-1').classList.remove('hidden'); document.getElementById('page-2').classList.add('hidden'); document.getElementById('page-3').classList.add('hidden'); this.classList.add('bg-primary-container', 'text-white', 'shadow-md'); this.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'hover:bg-surface-container'); document.getElementById('btn-page-2').classList.remove('bg-primary-container', 'text-white', 'shadow-md'); document.getElementById('btn-page-2').classList.add('bg-surface-container-lowest', 'text-on-surface', 'hover:bg-surface-container'); document.getElementById('btn-page-3').classList.remove('bg-primary-container', 'text-white', 'shadow-md'); document.getElementById('btn-page-3').classList.add('bg-surface-container-lowest', 'text-on-surface', 'hover:bg-surface-container');"
+            id="btn-page-1"
+            class="w-12 h-12 rounded-full font-bold flex items-center justify-center bg-primary-container text-white shadow-md transition-all duration-200">1</button>
+          <button
+            onclick="document.getElementById('page-2').classList.remove('hidden'); document.getElementById('page-1').classList.add('hidden'); document.getElementById('page-3').classList.add('hidden'); this.classList.add('bg-primary-container', 'text-white', 'shadow-md'); this.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'hover:bg-surface-container'); document.getElementById('btn-page-1').classList.remove('bg-primary-container', 'text-white', 'shadow-md'); document.getElementById('btn-page-1').classList.add('bg-surface-container-lowest', 'text-on-surface', 'hover:bg-surface-container'); document.getElementById('btn-page-3').classList.remove('bg-primary-container', 'text-white', 'shadow-md'); document.getElementById('btn-page-3').classList.add('bg-surface-container-lowest', 'text-on-surface', 'hover:bg-surface-container');"
+            id="btn-page-2"
+            class="w-12 h-12 rounded-full font-bold flex items-center justify-center bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-all duration-200">2</button>
+          <button
+            onclick="document.getElementById('page-3').classList.remove('hidden'); document.getElementById('page-1').classList.add('hidden'); document.getElementById('page-2').classList.add('hidden'); this.classList.add('bg-primary-container', 'text-white', 'shadow-md'); this.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'hover:bg-surface-container'); document.getElementById('btn-page-1').classList.remove('bg-primary-container', 'text-white', 'shadow-md'); document.getElementById('btn-page-1').classList.add('bg-surface-container-lowest', 'text-on-surface', 'hover:bg-surface-container'); document.getElementById('btn-page-2').classList.remove('bg-primary-container', 'text-white', 'shadow-md'); document.getElementById('btn-page-2').classList.add('bg-surface-container-lowest', 'text-on-surface', 'hover:bg-surface-container');"
+            id="btn-page-3"
+            class="w-12 h-12 rounded-full font-bold flex items-center justify-center bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-all duration-200">3</button>
+        </div>
+        <!-- Notes -->
+        <div
+          class="mt-8 flex items-start gap-4 p-6 bg-surface-container-low rounded-xl text-sm text-secondary leading-relaxed border-r-4 border-tertiary">
+          <span class="material-symbols-outlined text-tertiary shrink-0" data-icon="info">info</span>
+          <div>
+            <p class="font-bold text-on-surface mb-2">ملاحظات هامة:</p>
+            <ul class="list-disc pr-5 space-y-1">
+              <li>الحجز المسبق ضروري لجميع العيادات التخصصية لضمان تقديم الخدمة الأمثل.</li>
+              <li>الجداول عرضة للتغيير بناءً على توفر الاستشاريين وحالات الطوارئ.</li>
+              <li>للحالات الحرجة والطارئة، يرجى التوجه فوراً لقسم الطوارئ المتاح على مدار 24 ساعة.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Footer Shell -->
+  <footer class="bg-[#f8f9fa] dark:bg-slate-950 full-width py-10 md:py-12 px-4 sm:px-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-8 max-w-7xl mx-auto font-['Tajawal'] text-sm leading-relaxed">
+      <div class="space-y-4">
+        <div class="text-lg font-bold text-gray-900 dark:text-white">مستشفى المرج التخصصي</div>
+        <p class="text-gray-500 dark:text-gray-400">منشأة طبية رائدة تقدم رعاية صحية عالمية المستوى مع التركيز على
+          التميز الجراحي والرعاية الرحيمة بالمرضى.</p>
+      </div>
+      <div>
+        <h4 class="font-semibold text-[#A31D1D] mb-4">روابط سريعة</h4>
+        <div class="flex flex-col gap-2">
+          <a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200"
+            href="#">البحث عن طبيب</a>
+          <a class="font-semibold text-[#A31D1D]" href="#">جداول العيادات</a>
+          <a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200"
+            href="#">الخدمات الطبية</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-semibold text-[#A31D1D] mb-4">رعاية المرضى</h4>
+        <div class="flex flex-col gap-2">
+          <a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200"
+            href="#">حقوق المريض</a>
+          <a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200"
+            href="#">سياسة الخصوصية</a>
+          <a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200"
+            href="#">الأحكام والقوانين</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-semibold text-[#A31D1D] mb-4">اتصل بنا</h4>
+        <div class="flex flex-col gap-2 text-gray-500 dark:text-gray-400">
+          <p class="flex items-center gap-2"><span class="material-symbols-outlined text-xs"
+              data-icon="call">call</span> +20 (02) 1234 5678</p>
+          <p class="flex items-center gap-2"><span class="material-symbols-outlined text-xs"
+              data-icon="location_on">location_on</span> القاهرة، مصر</p>
+          <a class="text-[#A31D1D] font-bold mt-2" href="#">تواصل معنا الآن</a>
+        </div>
+      </div>
+    </div>
+    <div
+      class="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 text-center text-gray-500 dark:text-gray-400">
+      © 2024 جميع الحقوق محفوظة لمستشفى المرج التخصصي.
+    </div>
+  </footer>
+</body>
+
+</html>

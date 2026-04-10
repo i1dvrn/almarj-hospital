@@ -88,29 +88,29 @@
 <body class="bg-surface text-on-surface">
 <!-- TopNavBar (Updated to match SCREEN_3 style) -->
 <nav class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none">
-<div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex justify-between items-center">
-<div class="flex items-center gap-2 md:gap-3">
-<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center text-white">
-<span class="material-symbols-outlined">local_hospital</span>
-</div>
-<div class="text-lg md:text-xl font-bold text-gray-900 dark:text-white flex flex-col leading-tight font-['Tajawal']">
-<span>مستشفى المرج التخصصي</span>
-</div>
-</div>
-<div class="hidden lg:flex items-center gap-8 font-['Tajawal'] font-bold text-sm tracking-tight">
-<a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors transition-all duration-200" href="main.html">الرئيسية</a>
-<a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors transition-all duration-200" href="schadules.html">الجداول</a>
-<a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1 transition-all duration-200" href="doctors.html">الأطباء</a>
-</div>
-<div class="flex items-center gap-3">
-<button class="hidden sm:block bg-primary-container text-white px-6 py-3 lg:py-2.5 rounded-lg font-bold text-sm hover:opacity-90 transition-all duration-200 active:opacity-80 scale-95 duration-150">
-            احجز موعدك
-        </button>
-<button class="block lg:hidden text-gray-900 dark:text-white p-2 flex items-center justify-center">
-            <span class="material-symbols-outlined text-3xl">menu</span>
-        </button>
-</div>
-</div>
+  <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex justify-between items-center">
+  <div class="flex items-center gap-2 md:gap-3">
+    <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white">
+  <img class="material-symbols-outlined" src="images/logo.jpg">
+  </div>
+  <div class="text-lg md:text-xl font-bold text-gray-900 dark:text-white flex flex-col leading-tight font-['Tajawal']">
+  <span>مستشفى المرج التخصصي</span>
+  </div>
+  </div>
+  <div class="hidden lg:flex items-center gap-8 font-['Tajawal'] font-bold text-sm tracking-tight">
+  <a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors transition-all duration-200" href="main.html">الرئيسية</a>
+  <a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors transition-all duration-200"  href="schadules.html">الجداول</a>
+  <a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1 transition-all duration-200" href="doctors.html">الأطباء</a>
+  </div>
+  <div class="flex items-center gap-3">
+  <button class="hidden sm:block bg-primary-container text-white px-6 py-3 lg:py-2.5 rounded-lg font-bold text-sm hover:opacity-90 transition-all duration-200 active:opacity-80 scale-95 duration-150">
+              احجز موعدك
+          </button>
+  <button class="block lg:hidden text-gray-900 dark:text-white p-2 flex items-center justify-center">
+              <span class="material-symbols-outlined text-3xl">menu</span>
+          </button>
+    </div>
+  </div>
 </nav>
 <main class="min-h-screen">
 <!-- Hero Section -->
@@ -283,13 +283,15 @@
 </div>
 </div>
 </section>
+</main>
+
 <!-- CTAs / Stats -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20">
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-center">
 <div class="p-6 md:p-8 rounded-2xl bg-tertiary-fixed text-on-tertiary-fixed-variant">
 <span class="material-symbols-outlined text-4xl mb-4 block" data-icon="groups">groups</span>
 <h4 class="text-3xl font-extrabold mb-2">50+</h4>
-<p class="text-sm font-bold uppercase tracking-widest opacity-80">استشاري متخصص</p>
+<p class="text-sm font-bold uppercase tracking-widest opacity-80">طبيب متخصص</p>
 </div>
 <div class="p-6 md:p-8 rounded-2xl bg-secondary-fixed text-on-secondary-fixed-variant">
 <span class="material-symbols-outlined text-4xl mb-4 block" data-icon="clinical_notes">clinical_notes</span>
@@ -303,50 +305,43 @@
 </div>
 </div>
 </section>
-</main>
 <!-- Footer -->
-<footer class="bg-[#f8f9fa] dark:bg-slate-950 full-width py-10 md:py-12 px-4 sm:px-6 border-t border-surface-container">
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto font-['Tajawal'] text-sm leading-relaxed">
-<div class="md:col-span-1">
-<h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">مستشفى المرج التخصصي</h2>
-<p class="text-gray-500 dark:text-gray-400 mb-6">وضع معايير التميز في الرعاية الصحية من خلال الابتكار والرحمة.</p>
-<div class="flex space-x-reverse space-x-4">
-<span class="material-symbols-outlined text-[#A31D1D] cursor-pointer hover:opacity-70 transition-all" data-icon="public">public</span>
-<span class="material-symbols-outlined text-[#A31D1D] cursor-pointer hover:opacity-70 transition-all" data-icon="contact_support">contact_support</span>
-<span class="material-symbols-outlined text-[#A31D1D] cursor-pointer hover:opacity-70 transition-all" data-icon="location_on">location_on</span>
-</div>
-</div>
-<div class="md:col-span-1">
-<h3 class="font-bold text-gray-900 dark:text-white mb-6 uppercase tracking-wider text-xs">التنقل</h3>
-<ul class="space-y-4">
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">من نحن</a></li>
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">الخدمات</a></li>
-<li><a class="font-semibold text-[#A31D1D] hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">البحث عن طبيب</a></li>
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">الوظائف</a></li>
-</ul>
-</div>
-<div class="md:col-span-1">
-<h3 class="font-bold text-gray-900 dark:text-white mb-6 uppercase tracking-wider text-xs">موارد المريض</h3>
-<ul class="space-y-4">
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">قانوني</a></li>
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">سياسة الخصوصية</a></li>
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">اتصل بنا</a></li>
-<li><a class="text-gray-500 dark:text-gray-400 hover:underline decoration-[#A31D1D] underline-offset-4 transition-all duration-200 ease-in-out" href="#">حقوق المريض</a></li>
-</ul>
-</div>
-<div class="md:col-span-1">
-<h3 class="font-bold text-gray-900 dark:text-white mb-6 uppercase tracking-wider text-xs">النشرة الإخبارية</h3>
-<p class="text-gray-500 dark:text-gray-400 mb-4 text-xs">ابق على اطلاع بأحدث النصائح الصحية وأخبار المستشفى.</p>
-<div class="flex">
-<input class="bg-white dark:bg-slate-900 border-none rounded-r-lg px-4 py-2 w-full text-xs focus:ring-1 focus:ring-[#A31D1D]" placeholder="البريد الإلكتروني" type="email"/>
-<button class="bg-[#A31D1D] text-white px-4 py-2 rounded-l-lg hover:opacity-90 transition-all">
-<span class="material-symbols-outlined text-sm" data-icon="send">send</span>
-</button>
-</div>
-</div>
-</div>
-<div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-gray-200 dark:border-slate-800 text-center">
-<p class="text-gray-500 dark:text-gray-400 text-xs">© 2024 مستشفى المرج التخصصي. جميع الحقوق محفوظة.</p>
-</div>
+<footer class="bg-[#f8f9fa] py-10 px-4 sm:px-6">
+  
+  <div class="max-w-7xl mx-auto text-center space-y-6">
+
+    <!-- الاسم + الشعار -->
+    <div class="flex items-center justify-center gap-2 flex-wrap">
+      
+      <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900">
+        مستشفى المرج التخصصي
+      </h2>
+
+      <img 
+        src="images/footerlogo.jpg" 
+        alt="شعار مستشفى المرج التخصصي" 
+        class="w-9 h-9 sm:w-10 sm:h-10 object-contain rounded-full"
+        loading="lazy"
+      >
+
+    </div>
+
+    <!-- النص -->
+    <p class="text-gray-600 text-sm sm:text-base md:text-lg">
+      من أجل رعاية طبية متميزة بكل حب واحترافية
+    </p>
+
+  </div>
+
+  <!-- حقوق النشر -->
+  <div class="max-w-7xl mx-auto mt-8 md:mt-12 pt-6 border-t border-gray-200 text-center">
+    <p class="text-gray-500 text-xs sm:text-sm">
+      © 2026 جميع الحقوق محفوظة | تم التطوير بواسطة
+      <a href="#" class="text-brown-600 hover:underline ml-1">
+        منتصر العقيلي
+      </a>
+    </p>
+  </div>
+
 </footer>
 </body></html>

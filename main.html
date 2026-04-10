@@ -7,6 +7,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Tajawal:wght@300;400;500;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -149,25 +150,27 @@
       </p>
 
       <div class="flex flex-col sm:flex-row flex-wrap gap-4 pt-8 w-full sm:w-auto">
+        
         <button class="w-full sm:w-auto bg-primary-container text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-primary/20 transition-all min-h-[56px]">
-          احجز موعدك الآن
-        </button>
-        <button class="w-full sm:w-auto bg-white text-primary-container border-2 border-primary-container px-8 py-4 rounded-xl font-bold text-lg hover:bg-primary-fixed/30 transition-all min-h-[56px]">
           تواصل معنا
         </button>
-      </div>
+        <div class="flex items-center gap-2 text-brown-700 font-medium mt-2" style="color: brown;">
+          <a href="https://maps.app.goo.gl/WuBFgkdh83DZXgm37" target="_blank">
+          <span class="material-symbols-outlined text-lg">location_on</span> 
+          المرج - حي الـ700، مقابل مسجد أبوبكر الصديق   </a>
+        </div>
     </div>
   </div>
 </section>
 </section><!-- Clinic Schedules Section -->
 <section class="py-24 bg-surface-container-low">
 <div class="max-w-7xl mx-auto px-6">
-<div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 sm:gap-0 mb-8 md:mb-12">
-<div>
+<div class="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4 sm:gap-0 mb-8 md:mb-12">
+<div class="text-center sm:text-right">
 <h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline">جداول العيادات</h2>
 <p class="text-secondary mt-2 text-sm md:text-base">مواعيد عمل العيادات التخصصية خلال الأسبوع</p>
 </div>
-<a class="text-primary-container font-bold flex items-center gap-1 hover:underline min-h-[44px] py-2" href="#">
+<a class="text-primary-container font-bold flex items-center gap-1 hover:underline min-h-[44px] py-2" href="schadules.html"> 
                     عرض كافة التخصصات
                     <span class="material-symbols-outlined">arrow_back</span>
 </a>
@@ -217,7 +220,7 @@
 </div>
 </div>
 <!-- الصف الثاني: 3 أيام -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:w-3/4 mx-auto">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full lg:w-3/4 lg:mx-auto">
 <!-- الأربعاء -->
 <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
 <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
@@ -255,8 +258,8 @@
 <!-- Elite Doctors Section -->
 <section class="py-24 bg-surface">
 <div class="max-w-7xl mx-auto px-6">
-<div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 sm:gap-0 mb-8 md:mb-12">
-<div>
+<div class="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4 sm:gap-0 mb-8 md:mb-12">
+<div class="text-center sm:text-right">
 <h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline">نخبة من الأطباء</h2>
 <p class="text-secondary mt-2 text-sm md:text-base">تضم مستشفى المرج فريقاً طبياً من أكفأ الاستشاريين والأخصائيين في مختلف المجالات الطبية</p>
 </div>
@@ -306,9 +309,9 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6">
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
 <div class="bg-white p-8 md:p-12 lg:p-16 flex flex-col justify-center rounded-t-2xl lg:rounded-t-none lg:rounded-r-2xl">
-<h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline mb-6">تواصل معنا</h2>
+<h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline mb-12";">تواصل معنا</h2>
 <div class="space-y-6 md:space-y-8">
-<div class="flex items-start gap-4 flex-col sm:flex-row">
+<div class="flex items-center sm:items-start gap-4">
 <div class="w-12 h-12 bg-primary-fixed text-primary-container rounded-full flex items-center justify-center flex-shrink-0">
 <span class="material-symbols-outlined">location_on</span>
 </div>
@@ -317,7 +320,7 @@
 <p class="text-secondary text-sm md:text-base">المرج / حي الـ700 مقابل مسجد ابوبكر الصديق</p>
 </div>
 </div>
-<div class="flex items-start gap-4 flex-col sm:flex-row">
+<div class="flex items-center sm:items-start gap-4">
 <div class="w-12 h-12 bg-primary-fixed text-primary-container rounded-full flex items-center justify-center flex-shrink-0">
 <span class="material-symbols-outlined">call</span>
 </div>
@@ -326,13 +329,13 @@
 <p class="text-secondary text-sm md:text-base">092-8667081<br/>092-2625986</p>
 </div>
 </div>
-<div class="flex items-start gap-4 flex-col sm:flex-row">
+<div class="flex items-center sm:items-start gap-4">
 <div class="w-12 h-12 bg-primary-fixed text-primary-container rounded-full flex items-center justify-center flex-shrink-0">
-<span class="material-symbols-outlined">mail</span>
+  <i class="fa-brands fa-facebook"></i>
 </div>
 <div class="overflow-hidden break-all">
 <h4 class="font-bold text-lg">فيسبوك</h4>
-<p class="text-secondary text-sm md:text-base">https://www.facebook.com/AlmarjHospital</p>
+<p class="text-secondary text-sm md:text-base"> <a href="https://www.facebook.com/AlmarjHospital" target="_blank" style="color: cornflowerblue;">www.facebook.com/AlmarjHospital</a></p>
 </div>
 </div>
 </div>
@@ -353,24 +356,41 @@
 </main>
 <!-- Footer -->
 <footer class="bg-[#f8f9fa] py-10 px-4 sm:px-6">
+  
   <div class="max-w-7xl mx-auto text-center space-y-6">
 
     <!-- الاسم + الشعار -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-      <h2 class="text-xl md:text-2xl font-extrabold text-gray-900">
+    <div class="flex items-center justify-center gap-2 flex-wrap">
+      
+      <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900">
         مستشفى المرج التخصصي
       </h2>
-      <img src="images/footerlogo.jpg" alt="logo" class="w-10 h-10 object-contain mt-2 sm:mt-0" style="border-radius: 100%;">
+
+      <img 
+        src="images/footerlogo.jpg" 
+        alt="شعار مستشفى المرج التخصصي" 
+        class="w-9 h-9 sm:w-10 sm:h-10 object-contain rounded-full"
+        loading="lazy"
+      >
+
     </div>
 
     <!-- النص -->
-    <p class="text-gray-600 text-base md:text-lg">
+    <p class="text-gray-600 text-sm sm:text-base md:text-lg">
       من أجل رعاية طبية متميزة بكل حب واحترافية
     </p>
 
   </div>
-  <div class="max-w-7xl mx-auto mt-8 md:mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 text-center"> 
-    <p class="text-gray-500 dark:text-gray-400 text-sm">©  تم التطوير بواسطة <a href="#" style="color: brown; padding: 10px;" > منتصر العقيلي </a></p>
+
+  <!-- حقوق النشر -->
+  <div class="max-w-7xl mx-auto mt-8 md:mt-12 pt-6 border-t border-gray-200 text-center">
+    <p class="text-gray-500 text-xs sm:text-sm">
+      © 2026 جميع الحقوق محفوظة | تم التطوير بواسطة
+      <a href="#" class="text-brown-600 hover:underline ml-1">
+        منتصر العقيلي
+      </a>
+    </p>
   </div>
+
 </footer>
 </body></html>

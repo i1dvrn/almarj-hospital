@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>جداول العيادات — مستشفى المرج التخصصي</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Work+Sans:wght@300;400;500;600&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="db.js"></script>
+  <style>
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+    body { font-family:'Tajawal','Work Sans',sans-serif; }
+    h1,h2,h3 { font-family:'Tajawal','Plus Jakarta Sans',sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display:none; }
+    .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+  </style>
+</head>
+<body class="bg-surface text-on-surface">
+
+  <!-- Nav -->
+  <nav class="bg-white/90 backdrop-blur-md top-0 sticky z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex justify-between items-center">
+      <div class="flex items-center gap-2 md:gap-3">
+        <img src="images/logo.jpg" class="w-10 h-10 object-cover rounded-lg" alt="شعار"/>
+        <span class="text-lg md:text-xl font-bold text-gray-900 font-['Tajawal']">مستشفى المرج التخصصي</span>
+      </div>
+      <div class="hidden lg:flex items-center gap-8 font-['Tajawal'] font-bold text-sm">
+        <a class="text-gray-600 hover:text-[#A31D1D] transition" href="main.html">الرئيسية</a>
+        <a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1" href="schedules.html">الجداول</a>
+        <a class="text-gray-600 hover:text-[#A31D1D] transition" href="doctors.html">الأطباء</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="hidden sm:block bg-primary-container text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:bg-red-900 transition">احجز موعدك</button>
+        <button id="menuBtn" class="block lg:hidden text-gray-900 p-2">
+          <span class="material-symbols-outlined text-3xl">menu</span>
+        </button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden lg:hidden border-t border-gray-100 bg-white px-4 py-4 flex flex-col gap-4 font-['Tajawal'] font-bold text-sm">
+      <a class="text-gray-600 hover:text-[#A31D1D]" href="main.html">الرئيسية</a>
+      <a class="text-[#A31D1D]" href="schedules.html">الجداول</a>
+      <a class="text-gray-600 hover:text-[#A31D1D]" href="doctors.html">الأطباء</a>
+    </div>
+  </nav>
+
+  <main class="min-h-screen">
+    <!-- Hero -->
+    <section class="bg-surface py-8 md:py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-r-4 border-primary-container pr-4 md:pr-6 mb-8 md:mb-12">
+          <div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight leading-tight">
+              جدول مواعيد العيادات الخارجية
+            </h1>
+            <p class="text-base md:text-lg font-medium text-secondary mt-2">
+              نخبة من الاستشاريين والأخصائيين في خدمتكم طوال الأسبوع
+            </p>
+          </div>
+        </div>
+
+        <!-- Day Tabs -->
+        <div class="flex overflow-x-auto pb-4 gap-3 no-scrollbar" id="day-tabs">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Schedule Table -->
+    <section class="pb-16 md:pb-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+        <!-- Empty State -->
+        <div id="schedule-empty" class="hidden text-center py-20 text-gray-400">
+          <span class="material-symbols-outlined text-6xl block mb-4">event_busy</span>
+          <p class="text-xl font-bold">لا توجد عيادات مجدولة لهذا اليوم</p>
+          <p class="text-sm mt-2">يمكن إضافة الجدول من لوحة التحكم</p>
+        </div>
+
+        <!-- Table -->
+        <div id="schedule-table-wrapper" class="overflow-x-auto rounded-2xl bg-surface-container-lowest shadow-sm border border-surface-container">
+          <table class="w-full min-w-[450px] md:min-w-full text-right border-collapse text-sm md:text-base">
+            <thead>
+              <tr class="bg-primary-container text-white">
+                <th class="p-4 md:p-6 text-right font-bold text-sm md:text-lg">العيادة</th>
+                <th class="p-4 md:p-6 text-center font-bold text-sm md:text-lg">
+                  الفترة الصباحية<br/><span class="text-xs font-normal opacity-80">(09:00 - 14:00)</span>
+                </th>
+                <th class="p-4 md:p-6 text-center font-bold text-sm md:text-lg">
+                  الفترة المسائية<br/><span class="text-xs font-normal opacity-80">(17:00 - 21:00)</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="schedule-tbody" class="divide-y divide-surface-container">
+              <!-- rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Notes -->
+        <div class="mt-8 flex items-start gap-4 p-6 bg-surface-container-low rounded-xl text-sm text-secondary leading-relaxed border-r-4 border-tertiary">
+          <span class="material-symbols-outlined text-tertiary shrink-0">info</span>
+          <div>
+            <p class="font-bold text-on-surface mb-2">ملاحظات هامة:</p>
+            <ul class="list-disc pr-5 space-y-1">
+              <li>الحجز المسبق ضروري لجميع العيادات التخصصية لضمان تقديم الخدمة الأمثل.</li>
+              <li>الجداول عرضة للتغيير بناءً على توفر الاستشاريين وحالات الطوارئ.</li>
+              <li>للحالات الحرجة والطارئة، يرجى التوجه فوراً لقسم الطوارئ المتاح على مدار 24 ساعة.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-[#f8f9fa] py-10 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto text-center space-y-6">
+      <div class="flex items-center justify-center gap-2 flex-wrap">
+        <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900">مستشفى المرج التخصصي</h2>
+        <img src="images/footerlogo.jpg" class="w-9 h-9 object-contain rounded-full" loading="lazy"/>
+      </div>
+      <p class="text-gray-600 text-sm sm:text-base md:text-lg">من أجل رعاية طبية متميزة بكل حب واحترافية</p>
+    </div>
+    <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-gray-200 text-center">
+      <p class="text-gray-500 text-xs sm:text-sm">
+        © 2026 جميع الحقوق محفوظة | تم التطوير بواسطة
+        <a href="#" class="hover:underline">منتصر العقيلي</a>
+      </p>
+    </div>
+  </footer>
+
+<script>
+// ===== Mobile Menu =====
+document.getElementById('menuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+
+// ===== Current selected day =====
+let selectedDay = 'saturday';
+
+// ===== Render Day Tabs =====
+function renderDayTabs() {
+  const container = document.getElementById('day-tabs');
+  container.innerHTML = MARJ_DAYS.map(day => `
+    <button onclick="selectDay('${day}')" id="tab-${day}"
+      class="flex-none min-w-[120px] ${day === selectedDay
+        ? 'bg-primary-container text-white shadow-lg'
+        : 'bg-surface-container-lowest text-on-surface hover:bg-surface-container'
+      } p-4 rounded-xl transition-all duration-200">
+      <span class="block text-lg font-bold">${MARJ_DAY_NAMES[day].ar}</span>
+      <span class="block text-xs opacity-70 mt-1">${MARJ_DAY_NAMES[day].en}</span>
+    </button>
+  `).join('');
+}
+
+// ===== Select Day =====
+function selectDay(day) {
+  selectedDay = day;
+  renderDayTabs();
+  renderSchedule(day);
+}
+
+// ===== Render Schedule Table =====
+function renderSchedule(day) {
+  const schedules = marjGetSchedules();
+  const rows = (schedules[day] || []);
+
+  const tbody = document.getElementById('schedule-tbody');
+  const empty = document.getElementById('schedule-empty');
+  const wrapper = document.getElementById('schedule-table-wrapper');
+
+  if (rows.length === 0) {
+    empty.classList.remove('hidden');
+    wrapper.classList.add('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  wrapper.classList.remove('hidden');
+
+  tbody.innerHTML = rows.map((row, idx) => {
+    const morningName = marjGetDoctorName(row.morning);
+    const eveningName = marjGetDoctorName(row.evening);
+    const iconCls = marjGetIconClasses(row.iconColor);
+    const isAlt = idx % 2 !== 0;
+
+    return `
+      <tr class="${isAlt ? 'bg-surface-container-low/30' : ''} hover:bg-surface transition-colors">
+        <td class="p-4 md:p-6">
+          <div class="flex items-center gap-2 md:gap-4">
+            <div class="w-9 h-9 md:w-12 md:h-12 shrink-0 ${iconCls.bg} rounded-lg flex items-center justify-center">
+              <span class="material-symbols-outlined ${iconCls.text}">${escHtml(row.icon || 'stethoscope')}</span>
+            </div>
+            <div class="font-bold text-on-surface text-sm sm:text-base md:text-lg">${escHtml(row.clinicName)}</div>
+          </div>
+        </td>
+        <td class="p-4 md:p-6 text-center">
+          ${morningName
+            ? `<div class="font-bold text-primary">${escHtml(morningName)}</div>`
+            : `<div class="font-bold text-gray-300">—</div>`}
+        </td>
+        <td class="p-4 md:p-6 text-center">
+          ${eveningName
+            ? `<div class="font-bold text-primary">${escHtml(eveningName)}</div>`
+            : `<div class="font-bold text-gray-300">—</div>`}
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ===== Init =====
+renderDayTabs();
+renderSchedule(selectedDay);
+</script>
+</body>
+</html>

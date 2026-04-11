@@ -1,396 +1,372 @@
 <!DOCTYPE html>
 
-<html dir="rtl" lang="ar"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>مستشفى المرج التخصصي</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Tajawal:wght@300;400;500;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "on-tertiary-fixed-variant": "#004b73",
-                    "surface-dim": "#d9dadb",
-                    "primary": "#80000a",
-                    "on-background": "#191c1d",
-                    "inverse-surface": "#2e3132",
-                    "on-error": "#ffffff",
-                    "surface-container": "#edeeef",
-                    "on-secondary-fixed-variant": "#36485b",
-                    "on-secondary-container": "#526478",
-                    "on-tertiary-container": "#96cdff",
-                    "error-container": "#ffdad6",
-                    "error": "#ba1a1a",
-                    "on-tertiary": "#ffffff",
-                    "secondary-fixed": "#d1e4fb",
-                    "outline-variant": "#e2beba",
-                    "on-surface": "#191c1d",
-                    "on-error-container": "#93000a",
-                    "tertiary-fixed-dim": "#93ccff",
-                    "surface-variant": "#e1e3e4",
-                    "on-secondary-fixed": "#091d2e",
-                    "tertiary": "#004064",
-                    "inverse-primary": "#ffb4ac",
-                    "tertiary-container": "#005887",
-                    "tertiary-fixed": "#cce5ff",
-                    "surface": "#f8f9fa",
-                    "primary-fixed": "#ffdad6",
-                    "primary-fixed-dim": "#ffb4ac",
-                    "surface-container-lowest": "#ffffff",
-                    "secondary-container": "#cfe2f9",
-                    "surface-container-high": "#e7e8e9",
-                    "surface-container-low": "#f3f4f5",
-                    "on-primary": "#ffffff",
-                    "inverse-on-surface": "#f0f1f2",
-                    "primary-container": "#a31d1d",
-                    "surface-tint": "#b22926",
-                    "surface-bright": "#f8f9fa",
-                    "surface-container-highest": "#e1e3e4",
-                    "on-primary-fixed-variant": "#900c12",
-                    "on-tertiary-fixed": "#001d31",
-                    "background": "#f8f9fa",
-                    "on-secondary": "#ffffff",
-                    "secondary": "#4e6073",
-                    "on-surface-variant": "#5a413e",
-                    "on-primary-container": "#ffb6ae",
-                    "on-primary-fixed": "#410002",
-                    "secondary-fixed-dim": "#b5c8df",
-                    "outline": "#8e706d"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-            },
-            "fontFamily": {
-                    "headline": ["Plus Jakarta Sans", "Tajawal"],
-                    "body": ["Work Sans", "Tajawal"],
-                    "label": ["Work Sans", "Tajawal"]
-            }
-          },
-        },
-      }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
-        body { font-family: 'Tajawal', sans-serif; }
-    </style>
+<html dir="rtl" lang="ar">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>مستشفى المرج التخصصي</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Tajawal:wght@300;400;500;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="tailwind-config.js"></script>
+  <script src="db.js"></script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+    }
+  </style>
 </head>
+
 <body class="bg-surface text-on-surface">
-<!-- TopNavBar -->
-<nav class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none">
-<div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex justify-between items-center">
-<div class="flex items-center gap-2 md:gap-3">
-  <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white">
-<img class="material-symbols-outlined" src="images/logo.jpg">
-</div>
-<div class="text-lg md:text-xl font-bold text-gray-900 dark:text-white flex flex-col leading-tight font-['Tajawal']">
-<span>مستشفى المرج التخصصي</span>
-</div>
-</div>
-<div class="hidden lg:flex items-center gap-8 font-['Tajawal'] font-bold text-sm tracking-tight">
-<a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1 transition-all duration-200" href="main.html">الرئيسية</a>
-<a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors transition-all duration-200" href="schadules.html">الجداول</a>
-<a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors transition-all duration-200" href="doctors.html">الأطباء</a>
-</div>
-<div class="flex items-center gap-3">
-<button class="hidden sm:block bg-primary-container text-white px-6 py-3 lg:py-2.5 rounded-lg font-bold text-sm hover:opacity-90 transition-all duration-200 active:opacity-80 scale-95 duration-150">
-            احجز موعدك
+  <!-- TopNavBar -->
+  <nav
+    class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex justify-between items-center">
+      <div class="flex items-center gap-2 md:gap-3">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white">
+          <img class="material-symbols-outlined object-cover" src="images/logo.jpg">
+        </div>
+        <div
+          class="text-lg md:text-xl font-bold text-gray-900 dark:text-white flex flex-col leading-tight font-['Tajawal']">
+          <span>مستشفى المرج التخصصي</span>
+        </div>
+      </div>
+      <div class="hidden lg:flex items-center gap-8 font-['Tajawal'] font-bold text-sm tracking-tight">
+        <a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1 transition-all duration-200"
+          href="main.html">الرئيسية</a>
+        <a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors transition-all duration-200"
+          href="schedules.html">الجداول</a>
+        <a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors transition-all duration-200"
+          href="doctors.html">الأطباء</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button
+          class="hidden sm:block bg-primary-container text-white px-6 py-3 lg:py-2.5 rounded-lg font-bold text-sm hover:bg-red-900 transition-colors duration-200 active:opacity-80 scale-95">
+          احجز موعدك
         </button>
-<button class="block lg:hidden text-gray-900 dark:text-white p-2 flex items-center justify-center">
-            <span class="material-symbols-outlined text-3xl">menu</span>
+        <button class="block lg:hidden text-gray-900 dark:text-white p-2 flex items-center justify-center">
+          <span class="material-symbols-outlined text-3xl">menu</span>
         </button>
-</div>
-</div>
-</nav>
-<main>
-<!-- Hero Section -->
-<section class="relative overflow-hidden bg-surface">
-  
-  <div class="relative md:hidden w-[92%] mx-auto mt-6 rounded-2xl overflow-hidden shadow-md border border-gray-100">
-  
-    <img src="images/heropicM.jpg"   
-         alt="مستشفى المرج - جوال" 
-         class="w-full h-auto aspect-[1024/500] object-cover">
-    
-    <div class="absolute bottom-3 right-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-primary font-bold text-[10px] uppercase tracking-wider shadow-sm">
-      <span class="material-symbols-outlined text-sm">verified_user</span>
-      رعاية طبية متميزة
+      </div>
     </div>
-  </div>
+  </nav>
+  <main>
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-surface">
 
-  <div class="hidden md:block absolute inset-0 z-0">
-    <img src="images/new-image.png" class="w-full h-full object-cover">
-  </div>
+      <div class="relative md:hidden w-[92%] mx-auto mt-6 rounded-2xl overflow-hidden shadow-md border border-gray-100">
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-    <div class="flex flex-col items-center lg:items-start text-center lg:text-right py-10 md:py-20 lg:h-[600px] lg:justify-center">
-      
-      <div class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-fixed text-primary font-bold text-xs uppercase tracking-wider mb-6">
-        <span class="material-symbols-outlined text-sm">verified_user</span>
-        رعاية طبية متميزة
+        <img src="images/heropicM.jpg" alt="مستشفى المرج - جوال" class="w-full h-auto aspect-[1024/500] object-cover">
+
+        <div
+          class="absolute bottom-3 right-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-primary font-bold text-[10px] uppercase tracking-wider shadow-sm">
+          <span class="material-symbols-outlined text-sm">verified_user</span>
+          رعاية طبية متميزة
+        </div>
       </div>
 
-      <h1 class="text-3xl md:text-5xl lg:text-7xl font-extrabold text-on-background leading-tight lg:leading-[1.2] font-headline">
-        مستشفى <span style="color: rgb(48, 109, 170);">المرج</span>
-        <br> التخصصــــــــــــــــــــــي
-      </h1>
-      
-      <p class="text-base sm:text-lg md:text-xl text-secondary leading-relaxed max-w-lg font-body mt-6">
-        نقدم رعاية صحية عالمية المستوى بأحدث التقنيات الطبية ونخبة من الاستشاريين المتخصصين لضمان سلامتك وراحتك.
+      <div class="hidden md:block absolute inset-0 z-0">
+        <img src="images/new-image.png" class="w-full h-full object-cover">
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <div
+          class="flex flex-col items-center lg:items-start text-center lg:text-right py-10 md:py-20 lg:h-[600px] lg:justify-center">
+
+          <div
+            class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-fixed text-primary font-bold text-xs uppercase tracking-wider mb-6">
+            <span class="material-symbols-outlined text-sm">verified_user</span>
+            رعاية طبية متميزة
+          </div>
+
+          <h1
+            class="text-3xl md:text-5xl lg:text-7xl font-extrabold text-on-background leading-tight lg:leading-[1.2] font-headline">
+            مستشفى <span style="color: rgb(48, 109, 170);">المرج</span>
+            <br> التخصصــــــــــــــــــــــي
+          </h1>
+
+          <p class="text-base sm:text-lg md:text-xl text-secondary leading-relaxed max-w-lg font-body mt-6">
+            نقدم رعاية صحية عالمية المستوى بأحدث التقنيات الطبية ونخبة من الاستشاريين المتخصصين لضمان سلامتك وراحتك.
+          </p>
+
+          <div class="flex flex-col sm:flex-row flex-wrap gap-4 pt-8 w-full sm:w-auto">
+
+            <button
+              class="w-full sm:w-auto bg-primary-container text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-primary/20 hover:bg-red-900 transition-colors min-h-[56px]">
+              تواصل معنا
+            </button>
+            <div class="flex items-center gap-2 text-brown-700 font-medium mt-2" style="color: brown;">
+              <a href="https://maps.app.goo.gl/WuBFgkdh83DZXgm37" target="_blank">
+                <span class="material-symbols-outlined text-lg">location_on</span>
+                المرج - حي الـ700، مقابل مسجد أبوبكر الصديق </a>
+            </div>
+          </div>
+        </div>
+    </section>
+    </section><!-- Clinic Schedules Section -->
+    <section class="py-24 bg-surface-container-low">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4 sm:gap-0 mb-8 md:mb-12">
+          <div class="text-center sm:text-right">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline">جداول العيادات</h2>
+            <p class="text-secondary mt-2 text-sm md:text-base">مواعيد عمل العيادات التخصصية خلال الأسبوع</p>
+          </div>
+          <a class="text-primary-container font-bold flex items-center gap-1 hover:underline min-h-[44px] py-2"
+            href="schedules.html">
+            عرض كافة التخصصات
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+        </div>
+        <div class="flex flex-col gap-6">
+          <!-- الصف الأول: 4 أيام -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- السبت -->
+            <div
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+                <img src="images/saturday.jpg" alt="السبت"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              </div>
+              <div class="p-5 text-center flex flex-col justify-between flex-1">
+                <h3 class="text-2xl font-bold mb-4 font-headline">السبت</h3>
+                <button
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+              </div>
+            </div>
+            <!-- الأحد -->
+            <div
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+                <img src="images/sunday.jpg" alt="الأحد"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              </div>
+              <div class="p-5 text-center flex flex-col justify-between flex-1">
+                <h3 class="text-2xl font-bold mb-4 font-headline">الأحد</h3>
+                <button
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+              </div>
+            </div>
+            <!-- الإثنين -->
+            <div
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+                <img src="images/monday.jpg" alt="الإثنين"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              </div>
+              <div class="p-5 text-center flex flex-col justify-between flex-1">
+                <h3 class="text-2xl font-bold mb-4 font-headline">الإثنين</h3>
+                <button
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+              </div>
+            </div>
+            <!-- الثلاثاء -->
+            <div
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+                <img src="images/tuesday.jpg" alt="الثلاثاء"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              </div>
+              <div class="p-5 text-center flex flex-col justify-between flex-1">
+                <h3 class="text-2xl font-bold mb-4 font-headline">الثلاثاء</h3>
+                <button
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+              </div>
+            </div>
+          </div>
+          <!-- الصف الثاني: 3 أيام -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full lg:w-3/4 lg:mx-auto">
+            <!-- الأربعاء -->
+            <div
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+                <img src="images/wednesday.jpg" alt="الأربعاء"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              </div>
+              <div class="p-5 text-center flex flex-col justify-between flex-1">
+                <h3 class="text-2xl font-bold mb-4 font-headline">الأربعاء</h3>
+                <button
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+              </div>
+            </div>
+            <!-- الخميس -->
+            <div
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+                <img src="images/thursday.jpg" alt="الخميس"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              </div>
+              <div class="p-5 text-center flex flex-col justify-between flex-1">
+                <h3 class="text-2xl font-bold mb-4 font-headline">الخميس</h3>
+                <button
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+              </div>
+            </div>
+            <!-- الجمعة -->
+            <div
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+                <img src="images/friday.jpg" alt="الجمعة"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              </div>
+              <div class="p-5 text-center flex flex-col justify-between flex-1">
+                <h3 class="text-2xl font-bold mb-4 font-headline">الجمعة</h3>
+                <button
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Elite Doctors Section -->
+    <section class="py-24 bg-surface">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4 sm:gap-0 mb-8 md:mb-12">
+          <div class="text-center sm:text-right">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline">نخبة من الأطباء</h2>
+            <p class="text-secondary mt-2 text-sm md:text-base">تضم مستشفى المرج فريقاً طبياً من أكفأ الاستشاريين
+              والأخصائيين في مختلف المجالات الطبية</p>
+          </div>
+          <a class="text-primary-container font-bold flex items-center gap-1 hover:underline min-h-[44px] py-2"
+            href="doctors.html">
+            عرض جميع الأطباء
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+        </div>
+        <div id="home-doctors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- rendered dynamically -->
+        </div>
+        <div id="home-doctors-empty" class="hidden text-center py-10 text-gray-400">
+          <p>لم يتم إضافة أطباء بعد</p>
+        </div>
+
+      </div>
+    </section>
+    <!-- Location Map Section -->
+    <section class="py-16 md:py-24 bg-surface-container-low overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div
+          class="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <div
+            class="bg-white p-8 md:p-12 lg:p-16 flex flex-col justify-center rounded-t-2xl lg:rounded-t-none lg:rounded-r-2xl">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline mb-12" ;">تواصل معنا</h2>
+            <div class="space-y-6 md:space-y-8">
+              <div class="flex items-center sm:items-start gap-4">
+                <div
+                  class="w-12 h-12 bg-primary-fixed text-primary-container rounded-full flex items-center justify-center flex-shrink-0">
+                  <span class="material-symbols-outlined">location_on</span>
+                </div>
+                <div>
+                  <h4 class="font-bold text-lg">الموقع</h4>
+                  <p class="text-secondary text-sm md:text-base">المرج / حي الـ700 مقابل مسجد ابوبكر الصديق</p>
+                </div>
+              </div>
+              <div class="flex items-center sm:items-start gap-4">
+                <div
+                  class="w-12 h-12 bg-primary-fixed text-primary-container rounded-full flex items-center justify-center flex-shrink-0">
+                  <span class="material-symbols-outlined">call</span>
+                </div>
+                <div>
+                  <h4 class="font-bold text-lg">الهاتف</h4>
+                  <p class="text-secondary text-sm md:text-base">092-8667081<br />092-2625986</p>
+                </div>
+              </div>
+              <div class="flex items-center sm:items-start gap-4">
+                <div
+                  class="w-12 h-12 bg-primary-fixed text-primary-container rounded-full flex items-center justify-center flex-shrink-0">
+                  <i class="fa-brands fa-facebook"></i>
+                </div>
+                <div class="overflow-hidden break-all">
+                  <h4 class="font-bold text-lg">فيسبوك</h4>
+                  <p class="text-secondary text-sm md:text-base"> <a href="https://www.facebook.com/AlmarjHospital"
+                      target="_blank" style="color: cornflowerblue;">www.facebook.com/AlmarjHospital</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="h-64 sm:h-80 md:h-[400px] lg:h-auto rounded-b-2xl lg:rounded-b-none lg:rounded-l-2xl overflow-hidden">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1169.4510415770053!2d20.837573096953804!3d32.49319773590454!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x138211122418410b%3A0xe31667a410a3a5c9!2z2YXYs9iq2LTZgdmJINin2YTZhdix2Kwg2KfZhNiq2K7Ytdi12Yo!5e0!3m2!1sen!2sly!4v1775728449470!5m2!1sen!2sly"
+              class="w-full h-full border-0" style="border:0;" allowfullscreen loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <footer class="bg-[#f8f9fa] py-10 px-4 sm:px-6">
+
+    <div class="max-w-7xl mx-auto text-center space-y-6">
+
+      <!-- الاسم + الشعار -->
+      <div class="flex items-center justify-center gap-2 flex-wrap">
+
+        <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900">
+          مستشفى المرج التخصصي
+        </h2>
+
+        <img src="images/footerlogo.jpg" alt="شعار مستشفى المرج التخصصي"
+          class="w-9 h-9 sm:w-10 sm:h-10 object-contain rounded-full" loading="lazy">
+
+      </div>
+
+      <!-- النص -->
+      <p class="text-gray-600 text-sm sm:text-base md:text-lg">
+        من أجل رعاية طبية متميزة بكل حب واحترافية
       </p>
 
-      <div class="flex flex-col sm:flex-row flex-wrap gap-4 pt-8 w-full sm:w-auto">
-        
-        <button class="w-full sm:w-auto bg-primary-container text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-primary/20 transition-all min-h-[56px]">
-          تواصل معنا
-        </button>
-        <div class="flex items-center gap-2 text-brown-700 font-medium mt-2" style="color: brown;">
-          <a href="https://maps.app.goo.gl/WuBFgkdh83DZXgm37" target="_blank">
-          <span class="material-symbols-outlined text-lg">location_on</span> 
-          المرج - حي الـ700، مقابل مسجد أبوبكر الصديق   </a>
-        </div>
-    </div>
-  </div>
-</section>
-</section><!-- Clinic Schedules Section -->
-<section class="py-24 bg-surface-container-low">
-<div class="max-w-7xl mx-auto px-6">
-<div class="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4 sm:gap-0 mb-8 md:mb-12">
-<div class="text-center sm:text-right">
-<h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline">جداول العيادات</h2>
-<p class="text-secondary mt-2 text-sm md:text-base">مواعيد عمل العيادات التخصصية خلال الأسبوع</p>
-</div>
-<a class="text-primary-container font-bold flex items-center gap-1 hover:underline min-h-[44px] py-2" href="schadules.html"> 
-                    عرض كافة التخصصات
-                    <span class="material-symbols-outlined">arrow_back</span>
-</a>
-</div>
-<div class="flex flex-col gap-6">
-<!-- الصف الأول: 4 أيام -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-<!-- السبت -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
-<div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
-<img src="images/saturday.jpg" alt="السبت" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-</div>
-<div class="p-5 text-center flex flex-col justify-between flex-1">
-<h3 class="text-2xl font-bold mb-4 font-headline">السبت</h3>
-<button class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
-</div>
-</div>
-<!-- الأحد -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
-<div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
-<img src="images/sunday.jpg" alt="الأحد" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-</div>
-<div class="p-5 text-center flex flex-col justify-between flex-1">
-<h3 class="text-2xl font-bold mb-4 font-headline">الأحد</h3>
-<button class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
-</div>
-</div>
-<!-- الإثنين -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
-<div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
-<img src="images/monday.jpg" alt="الإثنين" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-</div>
-<div class="p-5 text-center flex flex-col justify-between flex-1">
-<h3 class="text-2xl font-bold mb-4 font-headline">الإثنين</h3>
-<button class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
-</div>
-</div>
-<!-- الثلاثاء -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
-<div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
-<img src="images/tuesday.jpg" alt="الثلاثاء" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-</div>
-<div class="p-5 text-center flex flex-col justify-between flex-1">
-<h3 class="text-2xl font-bold mb-4 font-headline">الثلاثاء</h3>
-<button class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
-</div>
-</div>
-</div>
-<!-- الصف الثاني: 3 أيام -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full lg:w-3/4 lg:mx-auto">
-<!-- الأربعاء -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
-<div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
-<img src="images/wednesday.jpg" alt="الأربعاء" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-</div>
-<div class="p-5 text-center flex flex-col justify-between flex-1">
-<h3 class="text-2xl font-bold mb-4 font-headline">الأربعاء</h3>
-<button class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
-</div>
-</div>
-<!-- الخميس -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
-<div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
-<img src="images/thursday.jpg" alt="الخميس" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-</div>
-<div class="p-5 text-center flex flex-col justify-between flex-1">
-<h3 class="text-2xl font-bold mb-4 font-headline">الخميس</h3>
-<button class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
-</div>
-</div>
-<!-- الجمعة -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
-<div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
-<img src="images/friday.jpg" alt="الجمعة" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-</div>
-<div class="p-5 text-center flex flex-col justify-between flex-1">
-<h3 class="text-2xl font-bold mb-4 font-headline">الجمعة</h3>
-<button class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Elite Doctors Section -->
-<section class="py-24 bg-surface">
-<div class="max-w-7xl mx-auto px-6">
-<div class="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4 sm:gap-0 mb-8 md:mb-12">
-<div class="text-center sm:text-right">
-<h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline">نخبة من الأطباء</h2>
-<p class="text-secondary mt-2 text-sm md:text-base">تضم مستشفى المرج فريقاً طبياً من أكفأ الاستشاريين والأخصائيين في مختلف المجالات الطبية</p>
-</div>
-<a class="text-primary-container font-bold flex items-center gap-1 hover:underline min-h-[44px] py-2" href="doctors.html">
-                    عرض جميع الأطباء
-                    <span class="material-symbols-outlined">arrow_back</span>
-</a>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-<!-- Doctor Card 1 -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group p-6">
-<span class="text-primary-container text-xs font-bold uppercase tracking-widest">استشاري جراحة قلب</span>
-<h4 class="text-xl font-bold mt-1">د. أحمد محمود</h4>
-<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-end">
-<button class="text-primary-container text-sm font-bold">عرض المواعيد</button>
-</div>
-</div>
-<!-- Doctor Card 2 -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group p-6">
-<span class="text-primary-container text-xs font-bold uppercase tracking-widest">أخصائية طب الأطفال</span>
-<h4 class="text-xl font-bold mt-1">د. سارة التونسي</h4>
-<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-end">
-<button class="text-primary-container text-sm font-bold">عرض المواعيد</button>
-</div>
-</div>
-<!-- Doctor Card 3 -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group p-6">
-<span class="text-primary-container text-xs font-bold uppercase tracking-widest">استشاري جراحة عظام</span>
-<h4 class="text-xl font-bold mt-1">د. خالد الرشيدي</h4>
-<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-end">
-<button class="text-primary-container text-sm font-bold">عرض المواعيد</button>
-</div>
-</div>
-<!-- Doctor Card 4 -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group p-6">
-<span class="text-primary-container text-xs font-bold uppercase tracking-widest">أخصائي الطب الباطني</span>
-<h4 class="text-xl font-bold mt-1">د. يوسف علي</h4>
-<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-end">
-<button class="text-primary-container text-sm font-bold">عرض المواعيد</button>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Location Map Section -->
-<section class="py-16 md:py-24 bg-surface-container-low overflow-hidden">
-<div class="max-w-7xl mx-auto px-4 sm:px-6">
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
-<div class="bg-white p-8 md:p-12 lg:p-16 flex flex-col justify-center rounded-t-2xl lg:rounded-t-none lg:rounded-r-2xl">
-<h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline mb-12";">تواصل معنا</h2>
-<div class="space-y-6 md:space-y-8">
-<div class="flex items-center sm:items-start gap-4">
-<div class="w-12 h-12 bg-primary-fixed text-primary-container rounded-full flex items-center justify-center flex-shrink-0">
-<span class="material-symbols-outlined">location_on</span>
-</div>
-<div>
-<h4 class="font-bold text-lg">الموقع</h4>
-<p class="text-secondary text-sm md:text-base">المرج / حي الـ700 مقابل مسجد ابوبكر الصديق</p>
-</div>
-</div>
-<div class="flex items-center sm:items-start gap-4">
-<div class="w-12 h-12 bg-primary-fixed text-primary-container rounded-full flex items-center justify-center flex-shrink-0">
-<span class="material-symbols-outlined">call</span>
-</div>
-<div>
-<h4 class="font-bold text-lg">الهاتف</h4>
-<p class="text-secondary text-sm md:text-base">092-8667081<br/>092-2625986</p>
-</div>
-</div>
-<div class="flex items-center sm:items-start gap-4">
-<div class="w-12 h-12 bg-primary-fixed text-primary-container rounded-full flex items-center justify-center flex-shrink-0">
-  <i class="fa-brands fa-facebook"></i>
-</div>
-<div class="overflow-hidden break-all">
-<h4 class="font-bold text-lg">فيسبوك</h4>
-<p class="text-secondary text-sm md:text-base"> <a href="https://www.facebook.com/AlmarjHospital" target="_blank" style="color: cornflowerblue;">www.facebook.com/AlmarjHospital</a></p>
-</div>
-</div>
-</div>
-</div>
-<div class="h-64 sm:h-80 md:h-[400px] lg:h-auto rounded-b-2xl lg:rounded-b-none lg:rounded-l-2xl overflow-hidden">
-  <iframe
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1169.4510415770053!2d20.837573096953804!3d32.49319773590454!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x138211122418410b%3A0xe31667a410a3a5c9!2z2YXYs9iq2LTZgdmJINin2YTZhdix2Kwg2KfZhNiq2K7Ytdi12Yo!5e0!3m2!1sen!2sly!4v1775728449470!5m2!1sen!2sly"
-    class="w-full h-full border-0"
-    style="border:0;"
-    allowfullscreen
-    loading="lazy"
-    referrerpolicy="no-referrer-when-downgrade">
-  </iframe>
-</div>
-</div>
-</div>
-</section>
-</main>
-<!-- Footer -->
-<footer class="bg-[#f8f9fa] py-10 px-4 sm:px-6">
-  
-  <div class="max-w-7xl mx-auto text-center space-y-6">
-
-    <!-- الاسم + الشعار -->
-    <div class="flex items-center justify-center gap-2 flex-wrap">
-      
-      <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900">
-        مستشفى المرج التخصصي
-      </h2>
-
-      <img 
-        src="images/footerlogo.jpg" 
-        alt="شعار مستشفى المرج التخصصي" 
-        class="w-9 h-9 sm:w-10 sm:h-10 object-contain rounded-full"
-        loading="lazy"
-      >
-
     </div>
 
-    <!-- النص -->
-    <p class="text-gray-600 text-sm sm:text-base md:text-lg">
-      من أجل رعاية طبية متميزة بكل حب واحترافية
-    </p>
+    <!-- حقوق النشر -->
+    <div class="max-w-7xl mx-auto mt-8 md:mt-12 pt-6 border-t border-gray-200 text-center">
+      <p class="text-gray-500 text-xs sm:text-sm">
+        © 2026 جميع الحقوق محفوظة | تم التطوير بواسطة
+        <a href="#" class="text-brown-600 hover:underline ml-1">
+          منتصر العقيلي
+        </a>
+      </p>
+    </div>
 
-  </div>
+  </footer>
+<script>
+// ===== Render first 4 doctors on home page =====
+window.addEventListener('DOMContentLoaded', function() {
+  const doctors = marjGetDoctors().slice(0, 4);
+  const grid = document.getElementById('home-doctors-grid');
+  const empty = document.getElementById('home-doctors-empty');
+  if (doctors.length === 0) {
+    grid.classList.add('hidden');
+    empty.classList.remove('hidden');
+    return;
+  }
+  grid.innerHTML = doctors.map(d => `
+    <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group p-6">
+      <span class="text-primary-container text-xs font-bold uppercase tracking-widest block mb-1">${escH(d.description)}</span>
+      <h4 class="text-xl font-bold mt-1">${escH(d.name)}</h4>
+      <div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-end">
+        <a href="doctors.html" class="text-primary-container text-sm font-bold">عرض المواعيد</a>
+      </div>
+    </div>`).join('');
+});
+function escH(s) {
+  if(!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
 
-  <!-- حقوق النشر -->
-  <div class="max-w-7xl mx-auto mt-8 md:mt-12 pt-6 border-t border-gray-200 text-center">
-    <p class="text-gray-500 text-xs sm:text-sm">
-      © 2026 جميع الحقوق محفوظة | تم التطوير بواسطة
-      <a href="#" class="text-brown-600 hover:underline ml-1">
-        منتصر العقيلي
-      </a>
-    </p>
-  </div>
-
-</footer>
-</body></html>
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <title>لوحة التحكم — مستشفى المرج</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script src="tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="db.js"></script>
+  <style>
+    body { font-family: 'Tajawal', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; vertical-align: middle; }
+    .tab-active   { border-bottom: 3px solid #A31D1D; color: #A31D1D; font-weight: 700; }
+    .tab-inactive { border-bottom: 3px solid transparent; color: #6b7280; }
+    .day-active   { background: #A31D1D; color: white; }
+    .day-inactive { background: #f3f4f6; color: #374151; }
+    .toast { position:fixed; bottom:24px; right:24px; background:#1e293b; color:white; padding:12px 20px; border-radius:12px; font-weight:600; font-size:14px; z-index:9999; display:none; }
+    select, input, textarea { font-family: 'Tajawal', sans-serif !important; }
+    .row-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<!-- ===== TOAST ===== -->
+<div id="toast" class="toast"></div>
+
+<!-- ===== PASSWORD GATE ===== -->
+<div id="gate" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl p-8 w-full max-w-sm mx-4 shadow-2xl text-center">
+    <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+      <span class="material-symbols-outlined text-3xl text-[#A31D1D]">admin_panel_settings</span>
+    </div>
+    <h2 class="text-xl font-bold text-gray-900 mb-1">لوحة التحكم</h2>
+    <p class="text-sm text-gray-500 mb-6">مستشفى المرج التخصصي</p>
+    <input id="pw-input" type="password" placeholder="كلمة المرور"
+      class="w-full border border-gray-300 rounded-xl px-4 py-3 text-center text-lg mb-3 focus:outline-none focus:ring-2 focus:ring-red-800"
+      onkeydown="if(event.key==='Enter') doLogin()"/>
+    <div id="pw-error" class="text-red-600 text-sm mb-3 hidden">كلمة المرور غير صحيحة</div>
+    <button onclick="doLogin()" class="w-full bg-[#A31D1D] text-white py-3 rounded-xl font-bold text-base hover:bg-red-900 transition">
+      دخول
+    </button>
+    <p class="text-xs text-gray-400 mt-4">الكلمة الافتراضية: almarj2026</p>
+  </div>
+</div>
+
+<!-- ===== ADMIN SHELL (hidden until auth) ===== -->
+<div id="admin-shell" class="hidden">
+
+  <!-- Header -->
+  <header class="bg-[#A31D1D] text-white px-4 md:px-6 py-4 flex items-center justify-between sticky top-0 z-40 shadow-lg">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-2xl">admin_panel_settings</span>
+      <div>
+        <h1 class="font-bold text-base md:text-lg leading-tight">لوحة التحكم</h1>
+        <p class="text-xs opacity-75 hidden sm:block">مستشفى المرج التخصصي</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <span class="text-xs opacity-70 hidden sm:flex items-center gap-1">
+        <span class="material-symbols-outlined text-sm">lock</span> رابط سري
+      </span>
+      <a href="main.html" class="flex items-center gap-1 text-xs bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg transition">
+        <span class="material-symbols-outlined text-sm">open_in_new</span>
+        <span class="hidden sm:inline">الموقع</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Tab Bar -->
+  <div class="bg-white border-b border-gray-200 px-4 md:px-6">
+    <div class="flex gap-0 max-w-5xl mx-auto">
+      <button onclick="switchTab('doctors')" id="tab-doctors"
+        class="tab-active flex items-center gap-2 px-6 py-4 text-sm transition-all duration-200">
+        <span class="material-symbols-outlined text-base">person</span> الأطباء
+      </button>
+      <button onclick="switchTab('schedules')" id="tab-schedules"
+        class="tab-inactive flex items-center gap-2 px-6 py-4 text-sm transition-all duration-200">
+        <span class="material-symbols-outlined text-base">calendar_month</span> الجداول
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================
+       TAB: الأطباء
+       ============================ -->
+  <div id="panel-doctors" class="max-w-5xl mx-auto px-4 py-6 md:py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+
+      <!-- FORM (add/edit) -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm sticky top-[80px]">
+          <h2 id="form-title" class="text-base font-bold text-gray-900 mb-5 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#A31D1D]">person_add</span> إضافة طبيب جديد
+          </h2>
+          <input type="hidden" id="doc-id"/>
+          <div class="space-y-4">
+            <div>
+              <label class="text-xs font-bold text-gray-600 block mb-1">الاسم الكامل <span class="text-red-500">*</span></label>
+              <input id="doc-name" type="text" placeholder="د. محمد عبدالكريم"
+                class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-800"/>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-gray-600 block mb-1">التخصص (قصير للتصفية) <span class="text-red-500">*</span></label>
+              <input id="doc-specialty" type="text" placeholder="مثال: الباطنة  أو  القلب والإيكو"
+                class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-800"/>
+              <p class="text-xs text-gray-400 mt-1">يُستخدم لأزرار التصفية في صفحة الأطباء</p>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-gray-600 block mb-1">الوصف (يظهر كما تكتبه) <span class="text-red-500">*</span></label>
+              <textarea id="doc-description" rows="3" placeholder="مثال: استشاري أمراض القلب والأوعية الدموية"
+                class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-800 resize-none"></textarea>
+              <p class="text-xs text-gray-400 mt-1">هذا النص يظهر في بطاقة الطبيب كما هو بالضبط</p>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button onclick="saveDoctor()" class="flex-1 bg-[#A31D1D] text-white py-3 rounded-xl font-bold text-sm hover:bg-red-900 transition">
+              <span class="material-symbols-outlined text-sm align-middle">save</span> حفظ
+            </button>
+            <button onclick="resetDoctorForm()" class="px-4 py-3 border border-gray-300 rounded-xl text-sm text-gray-600 hover:bg-gray-50 transition">
+              إلغاء
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIST -->
+      <div class="lg:col-span-3">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-bold text-gray-900 flex items-center gap-2">
+            <span class="material-symbols-outlined text-gray-500">group</span>
+            قائمة الأطباء
+          </h2>
+          <span id="doc-count" class="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full">0 طبيب</span>
+        </div>
+        <div id="doctors-list" class="space-y-3">
+          <!-- rendered by JS -->
+        </div>
+        <div id="doctors-empty" class="text-center py-16 text-gray-400 hidden">
+          <span class="material-symbols-outlined text-5xl block mb-3">person_off</span>
+          <p class="font-medium">لا يوجد أطباء بعد</p>
+          <p class="text-sm mt-1">أضف أول طبيب من النموذج على اليسار</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================
+       TAB: الجداول
+       ============================ -->
+  <div id="panel-schedules" class="hidden max-w-5xl mx-auto px-4 py-6 md:py-8">
+
+    <!-- Day Tabs -->
+    <div class="flex gap-2 overflow-x-auto pb-3 mb-6" style="scrollbar-width:none">
+      <!-- rendered by JS -->
+    </div>
+
+    <!-- Day Editor -->
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+      <!-- Editor Header -->
+      <div class="bg-gray-50 border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+        <div>
+          <h2 id="sched-day-title" class="font-bold text-gray-900 text-base"></h2>
+          <p id="sched-day-subtitle" class="text-xs text-gray-500 mt-0.5">العيادات المجدولة في هذا اليوم</p>
+        </div>
+        <button onclick="addScheduleRow()"
+          class="flex items-center gap-2 bg-[#A31D1D] text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-red-900 transition">
+          <span class="material-symbols-outlined text-sm">add</span> إضافة عيادة
+        </button>
+      </div>
+
+      <!-- Rows area -->
+      <div id="schedule-rows" class="p-4 md:p-6 space-y-3 min-h-[200px]">
+        <!-- rendered by JS -->
+      </div>
+
+      <div id="schedule-empty" class="hidden text-center py-16 text-gray-400 px-6">
+        <span class="material-symbols-outlined text-5xl block mb-3">event_busy</span>
+        <p class="font-medium">لا توجد عيادات مجدولة لهذا اليوم</p>
+        <p class="text-sm mt-1">اضغط "إضافة عيادة" لإضافة أول صف</p>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="mt-6 bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 text-sm text-blue-800">
+      <span class="material-symbols-outlined text-blue-500 shrink-0">info</span>
+      <div>
+        <p class="font-bold mb-1">ملاحظة:</p>
+        <p>كل يوم مستقل تماماً عن الآخر. التغييرات تُحفظ تلقائياً فور إجرائها. مواعيد الأطباء في صفحة الأطباء تُستخرج تلقائياً من هذه الجداول.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /admin-shell -->
+
+<script>
+// ===================================================
+//   كلمة المرور — غيّرها هنا
+// ===================================================
+const ADMIN_PASSWORD = 'almarj2026';
+
+// ===================================================
+//   المصادقة
+// ===================================================
+function doLogin() {
+  const pw = document.getElementById('pw-input').value;
+  if (pw === ADMIN_PASSWORD) {
+    sessionStorage.setItem('marj_admin', '1');
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('admin-shell').classList.remove('hidden');
+    initAdmin();
+  } else {
+    document.getElementById('pw-error').classList.remove('hidden');
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('marj_admin') === '1') {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('admin-shell').classList.remove('hidden');
+    initAdmin();
+  }
+  document.getElementById('pw-input').focus();
+});
+
+// ===================================================
+//   Tabs
+// ===================================================
+let currentTab = 'doctors';
+
+function switchTab(tab) {
+  currentTab = tab;
+  ['doctors','schedules'].forEach(t => {
+    document.getElementById('panel-' + t).classList.toggle('hidden', t !== tab);
+    document.getElementById('tab-' + t).className =
+      (t === tab ? 'tab-active' : 'tab-inactive') +
+      ' flex items-center gap-2 px-6 py-4 text-sm transition-all duration-200';
+  });
+}
+
+// ===================================================
+//   Toast
+// ===================================================
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 2500);
+}
+
+// ===================================================
+//   Init
+// ===================================================
+function initAdmin() {
+  renderDoctorsList();
+  renderDayTabs();
+  selectDay('saturday');
+}
+
+// ===================================================
+//   DOCTORS
+// ===================================================
+function renderDoctorsList() {
+  const doctors = marjGetDoctors();
+  const list = document.getElementById('doctors-list');
+  const empty = document.getElementById('doctors-empty');
+  document.getElementById('doc-count').textContent = doctors.length + ' طبيب';
+
+  if (doctors.length === 0) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  list.innerHTML = doctors.map(d => `
+    <div class="bg-white border border-gray-200 rounded-xl p-4 flex items-start gap-4 hover:border-red-200 transition group">
+      <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0 text-[#A31D1D]">
+        <span class="material-symbols-outlined text-lg">person</span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="font-bold text-gray-900 text-sm truncate">${escHtml(d.name)}</p>
+        <p class="text-xs text-[#A31D1D] font-semibold mt-0.5">${escHtml(d.specialty)}</p>
+        <p class="text-xs text-gray-500 mt-1 line-clamp-2">${escHtml(d.description)}</p>
+      </div>
+      <div class="flex gap-2 shrink-0">
+        <button onclick="editDoctor('${d.id}')"
+          class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-100 transition"
+          title="تعديل">
+          <span class="material-symbols-outlined text-sm">edit</span>
+        </button>
+        <button onclick="deleteDoctor('${d.id}')"
+          class="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center hover:bg-red-100 transition"
+          title="حذف">
+          <span class="material-symbols-outlined text-sm">delete</span>
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function saveDoctor() {
+  const id   = document.getElementById('doc-id').value;
+  const name = document.getElementById('doc-name').value.trim();
+  const spec = document.getElementById('doc-specialty').value.trim();
+  const desc = document.getElementById('doc-description').value.trim();
+  if (!name || !spec || !desc) { showToast('⚠️ يرجى ملء جميع الحقول'); return; }
+
+  const doctors = marjGetDoctors();
+  if (id) {
+    const idx = doctors.findIndex(d => d.id === id);
+    if (idx !== -1) doctors[idx] = { id, name, specialty: spec, description: desc };
+    showToast('✅ تم تحديث بيانات الطبيب');
+  } else {
+    doctors.push({ id: marjGenId(), name, specialty: spec, description: desc });
+    showToast('✅ تمت إضافة الطبيب');
+  }
+  marjSaveDoctors(doctors);
+  resetDoctorForm();
+  renderDoctorsList();
+  // تحديث قوائم اختيار الأطباء في الجدول
+  if (currentTab === 'schedules') renderCurrentDay();
+}
+
+function editDoctor(id) {
+  const doc = marjGetDoctorById(id);
+  if (!doc) return;
+  document.getElementById('doc-id').value = id;
+  document.getElementById('doc-name').value = doc.name;
+  document.getElementById('doc-specialty').value = doc.specialty;
+  document.getElementById('doc-description').value = doc.description;
+  document.getElementById('form-title').innerHTML =
+    '<span class="material-symbols-outlined text-[#A31D1D]">edit</span> تعديل بيانات الطبيب';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteDoctor(id) {
+  if (!confirm('هل أنت متأكد من حذف هذا الطبيب؟\nسيُزال من جميع الجداول أيضاً.')) return;
+  let doctors = marjGetDoctors().filter(d => d.id !== id);
+  marjSaveDoctors(doctors);
+
+  // إزالة من الجداول
+  const schedules = marjGetSchedules();
+  for (const day of MARJ_DAYS) {
+    (schedules[day] || []).forEach(row => {
+      if (row.morning === id) row.morning = null;
+      if (row.evening === id) row.evening = null;
+    });
+  }
+  marjSaveSchedules(schedules);
+  renderDoctorsList();
+  if (currentTab === 'schedules') renderCurrentDay();
+  showToast('🗑️ تم حذف الطبيب');
+}
+
+function resetDoctorForm() {
+  document.getElementById('doc-id').value = '';
+  document.getElementById('doc-name').value = '';
+  document.getElementById('doc-specialty').value = '';
+  document.getElementById('doc-description').value = '';
+  document.getElementById('form-title').innerHTML =
+    '<span class="material-symbols-outlined text-[#A31D1D]">person_add</span> إضافة طبيب جديد';
+}
+
+// ===================================================
+//   SCHEDULES
+// ===================================================
+let currentDay = 'saturday';
+
+function renderDayTabs() {
+  const container = document.querySelector('#panel-schedules > .flex');
+  container.innerHTML = MARJ_DAYS.map(d => `
+    <button onclick="selectDay('${d}')" id="daytab-${d}"
+      class="day-inactive shrink-0 px-5 py-3 rounded-xl text-sm font-bold transition-all duration-200 whitespace-nowrap">
+      ${MARJ_DAY_NAMES[d].ar}
+    </button>
+  `).join('');
+}
+
+function selectDay(day) {
+  MARJ_DAYS.forEach(d => {
+    const btn = document.getElementById('daytab-' + d);
+    if (btn) btn.className = (d === day ? 'day-active' : 'day-inactive') +
+      ' shrink-0 px-5 py-3 rounded-xl text-sm font-bold transition-all duration-200 whitespace-nowrap';
+  });
+  currentDay = day;
+  document.getElementById('sched-day-title').textContent =
+    'جدول يوم ' + MARJ_DAY_NAMES[day].ar;
+  renderCurrentDay();
+}
+
+function renderCurrentDay() {
+  const schedules = marjGetSchedules();
+  const rows = schedules[currentDay] || [];
+  const container = document.getElementById('schedule-rows');
+  const empty = document.getElementById('schedule-empty');
+
+  if (rows.length === 0) {
+    container.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  container.innerHTML = rows.map((row, idx) => buildRowHTML(row, idx, rows.length)).join('');
+}
+
+function buildRowHTML(row, idx, total) {
+  const doctors = marjGetDoctors();
+  const doctorOptions = `<option value="">— فارغ —</option>` +
+    doctors.map(d => `<option value="${d.id}" ${'' }>${escHtml(d.name)} (${escHtml(d.specialty)})</option>`).join('');
+
+  const iconOptions = MARJ_ICONS.map(i =>
+    `<option value="${i.value}" ${row.icon === i.value ? 'selected' : ''}>${i.label}</option>`
+  ).join('');
+
+  const colorOptions = Object.keys(MARJ_COLORS).map(c =>
+    `<option value="${c}" ${row.iconColor === c ? 'selected' : ''}>${colorLabel(c)}</option>`
+  ).join('');
+
+  const morningSelected = row.morning || '';
+  const eveningSelected = row.evening || '';
+
+  return `
+  <div class="row-card" data-row-id="${row.id}">
+    <div class="flex items-start gap-3">
+      <!-- Reorder -->
+      <div class="flex flex-col gap-1 shrink-0 pt-1">
+        <button onclick="moveRow('${row.id}', -1)" ${idx === 0 ? 'disabled' : ''}
+          class="w-7 h-7 rounded-lg bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-gray-200 disabled:opacity-30 transition text-xs">▲</button>
+        <button onclick="moveRow('${row.id}', 1)" ${idx === total-1 ? 'disabled' : ''}
+          class="w-7 h-7 rounded-lg bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-gray-200 disabled:opacity-30 transition text-xs">▼</button>
+      </div>
+
+      <!-- Fields -->
+      <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+        <!-- Clinic Name -->
+        <div class="sm:col-span-2">
+          <label class="text-xs font-bold text-gray-500 block mb-1">اسم العيادة</label>
+          <input type="text" value="${escHtml(row.clinicName)}"
+            onchange="updateRowField('${row.id}','clinicName',this.value)"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-800"/>
+        </div>
+
+        <!-- Icon -->
+        <div>
+          <label class="text-xs font-bold text-gray-500 block mb-1">الأيقونة</label>
+          <select onchange="updateRowField('${row.id}','icon',this.value)"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-800">
+            ${iconOptions}
+          </select>
+        </div>
+
+        <!-- Color -->
+        <div>
+          <label class="text-xs font-bold text-gray-500 block mb-1">لون الأيقونة</label>
+          <select onchange="updateRowField('${row.id}','iconColor',this.value)"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-800">
+            ${colorOptions}
+          </select>
+        </div>
+
+        <!-- Morning Doctor -->
+        <div>
+          <label class="text-xs font-bold text-gray-500 block mb-1">
+            <span class="inline-block w-2 h-2 rounded-full bg-amber-400 ml-1"></span>الفترة الصباحية
+          </label>
+          <select onchange="updateRowField('${row.id}','morning',this.value||null)"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-800">
+            ${doctorOptions.replace(`value="${morningSelected}"`, `value="${morningSelected}" selected`)}
+          </select>
+        </div>
+
+        <!-- Evening Doctor -->
+        <div>
+          <label class="text-xs font-bold text-gray-500 block mb-1">
+            <span class="inline-block w-2 h-2 rounded-full bg-indigo-500 ml-1"></span>الفترة المسائية
+          </label>
+          <select onchange="updateRowField('${row.id}','evening',this.value||null)"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-800">
+            ${doctorOptions.replace(`value="${eveningSelected}"`, `value="${eveningSelected}" selected`)}
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Delete -->
+      <button onclick="deleteRow('${row.id}')"
+        class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-100 transition shrink-0 mt-1">
+        <span class="material-symbols-outlined text-sm">delete</span>
+      </button>
+    </div>
+  </div>`;
+}
+
+function updateRowField(rowId, field, value) {
+  const schedules = marjGetSchedules();
+  const rows = schedules[currentDay] || [];
+  const row = rows.find(r => r.id === rowId);
+  if (row) {
+    row[field] = value;
+    marjSaveSchedules(schedules);
+    showToast('💾 تم الحفظ');
+  }
+}
+
+function addScheduleRow() {
+  const schedules = marjGetSchedules();
+  if (!schedules[currentDay]) schedules[currentDay] = [];
+  schedules[currentDay].push({
+    id: marjGenId(),
+    clinicName: 'عيادة جديدة',
+    icon: 'stethoscope',
+    iconColor: 'blue',
+    morning: null,
+    evening: null
+  });
+  marjSaveSchedules(schedules);
+  renderCurrentDay();
+  showToast('✅ تمت إضافة صف جديد');
+}
+
+function deleteRow(rowId) {
+  if (!confirm('هل تريد حذف هذا الصف؟')) return;
+  const schedules = marjGetSchedules();
+  schedules[currentDay] = (schedules[currentDay] || []).filter(r => r.id !== rowId);
+  marjSaveSchedules(schedules);
+  renderCurrentDay();
+  showToast('🗑️ تم الحذف');
+}
+
+function moveRow(rowId, dir) {
+  const schedules = marjGetSchedules();
+  const rows = schedules[currentDay] || [];
+  const idx = rows.findIndex(r => r.id === rowId);
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= rows.length) return;
+  [rows[idx], rows[newIdx]] = [rows[newIdx], rows[idx]];
+  schedules[currentDay] = rows;
+  marjSaveSchedules(schedules);
+  renderCurrentDay();
+}
+
+// ===================================================
+//   Helpers
+// ===================================================
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function colorLabel(c) {
+  const map = { blue:'أزرق', green:'أخضر', red:'أحمر', purple:'بنفسجي', cyan:'سماوي',
+    amber:'عنبري', slate:'رمادي', pink:'وردي', orange:'برتقالي', indigo:'نيلي', teal:'زمردي' };
+  return map[c] || c;
+}
+</script>
+</body>
+</html>

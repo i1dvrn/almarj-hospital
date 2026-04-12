@@ -14,7 +14,13 @@ const MARJ_DAY_NAMES = {
   friday:    { ar: 'الجمعة',   en: 'Friday'    }
 };
 
-// خريطة الأيقونات المتاحة
+// الفترات الثلاث
+const MARJ_PERIODS = [
+  { key: 'morning', label: 'صباحية', labelShort: 'صباح', icon: 'wb_sunny',    color: 'amber'  },
+  { key: 'evening', label: 'مسائية', labelShort: 'مساء', icon: 'wb_twilight', color: 'indigo' },
+  { key: 'night',   label: 'ليلية',  labelShort: 'ليل',  icon: 'nights_stay', color: 'slate'  }
+];
+
 const MARJ_ICONS = [
   { value: 'stethoscope',      label: 'سماعة طبية (باطنة/عامة)' },
   { value: 'favorite',         label: 'قلب' },
@@ -35,7 +41,6 @@ const MARJ_ICONS = [
   { value: 'dentistry',        label: 'أسنان' }
 ];
 
-// خريطة ألوان الأيقونات
 const MARJ_COLORS = {
   blue:   { bg: 'bg-blue-50',   text: 'text-blue-700'   },
   green:  { bg: 'bg-green-50',  text: 'text-green-700'  },
@@ -50,17 +55,13 @@ const MARJ_COLORS = {
   teal:   { bg: 'bg-teal-50',   text: 'text-teal-700'   }
 };
 
-// ===================== CRUD Functions =====================
-
 function marjGetDoctors() {
   try { return JSON.parse(localStorage.getItem('marj_doctors')) || []; }
   catch { return []; }
 }
-
 function marjSaveDoctors(doctors) {
   localStorage.setItem('marj_doctors', JSON.stringify(doctors));
 }
-
 function marjGetSchedules() {
   try {
     const raw = localStorage.getItem('marj_schedules');
@@ -68,40 +69,40 @@ function marjGetSchedules() {
   } catch {}
   return MARJ_DAYS.reduce((a, d) => { a[d] = []; return a; }, {});
 }
-
 function marjSaveSchedules(schedules) {
   localStorage.setItem('marj_schedules', JSON.stringify(schedules));
 }
-
 function marjGetDoctorById(id) {
   return marjGetDoctors().find(d => d.id === id) || null;
 }
-
 function marjGetDoctorName(id) {
   if (!id) return null;
   const doc = marjGetDoctorById(id);
   return doc ? doc.name : null;
 }
-
-// يُعيد مواعيد الطبيب من الجداول: [{day, dayName, period, clinicName}]
+// يُعيد مواعيد الطبيب من الجداول
 function marjGetDoctorSchedule(doctorId) {
   const schedules = marjGetSchedules();
   const result = [];
   for (const day of MARJ_DAYS) {
     for (const row of (schedules[day] || [])) {
-      if (row.morning === doctorId)
-        result.push({ day, dayName: MARJ_DAY_NAMES[day].ar, period: 'morning', periodLabel: 'صباح', clinicName: row.clinicName });
-      if (row.evening === doctorId)
-        result.push({ day, dayName: MARJ_DAY_NAMES[day].ar, period: 'evening', periodLabel: 'مساء', clinicName: row.clinicName });
+      for (const p of MARJ_PERIODS) {
+        if (row[p.key] === doctorId) {
+          result.push({
+            day, dayName: MARJ_DAY_NAMES[day].ar,
+            period: p.key, periodLabel: p.labelShort,
+            periodIcon: p.icon, periodColor: p.color,
+            clinicName: row.clinicName
+          });
+        }
+      }
     }
   }
   return result;
 }
-
 function marjGetIconClasses(color) {
   return MARJ_COLORS[color] || MARJ_COLORS['blue'];
 }
-
 function marjGenId() {
   return 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
 }

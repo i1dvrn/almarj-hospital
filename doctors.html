@@ -17,117 +17,125 @@
     .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
     .doc-card { display:flex; }
     .doc-card.hidden-card { display:none; }
+    /* Period badges */
+    .badge-morning { background:#fffbeb; color:#b45309; border:1px solid #fde68a; }
+    .badge-evening { background:#eef2ff; color:#4338ca; border:1px solid #c7d2fe; }
+    .badge-night   { background:#1e293b; color:#94a3b8; border:1px solid #334155; }
   </style>
 </head>
 <body class="bg-surface text-on-surface">
 
-  <!-- Nav -->
-  <nav class="bg-white/90 backdrop-blur-md top-0 sticky z-50 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex justify-between items-center">
-      <div class="flex items-center gap-2 md:gap-3">
-        <img src="images/logo.jpg" class="w-10 h-10 object-cover rounded-lg" alt="شعار"/>
-        <span class="text-lg md:text-xl font-bold text-gray-900 font-['Tajawal']">مستشفى المرج التخصصي</span>
-      </div>
-      <div class="hidden lg:flex items-center gap-8 font-['Tajawal'] font-bold text-sm">
-        <a class="text-gray-600 hover:text-[#A31D1D] transition" href="main.html">الرئيسية</a>
-        <a class="text-gray-600 hover:text-[#A31D1D] transition" href="schedules.html">الجداول</a>
-        <a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1" href="doctors.html">الأطباء</a>
-      </div>
-      <div class="flex items-center gap-3">
-        <button class="hidden sm:block bg-primary-container text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:bg-red-900 transition">احجز موعدك</button>
-        <button class="block lg:hidden text-gray-900 p-2">
-          <span class="material-symbols-outlined text-3xl">menu</span>
-        </button>
-      </div>
+<!-- Nav -->
+<nav class="bg-white/90 backdrop-blur-md top-0 sticky z-50 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex justify-between items-center">
+    <div class="flex items-center gap-2 md:gap-3">
+      <img src="images/logo.jpg" class="w-10 h-10 object-cover rounded-lg" alt="شعار"/>
+      <span class="text-lg md:text-xl font-bold text-gray-900 font-['Tajawal']">مستشفى المرج التخصصي</span>
     </div>
-  </nav>
+    <div class="hidden lg:flex items-center gap-8 font-['Tajawal'] font-bold text-sm">
+      <a class="text-gray-600 hover:text-[#A31D1D] transition" href="main.html">الرئيسية</a>
+      <a class="text-gray-600 hover:text-[#A31D1D] transition" href="schedules.html">الجداول</a>
+      <a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1" href="doctors.html">الأطباء</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="hidden sm:block bg-primary-container text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:bg-red-900 transition">احجز موعدك</button>
+      <button class="block lg:hidden text-gray-900 p-2">
+        <span class="material-symbols-outlined text-3xl">menu</span>
+      </button>
+    </div>
+  </div>
+</nav>
 
-  <main class="min-h-screen">
-    <!-- Hero -->
-    <section class="relative bg-surface-container-low py-12 md:py-20 overflow-hidden">
-      <div class="absolute inset-0 opacity-5 pointer-events-none">
-        <div class="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full blur-[120px]"></div>
-        <div class="absolute bottom-0 left-0 w-96 h-96 bg-tertiary rounded-full blur-[120px]"></div>
-      </div>
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 relative text-center md:text-right">
-        <div class="max-w-3xl mx-auto md:mx-0">
-          <h1 class="text-3xl md:text-5xl font-extrabold text-on-surface mb-4 leading-tight tracking-tight">
-            نخبة الكوادر الطبية المتخصصة
-          </h1>
-          <p class="text-base md:text-lg text-secondary leading-relaxed max-w-2xl mx-auto md:mx-0 font-medium">
-            نلتزم في مستشفى المرج التخصصي بتقديم أعلى مستويات الرعاية الصحية من خلال فريق متميز من الأطباء والاستشاريين
-            في كافة التخصصات الطبية
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Filters -->
-    <section class="sticky top-20 z-40 bg-surface/80 backdrop-blur-sm border-b border-outline-variant/10">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-6 overflow-x-auto no-scrollbar">
-        <div id="filter-bar" class="flex flex-nowrap lg:flex-wrap items-center gap-2 md:gap-3 min-w-max lg:min-w-0 pb-2 lg:pb-0">
-          <span class="text-sm font-bold text-secondary ml-2 whitespace-nowrap">تصفية حسب التخصص:</span>
-          <!-- rendered by JS -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Doctor Cards -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
-      <div id="doctors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- rendered by JS -->
-      </div>
-      <div id="doctors-empty" class="hidden text-center py-20 text-gray-400">
-        <span class="material-symbols-outlined text-6xl block mb-4">person_off</span>
-        <p class="text-xl font-bold">لا يوجد أطباء في هذا التخصص</p>
-      </div>
-      <div id="no-doctors" class="hidden text-center py-20 text-gray-400">
-        <span class="material-symbols-outlined text-6xl block mb-4">group_off</span>
-        <p class="text-xl font-bold">لم يتم إضافة أطباء بعد</p>
-        <p class="text-sm mt-2">يمكن إضافة الأطباء من لوحة التحكم</p>
-      </div>
-    </section>
-  </main>
-
-  <!-- Stats -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-center">
-      <div class="p-6 md:p-8 rounded-2xl bg-tertiary-fixed text-on-tertiary-fixed-variant">
-        <span class="material-symbols-outlined text-4xl mb-4 block">groups</span>
-        <h4 class="text-3xl font-extrabold mb-2">50+</h4>
-        <p class="text-sm font-bold uppercase tracking-widest opacity-80">طبيب متخصص</p>
-      </div>
-      <div class="p-6 md:p-8 rounded-2xl bg-secondary-fixed text-on-secondary-fixed-variant">
-        <span class="material-symbols-outlined text-4xl mb-4 block">clinical_notes</span>
-        <h4 class="text-3xl font-extrabold mb-2">24/7</h4>
-        <p class="text-sm font-bold uppercase tracking-widest opacity-80">رعاية الطوارئ</p>
-      </div>
-      <div class="p-6 md:p-8 rounded-2xl bg-primary-fixed text-on-primary-fixed-variant">
-        <span class="material-symbols-outlined text-4xl mb-4 block">workspace_premium</span>
-        <h4 class="text-3xl font-extrabold mb-2">15+</h4>
-        <p class="text-sm font-bold uppercase tracking-widest opacity-80">قسم طبي متخصص</p>
+<main class="min-h-screen">
+  <!-- Hero -->
+  <section class="relative bg-surface-container-low py-12 md:py-20 overflow-hidden">
+    <div class="absolute inset-0 opacity-5 pointer-events-none">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full blur-[120px]"></div>
+      <div class="absolute bottom-0 left-0 w-96 h-96 bg-tertiary rounded-full blur-[120px]"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 relative text-center md:text-right">
+      <div class="max-w-3xl mx-auto md:mx-0">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-on-surface mb-4 leading-tight tracking-tight">
+          نخبة الكوادر الطبية المتخصصة
+        </h1>
+        <p class="text-base md:text-lg text-secondary leading-relaxed max-w-2xl mx-auto md:mx-0 font-medium">
+          نلتزم في مستشفى المرج التخصصي بتقديم أعلى مستويات الرعاية الصحية من خلال فريق متميز من الأطباء
+          والاستشاريين في كافة التخصصات الطبية
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-[#f8f9fa] py-10 px-4 sm:px-6">
-    <div class="max-w-7xl mx-auto text-center space-y-6">
-      <div class="flex items-center justify-center gap-2 flex-wrap">
-        <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900">مستشفى المرج التخصصي</h2>
-        <img src="images/footerlogo.jpg" class="w-9 h-9 object-contain rounded-full" loading="lazy"/>
+  <!-- Filters -->
+  <section class="sticky top-20 z-40 bg-surface/80 backdrop-blur-sm border-b border-outline-variant/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-6 overflow-x-auto no-scrollbar">
+      <div id="filter-bar" class="flex flex-nowrap lg:flex-wrap items-center gap-2 md:gap-3 min-w-max lg:min-w-0 pb-2 lg:pb-0">
+        <span class="text-sm font-bold text-secondary ml-2 whitespace-nowrap">تصفية حسب التخصص:</span>
       </div>
-      <p class="text-gray-600 text-sm sm:text-base md:text-lg">من أجل رعاية طبية متميزة بكل حب واحترافية</p>
     </div>
-    <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-gray-200 text-center">
-      <p class="text-gray-500 text-xs sm:text-sm">
-        © 2026 جميع الحقوق محفوظة | تم التطوير بواسطة
-        <a href="#" class="hover:underline">منتصر العقيلي</a>
-      </p>
+  </section>
+
+  <!-- Doctors Grid -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
+    <div id="doctors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    <div id="doctors-empty" class="hidden text-center py-20 text-gray-400">
+      <span class="material-symbols-outlined text-6xl block mb-4">person_off</span>
+      <p class="text-xl font-bold">لا يوجد أطباء في هذا التخصص</p>
     </div>
-  </footer>
+    <div id="no-doctors" class="hidden text-center py-20 text-gray-400">
+      <span class="material-symbols-outlined text-6xl block mb-4">group_off</span>
+      <p class="text-xl font-bold">لم يتم إضافة أطباء بعد</p>
+      <p class="text-sm mt-2">يمكن إضافة الأطباء من لوحة التحكم</p>
+    </div>
+  </section>
+</main>
+
+<!-- Stats -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-center">
+    <div class="p-6 md:p-8 rounded-2xl bg-tertiary-fixed text-on-tertiary-fixed-variant">
+      <span class="material-symbols-outlined text-4xl mb-4 block">groups</span>
+      <h4 class="text-3xl font-extrabold mb-2">50+</h4>
+      <p class="text-sm font-bold uppercase tracking-widest opacity-80">طبيب متخصص</p>
+    </div>
+    <div class="p-6 md:p-8 rounded-2xl bg-secondary-fixed text-on-secondary-fixed-variant">
+      <span class="material-symbols-outlined text-4xl mb-4 block">clinical_notes</span>
+      <h4 class="text-3xl font-extrabold mb-2">24/7</h4>
+      <p class="text-sm font-bold uppercase tracking-widest opacity-80">رعاية الطوارئ</p>
+    </div>
+    <div class="p-6 md:p-8 rounded-2xl bg-primary-fixed text-on-primary-fixed-variant">
+      <span class="material-symbols-outlined text-4xl mb-4 block">workspace_premium</span>
+      <h4 class="text-3xl font-extrabold mb-2">15+</h4>
+      <p class="text-sm font-bold uppercase tracking-widest opacity-80">قسم طبي متخصص</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-[#f8f9fa] py-10 px-4 sm:px-6">
+  <div class="max-w-7xl mx-auto text-center space-y-6">
+    <div class="flex items-center justify-center gap-2 flex-wrap">
+      <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900">مستشفى المرج التخصصي</h2>
+      <img src="images/footerlogo.jpg" class="w-9 h-9 object-contain rounded-full" loading="lazy"/>
+    </div>
+    <p class="text-gray-600 text-sm sm:text-base md:text-lg">من أجل رعاية طبية متميزة بكل حب واحترافية</p>
+  </div>
+  <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-gray-200 text-center">
+    <p class="text-gray-500 text-xs sm:text-sm">
+      © 2026 جميع الحقوق محفوظة | تم التطوير بواسطة
+      <a href="#" class="hover:underline">منتصر العقيلي</a>
+    </p>
+  </div>
+</footer>
 
 <script>
+// Period badge config
+const PERIOD_BADGE = {
+  morning: { cls: 'badge-morning', icon: 'wb_sunny',    label: 'صباح' },
+  evening: { cls: 'badge-evening', icon: 'wb_twilight', label: 'مساء' },
+  night:   { cls: 'badge-night',   icon: 'nights_stay', label: 'ليل'  }
+};
+
 let activeFilter = 'all';
 
 function init() {
@@ -141,38 +149,30 @@ function init() {
   renderDoctors(doctors);
 }
 
-// ===== Filters =====
 function renderFilters(doctors) {
   const specialties = [...new Set(doctors.map(d => d.specialty).filter(Boolean))].sort();
   const bar = document.getElementById('filter-bar');
-  const all = `<button onclick="filterBy('all')" id="filter-all"
+  const all  = `<button onclick="filterBy('all')" id="filter-all"
     class="px-5 py-3 md:py-2 rounded-full bg-primary-container text-white text-sm font-semibold shadow-md transition-all whitespace-nowrap">
     كل التخصصات</button>`;
   const btns = specialties.map(s => `
-    <button onclick="filterBy('${escJs(s)}')" id="filter-${escJs(s).replace(/\s/g,'_')}"
+    <button onclick="filterBy('${escJ(s)}')" id="filter-${escJ(s).replace(/\s/g,'_')}"
       class="px-5 py-3 md:py-2 rounded-full bg-surface-container-lowest text-on-surface hover:bg-primary-container/10 text-sm font-semibold transition-all whitespace-nowrap">
-      ${escHtml(s)}</button>`
-  ).join('');
+      ${esc(s)}</button>`).join('');
   bar.innerHTML = '<span class="text-sm font-bold text-secondary ml-2 whitespace-nowrap">تصفية حسب التخصص:</span>' + all + btns;
 }
 
 function filterBy(specialty) {
   activeFilter = specialty;
-  const doctors = marjGetDoctors();
-
-  // Update button styles
   document.querySelectorAll('#filter-bar button').forEach(btn => {
     btn.className = 'px-5 py-3 md:py-2 rounded-full bg-surface-container-lowest text-on-surface hover:bg-primary-container/10 text-sm font-semibold transition-all whitespace-nowrap';
   });
-  const activeBtn = specialty === 'all'
-    ? document.getElementById('filter-all')
-    : document.getElementById('filter-' + specialty.replace(/\s/g,'_'));
-  if (activeBtn) activeBtn.className = 'px-5 py-3 md:py-2 rounded-full bg-primary-container text-white text-sm font-semibold shadow-md transition-all whitespace-nowrap';
+  const key = specialty === 'all' ? 'filter-all' : 'filter-' + specialty.replace(/\s/g,'_');
+  const active = document.getElementById(key);
+  if (active) active.className = 'px-5 py-3 md:py-2 rounded-full bg-primary-container text-white text-sm font-semibold shadow-md transition-all whitespace-nowrap';
 
-  // Filter cards
-  const cards = document.querySelectorAll('[data-specialty]');
   let visible = 0;
-  cards.forEach(card => {
+  document.querySelectorAll('[data-specialty]').forEach(card => {
     const match = specialty === 'all' || card.dataset.specialty === specialty;
     card.classList.toggle('hidden-card', !match);
     if (match) visible++;
@@ -180,67 +180,74 @@ function filterBy(specialty) {
   document.getElementById('doctors-empty').classList.toggle('hidden', visible > 0);
 }
 
-// ===== Doctor Cards =====
 function renderDoctors(doctors) {
-  const grid = document.getElementById('doctors-grid');
-  grid.innerHTML = doctors.map(d => buildDocCard(d)).join('');
+  document.getElementById('doctors-grid').innerHTML = doctors.map(buildDocCard).join('');
 }
 
 function buildDocCard(d) {
   const schedule = marjGetDoctorSchedule(d.id);
 
-  let scheduleHTML = '';
+  let schedHTML = '';
   if (schedule.length > 0) {
-    scheduleHTML = `
+    // group by day
+    const byDay = {};
+    schedule.forEach(s => {
+      if (!byDay[s.day]) byDay[s.day] = { dayName: s.dayName, periods: [] };
+      byDay[s.day].periods.push(s);
+    });
+
+    schedHTML = `
       <div class="space-y-3 mb-6">
-        <h4 class="text-xs font-bold text-on-surface uppercase tracking-widest border-b border-surface-container-low pb-2">
+        <h4 class="text-xs font-bold text-on-surface uppercase tracking-widest border-b border-surface-container-low pb-2 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm text-gray-400">calendar_month</span>
           جدول المواعيد
         </h4>
-        <div class="flex flex-wrap gap-2">
-          ${schedule.map(s => `
-            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold
-              ${s.period === 'morning'
-                ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                : 'bg-indigo-50 text-indigo-700 border border-indigo-200'}">
-              <span class="material-symbols-outlined text-[10px]">${s.period === 'morning' ? 'wb_sunny' : 'nights_stay'}</span>
-              ${escHtml(s.dayName)} — ${s.periodLabel}
-            </span>
-          `).join('')}
+        <div class="space-y-2">
+          ${Object.values(byDay).map(group => `
+            <div class="flex items-start gap-2 flex-wrap">
+              <span class="text-xs font-bold text-gray-600 bg-gray-100 px-2 py-1 rounded-md whitespace-nowrap shrink-0">${esc(group.dayName)}</span>
+              <div class="flex flex-wrap gap-1.5">
+                ${group.periods.map(s => {
+                  const b = PERIOD_BADGE[s.period] || PERIOD_BADGE['morning'];
+                  return `<span class="${b.cls} inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold whitespace-nowrap">
+                    <span class="material-symbols-outlined text-[10px]">${b.icon}</span>${b.label}
+                  </span>`;
+                }).join('')}
+              </div>
+            </div>`).join('')}
         </div>
       </div>`;
   } else {
-    scheduleHTML = `
-      <div class="mb-6">
-        <p class="text-xs text-gray-400 italic">لم يُجدوَل بعد</p>
-      </div>`;
+    schedHTML = `<div class="mb-6"><p class="text-xs text-gray-400 italic">لم يُجدوَل بعد</p></div>`;
   }
 
   return `
-    <div class="doc-card bg-surface-container-lowest rounded-xl p-6 md:p-8 shadow-[0_10px_30px_-15px_rgba(25,28,29,0.08)]
-      flex flex-col transition-all duration-300 hover:translate-y-[-4px] border border-surface-container"
-      data-specialty="${escHtml(d.specialty)}">
+    <div class="doc-card bg-surface-container-lowest rounded-xl p-6 md:p-8
+      shadow-[0_10px_30px_-15px_rgba(25,28,29,0.08)]
+      flex flex-col transition-all duration-300 hover:translate-y-[-4px]
+      border border-surface-container"
+      data-specialty="${esc(d.specialty)}">
       <div class="mb-5">
-        <span class="text-primary-container font-bold text-xs mb-2 uppercase tracking-widest block">${escHtml(d.description)}</span>
-        <h3 class="text-2xl font-bold text-on-surface mb-1">${escHtml(d.name)}</h3>
-        <span class="inline-block bg-surface-container text-secondary text-xs font-semibold px-2.5 py-1 rounded-full">${escHtml(d.specialty)}</span>
+        <span class="text-primary-container font-bold text-xs mb-2 uppercase tracking-widest block">${esc(d.description)}</span>
+        <h3 class="text-2xl font-bold text-on-surface mb-2">${esc(d.name)}</h3>
+        <span class="inline-block bg-surface-container text-secondary text-xs font-semibold px-2.5 py-1 rounded-full">${esc(d.specialty)}</span>
       </div>
-      ${scheduleHTML}
+      ${schedHTML}
       <button class="mt-auto w-full py-3 bg-primary text-on-primary rounded-lg font-bold text-sm hover:bg-red-900 transition shadow-lg shadow-primary/10">
         احجز استشارة
       </button>
     </div>`;
 }
 
-function escHtml(str) {
-  if (!str) return '';
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-function escJs(str) {
-  if (!str) return '';
-  return String(str).replace(/'/g,"\\'");
+function escJ(s) {
+  if (!s) return '';
+  return String(s).replace(/'/g,"\\'");
 }
 
-// ===== Init =====
 window.addEventListener('DOMContentLoaded', init);
 </script>
 </body>

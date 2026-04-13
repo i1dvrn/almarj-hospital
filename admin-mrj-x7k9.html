@@ -25,7 +25,9 @@
     .sel-evening { border-color:#c7d2fe !important; background:#eef2ff; }
     .sel-night   { border-color:#475569 !important; background:#1e293b; color:white; }
     .sel-night option { background:#1e293b; }
+    html { scroll-behavior: smooth; }
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
 <body class="bg-gray-50 min-h-screen">
 
@@ -33,7 +35,7 @@
 
 <!-- Password Gate -->
 <div id="gate" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
-  <div class="bg-white rounded-2xl p-8 w-full max-w-sm mx-4 shadow-2xl text-center">
+  <div class="bg-white rounded-2xl p-8 w-full max-w-sm mx-4 shadow-2xl text-center" data-aos="zoom-in">
     <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
       <span class="material-symbols-outlined text-3xl text-[#A31D1D]">admin_panel_settings</span>
     </div>
@@ -86,7 +88,7 @@
   </div>
 
   <!-- ======================== DOCTORS TAB ======================== -->
-  <div id="panel-doctors" class="max-w-5xl mx-auto px-4 py-6 md:py-8">
+  <div id="panel-doctors" class="max-w-5xl mx-auto px-4 py-6 md:py-8" data-aos="fade-up">
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
       <!-- Form -->
@@ -140,7 +142,7 @@
   </div>
 
   <!-- ======================== SCHEDULES TAB ======================== -->
-  <div id="panel-schedules" class="hidden max-w-5xl mx-auto px-4 py-6 md:py-8">
+  <div id="panel-schedules" class="hidden max-w-5xl mx-auto px-4 py-6 md:py-8" data-aos="fade-up">
 
     <!-- Day Tabs -->
     <div id="day-tabs-row" class="flex gap-2 overflow-x-auto pb-3 mb-6" style="scrollbar-width:none"></div>
@@ -186,8 +188,16 @@
 
 </div><!-- /admin-shell -->
 
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
 const ADMIN_PASSWORD = 'almarj2026';
+
+// Initialize AOS
+AOS.init({
+  duration: 600,
+  easing: 'ease-out-quad',
+  once: true
+});
 
 // ===== Auth =====
 function doLogin() {
@@ -231,6 +241,7 @@ function switchTab(tab) {
       (t===tab?'tab-active':'tab-inactive') +
       ' flex items-center gap-2 px-6 py-4 text-sm transition-all duration-200';
   });
+  AOS.refresh();
 }
 
 function initAdmin() {

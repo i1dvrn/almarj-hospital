@@ -21,7 +21,9 @@
     .badge-morning { background:#fffbeb; color:#b45309; border:1px solid #fde68a; }
     .badge-evening { background:#eef2ff; color:#4338ca; border:1px solid #c7d2fe; }
     .badge-night   { background:#1e293b; color:#94a3b8; border:1px solid #334155; }
+    html { scroll-behavior: smooth; }
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
 <body class="bg-surface text-on-surface">
 
@@ -53,12 +55,12 @@
       <div class="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full blur-[120px]"></div>
       <div class="absolute bottom-0 left-0 w-96 h-96 bg-tertiary rounded-full blur-[120px]"></div>
     </div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 relative text-center md:text-right">
-      <div class="max-w-3xl mx-auto md:mx-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 relative">
+      <div class="max-w-3xl border-r-4 border-primary-container pr-4 md:pr-6 mb-8 md:mb-12" data-aos="fade-right">
         <h1 class="text-3xl md:text-5xl font-extrabold text-on-surface mb-4 leading-tight tracking-tight">
           نخبة الكوادر الطبية المتخصصة
         </h1>
-        <p class="text-base md:text-lg text-secondary leading-relaxed max-w-2xl mx-auto md:mx-0 font-medium">
+        <p class="text-base md:text-lg text-secondary leading-relaxed font-medium">
           نلتزم في مستشفى المرج التخصصي بتقديم أعلى مستويات الرعاية الصحية من خلال فريق متميز من الأطباء
           والاستشاريين في كافة التخصصات الطبية
         </p>
@@ -93,17 +95,17 @@
 <!-- Stats -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20">
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-center">
-    <div class="p-6 md:p-8 rounded-2xl bg-tertiary-fixed text-on-tertiary-fixed-variant">
+    <div class="p-6 md:p-8 rounded-2xl bg-tertiary-fixed text-on-tertiary-fixed-variant" data-aos="zoom-in" data-aos-delay="0">
       <span class="material-symbols-outlined text-4xl mb-4 block">groups</span>
       <h4 class="text-3xl font-extrabold mb-2">50+</h4>
       <p class="text-sm font-bold uppercase tracking-widest opacity-80">طبيب متخصص</p>
     </div>
-    <div class="p-6 md:p-8 rounded-2xl bg-secondary-fixed text-on-secondary-fixed-variant">
+    <div class="p-6 md:p-8 rounded-2xl bg-secondary-fixed text-on-secondary-fixed-variant" data-aos="zoom-in" data-aos-delay="200">
       <span class="material-symbols-outlined text-4xl mb-4 block">clinical_notes</span>
       <h4 class="text-3xl font-extrabold mb-2">24/7</h4>
       <p class="text-sm font-bold uppercase tracking-widest opacity-80">رعاية الطوارئ</p>
     </div>
-    <div class="p-6 md:p-8 rounded-2xl bg-primary-fixed text-on-primary-fixed-variant">
+    <div class="p-6 md:p-8 rounded-2xl bg-primary-fixed text-on-primary-fixed-variant" data-aos="zoom-in" data-aos-delay="400">
       <span class="material-symbols-outlined text-4xl mb-4 block">workspace_premium</span>
       <h4 class="text-3xl font-extrabold mb-2">15+</h4>
       <p class="text-sm font-bold uppercase tracking-widest opacity-80">قسم طبي متخصص</p>
@@ -128,6 +130,7 @@
   </div>
 </footer>
 
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
 // Period badge config
 const PERIOD_BADGE = {
@@ -139,6 +142,12 @@ const PERIOD_BADGE = {
 let activeFilter = 'all';
 
 function init() {
+  AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true
+  });
+
   const doctors = marjGetDoctors();
   if (doctors.length === 0) {
     document.getElementById('no-doctors').classList.remove('hidden');
@@ -178,13 +187,17 @@ function filterBy(specialty) {
     if (match) visible++;
   });
   document.getElementById('doctors-empty').classList.toggle('hidden', visible > 0);
+  
+  // Refresh AOS after filtering
+  AOS.refresh();
 }
 
 function renderDoctors(doctors) {
-  document.getElementById('doctors-grid').innerHTML = doctors.map(buildDocCard).join('');
+  document.getElementById('doctors-grid').innerHTML = doctors.map((d, idx) => buildDocCard(d, idx)).join('');
+  AOS.refresh();
 }
 
-function buildDocCard(d) {
+function buildDocCard(d, idx) {
   const schedule = marjGetDoctorSchedule(d.id);
 
   let schedHTML = '';
@@ -224,9 +237,10 @@ function buildDocCard(d) {
   return `
     <div class="doc-card bg-surface-container-lowest rounded-xl p-6 md:p-8
       shadow-[0_10px_30px_-15px_rgba(25,28,29,0.08)]
-      flex flex-col transition-all duration-300 hover:translate-y-[-4px]
+      flex flex-col transition-all duration-300 hover:translate-y-[-8px] hover:shadow-xl
       border border-surface-container"
-      data-specialty="${esc(d.specialty)}">
+      data-specialty="${esc(d.specialty)}"
+      data-aos="fade-up" data-aos-delay="${(idx % 3) * 100}">
       <div class="mb-5">
         <span class="text-primary-container font-bold text-xs mb-2 uppercase tracking-widest block">${esc(d.description)}</span>
         <h3 class="text-2xl font-bold text-on-surface mb-2">${esc(d.name)}</h3>

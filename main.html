@@ -25,7 +25,21 @@
     body {
       font-family: 'Tajawal', sans-serif;
     }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Custom AOS refinements */
+    [data-aos] {
+      pointer-events: none;
+    }
+
+    .aos-animate {
+      pointer-events: auto;
+    }
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
 
 <body class="bg-surface text-on-surface">
@@ -65,7 +79,7 @@
     <!-- Hero Section -->
     <section class="relative overflow-hidden bg-surface">
 
-      <div class="relative md:hidden w-[92%] mx-auto mt-6 rounded-2xl overflow-hidden shadow-md border border-gray-100">
+      <div class="relative md:hidden w-[92%] mx-auto mt-6 rounded-2xl overflow-hidden shadow-md border border-gray-100" data-aos="zoom-in" data-aos-duration="1000">
 
         <img src="images/heropicM.jpg" alt="مستشفى المرج - جوال" class="w-full h-auto aspect-[1024/500] object-cover">
 
@@ -76,7 +90,7 @@
         </div>
       </div>
 
-      <div class="hidden md:block absolute inset-0 z-0">
+      <div class="hidden md:block absolute inset-0 z-0" data-aos="fade" data-aos-duration="1500">
         <img src="images/new-image.png" class="w-full h-full object-cover">
       </div>
 
@@ -85,22 +99,26 @@
           class="flex flex-col items-center lg:items-start text-center lg:text-right py-10 md:py-20 lg:h-[600px] lg:justify-center">
 
           <div
-            class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-fixed text-primary font-bold text-xs uppercase tracking-wider mb-6">
+            class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-fixed text-primary font-bold text-xs uppercase tracking-wider mb-6"
+            data-aos="fade-down" data-aos-delay="200">
             <span class="material-symbols-outlined text-sm">verified_user</span>
             رعاية طبية متميزة
           </div>
 
           <h1
-            class="text-3xl md:text-5xl lg:text-7xl font-extrabold text-on-background leading-tight lg:leading-[1.2] font-headline">
+            class="text-3xl md:text-5xl lg:text-7xl font-extrabold text-on-background leading-tight lg:leading-[1.2] font-headline"
+            data-aos="fade-up" data-aos-delay="400">
             مستشفى <span style="color: rgb(48, 109, 170);">المرج</span>
             <br> التخصصــــــــــــــــــــــي
           </h1>
 
-          <p class="text-base sm:text-lg md:text-xl text-secondary leading-relaxed max-w-lg font-body mt-6">
+          <p class="text-base sm:text-lg md:text-xl text-secondary leading-relaxed max-w-lg font-body mt-6"
+            data-aos="fade-up" data-aos-delay="600">
             نقدم رعاية صحية عالمية المستوى بأحدث التقنيات الطبية ونخبة من الاستشاريين المتخصصين لضمان سلامتك وراحتك.
           </p>
 
-          <div class="flex flex-col sm:flex-row flex-wrap gap-4 pt-8 w-full sm:w-auto">
+          <div class="flex flex-col sm:flex-row flex-wrap gap-4 pt-8 w-full sm:w-auto"
+            data-aos="fade-up" data-aos-delay="800">
 
             <button
               class="w-full sm:w-auto bg-primary-container text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-primary/20 hover:bg-red-900 transition-colors min-h-[56px]">
@@ -133,10 +151,11 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- السبت -->
             <div
-              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col"
+              data-aos="fade-up" data-aos-delay="0">
               <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
                 <img src="images/saturday.jpg" alt="السبت"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">السبت</h3>
@@ -146,10 +165,11 @@
             </div>
             <!-- الأحد -->
             <div
-              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col"
+              data-aos="fade-up" data-aos-delay="100">
               <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
                 <img src="images/sunday.jpg" alt="الأحد"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">الأحد</h3>
@@ -159,10 +179,11 @@
             </div>
             <!-- الإثنين -->
             <div
-              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col"
+              data-aos="fade-up" data-aos-delay="200">
               <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
                 <img src="images/monday.jpg" alt="الإثنين"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">الإثنين</h3>
@@ -172,10 +193,11 @@
             </div>
             <!-- الثلاثاء -->
             <div
-              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col"
+              data-aos="fade-up" data-aos-delay="300">
               <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
                 <img src="images/tuesday.jpg" alt="الثلاثاء"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">الثلاثاء</h3>
@@ -188,10 +210,11 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full lg:w-3/4 lg:mx-auto">
             <!-- الأربعاء -->
             <div
-              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col"
+              data-aos="fade-up" data-aos-delay="0">
               <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
                 <img src="images/wednesday.jpg" alt="الأربعاء"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">الأربعاء</h3>
@@ -201,10 +224,11 @@
             </div>
             <!-- الخميس -->
             <div
-              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col"
+              data-aos="fade-up" data-aos-delay="100">
               <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
                 <img src="images/thursday.jpg" alt="الخميس"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">الخميس</h3>
@@ -214,10 +238,11 @@
             </div>
             <!-- الجمعة -->
             <div
-              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col">
+              class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col"
+              data-aos="fade-up" data-aos-delay="200">
               <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
                 <img src="images/friday.jpg" alt="الجمعة"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">الجمعة</h3>
@@ -342,31 +367,40 @@
     </div>
 
   </footer>
-<script>
-// ===== Render first 4 doctors on home page =====
-window.addEventListener('DOMContentLoaded', function() {
-  const doctors = marjGetDoctors().slice(0, 4);
-  const grid = document.getElementById('home-doctors-grid');
-  const empty = document.getElementById('home-doctors-empty');
-  if (doctors.length === 0) {
-    grid.classList.add('hidden');
-    empty.classList.remove('hidden');
-    return;
-  }
-  grid.innerHTML = doctors.map(d => `
-    <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group p-6">
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      mirror: false
+    });
+
+    // ===== Render first 4 doctors on home page =====
+    window.addEventListener('DOMContentLoaded', function () {
+      const doctors = marjGetDoctors().slice(0, 4);
+      const grid = document.getElementById('home-doctors-grid');
+      const empty = document.getElementById('home-doctors-empty');
+      if (doctors.length === 0) {
+        grid.classList.add('hidden');
+        empty.classList.remove('hidden');
+        return;
+      }
+      grid.innerHTML = doctors.map((d, idx) => `
+    <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group p-6"
+         data-aos="fade-up" data-aos-delay="${idx * 150}">
       <span class="text-primary-container text-xs font-bold uppercase tracking-widest block mb-1">${escH(d.description)}</span>
       <h4 class="text-xl font-bold mt-1">${escH(d.name)}</h4>
       <div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-end">
         <a href="doctors.html" class="text-primary-container text-sm font-bold">عرض المواعيد</a>
       </div>
     </div>`).join('');
-});
-function escH(s) {
-  if(!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-</script>
+    });
+    function escH(s) {
+      if (!s) return '';
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+  </script>
 </body>
 
 </html>

@@ -87,7 +87,7 @@
               <tr class="bg-primary-container text-white font-headline">
                 <th class="p-4 md:p-6 text-right font-bold text-sm md:text-lg">العيادة</th>
                 <th class="p-4 md:p-6 text-center font-bold text-sm md:text-lg">
-                  الفترة الصباحية<br/><span class="text-xs font-normal opacity-80">(09:00 – 14:00)</span>
+                  الفترة الصباحية<br/><span class="text-xs font-normal opacity-80">(10:00 – 17:00)</span>
                 </th>
                 <th class="p-4 md:p-6 text-center font-bold text-sm md:text-lg">
                   الفترة المسائية<br/><span class="text-xs font-normal opacity-80">(17:00 – 21:00)</span>
@@ -107,7 +107,7 @@
               <tr class="bg-primary-container text-white font-headline">
                 <th class="p-4 md:p-6 text-right font-bold text-sm md:text-lg">العيادة</th>
                 <th class="p-4 md:p-6 text-center font-bold text-sm md:text-lg">
-                  الفترة الليلية<br/><span class="text-xs font-normal opacity-80">(21:00 – 01:00)</span>
+                  الفترة الليلية من الـ9 مساءً إلى الـ9 صباحاً<br/><span class="text-xs font-normal opacity-80"></span>
                 </th>
               </tr>
             </thead>
@@ -167,6 +167,13 @@ document.getElementById('menuBtn').addEventListener('click', () => {
 let selectedDay = 'saturday';
 let currentPage = 1;
 
+// Parse URL parameter for day
+const urlParams = new URLSearchParams(window.location.search);
+const dayParam = urlParams.get('day');
+if (dayParam && MARJ_DAYS.includes(dayParam)) {
+  selectedDay = dayParam;
+}
+
 // Init AOS
 AOS.init({
   duration: 800,
@@ -216,13 +223,17 @@ function showPage(n) {
 
 // ===== Render Schedule =====
 function renderSchedule(day) {
-  const rows = (marjGetSchedules()[day] || []);
+  const allRows = (marjGetSchedules()[day] || []);
   const empty   = document.getElementById('schedule-empty');
   const page1   = document.getElementById('page-1');
   const page2   = document.getElementById('page-2');
   const paging  = document.getElementById('pagination');
 
-  if (rows.length === 0) {
+  // Filter rows for each page
+  const rowsDay = allRows.filter(r => r.morning || r.evening);
+  const rowsNight = allRows.filter(r => r.night);
+
+  if (rowsDay.length === 0 && rowsNight.length === 0) {
     empty.classList.remove('hidden');
     page1.classList.add('hidden');
     page2.classList.add('hidden');
@@ -232,53 +243,86 @@ function renderSchedule(day) {
 
   empty.classList.add('hidden');
   paging.classList.remove('hidden');
+
+  // Auto-switch page if current is empty
+  if (currentPage === 1 && rowsDay.length === 0) currentPage = 2;
+  if (currentPage === 2 && rowsNight.length === 0) currentPage = 1;
+
   showPage(currentPage);  // restore current page visibility
 
   // ---- PAGE 1: صباحية + مسائية ----
-  document.getElementById('tbody-day').innerHTML = rows.map((row, idx) => {
-    const cls    = marjGetIconClasses(row.iconColor);
-    const isAlt  = idx % 2 !== 0;
-    const mName  = marjGetDoctorName(row.morning);
-    const eName  = marjGetDoctorName(row.evening);
-    return `
-    <tr class="${isAlt ? 'bg-surface-container-low/30' : ''} hover:bg-surface transition-colors">
-      <td class="p-4 md:p-6">
-        <div class="flex items-center gap-2 md:gap-4">
-          <div class="w-9 h-9 md:w-12 md:h-12 shrink-0 ${cls.bg} rounded-lg flex items-center justify-center">
-            <span class="material-symbols-outlined ${cls.text}">${esc(row.icon||'stethoscope')}</span>
+  if (rowsDay.length === 0) {
+    document.getElementById('tbody-day').innerHTML = `
+      <tr>
+        <td colspan="3" class="p-12 text-center text-gray-400">
+          <span class="material-symbols-outlined text-4xl block mb-2">wb_sunny</span>
+          <p class="font-bold">لا توجد عيادات صباحية أو مسائية اليوم</p>
+        </td>
+      </tr>`;
+  } else {
+    document.getElementById('tbody-day').innerHTML = rowsDay.map((row, idx) => {
+      const cls      = marjGetIconClasses(row.iconColor);
+      const isAlt    = idx % 2 !== 0;
+      const mDoc     = row.morning ? marjGetDoctorById(row.morning) : null;
+      const eDoc     = row.evening ? marjGetDoctorById(row.evening) : null;
+      const mName    = mDoc ? mDoc.name : null;
+      const eName    = eDoc ? eDoc.name : null;
+      const mExcused = !!(mDoc && mDoc.excused);
+      const eExcused = !!(eDoc && eDoc.excused);
+      const excusedBadge = '<span class="inline-flex items-center gap-1 bg-gray-100 text-gray-400 text-[11px] font-bold px-2 py-0.5 rounded-full mt-1"><span class="material-symbols-outlined text-[11px]">do_not_disturb</span>\u0645\u0639\u062a\u0630\u0631</span>';
+      return `
+      <tr class="${isAlt ? 'bg-surface-container-low/30' : ''} hover:bg-surface transition-colors">
+        <td class="p-4 md:p-6">
+          <div class="flex items-center gap-2 md:gap-4">
+            <div class="w-9 h-9 md:w-12 md:h-12 shrink-0 ${cls.bg} rounded-lg flex items-center justify-center">
+              <span class="material-symbols-outlined ${cls.text}">${esc(row.icon||'stethoscope')}</span>
+            </div>
+            <div class="font-bold text-on-surface text-sm sm:text-base md:text-lg">${esc(row.clinicName)}</div>
           </div>
-          <div class="font-bold text-on-surface text-sm sm:text-base md:text-lg">${esc(row.clinicName)}</div>
-        </div>
-      </td>
-      <td class="p-4 md:p-6 text-center">
-        <div class="font-bold ${mName ? 'text-primary' : 'text-gray-300'}">${mName ? esc(mName) : '—'}</div>
-      </td>
-      <td class="p-4 md:p-6 text-center">
-        <div class="font-bold ${eName ? 'text-primary' : 'text-gray-300'}">${eName ? esc(eName) : '—'}</div>
-      </td>
-    </tr>`;
-  }).join('');
+        </td>
+        <td class="p-4 md:p-6 text-center">
+          ${mName ? `<div class="font-bold ${mExcused ? 'text-gray-400 line-through' : 'text-primary'}">${esc(mName)}</div>${mExcused ? excusedBadge : ''}` : '<div class="font-bold text-gray-300">\u2014</div>'}
+        </td>
+        <td class="p-4 md:p-6 text-center">
+          ${eName ? `<div class="font-bold ${eExcused ? 'text-gray-400 line-through' : 'text-primary'}">${esc(eName)}</div>${eExcused ? excusedBadge : ''}` : '<div class="font-bold text-gray-300">\u2014</div>'}
+        </td>
+      </tr>`;
+    }).join('');
+  }
 
   // ---- PAGE 2: ليلية فقط ----
-  document.getElementById('tbody-night').innerHTML = rows.map((row, idx) => {
-    const cls   = marjGetIconClasses(row.iconColor);
-    const isAlt = idx % 2 !== 0;
-    const nName = marjGetDoctorName(row.night);
-    return `
-    <tr class="${isAlt ? 'bg-surface-container-low/30' : ''} hover:bg-surface transition-colors">
-      <td class="p-4 md:p-6">
-        <div class="flex items-center gap-2 md:gap-4">
-          <div class="w-9 h-9 md:w-12 md:h-12 shrink-0 ${cls.bg} rounded-lg flex items-center justify-center">
-            <span class="material-symbols-outlined ${cls.text}">${esc(row.icon||'stethoscope')}</span>
+  if (rowsNight.length === 0) {
+    document.getElementById('tbody-night').innerHTML = `
+      <tr>
+        <td colspan="2" class="p-12 text-center text-gray-400">
+          <span class="material-symbols-outlined text-4xl block mb-2">nights_stay</span>
+          <p class="font-bold">لا توجد عيادات ليلية اليوم</p>
+        </td>
+      </tr>`;
+  } else {
+    document.getElementById('tbody-night').innerHTML = rowsNight.map((row, idx) => {
+      const cls      = marjGetIconClasses(row.iconColor);
+      const isAlt    = idx % 2 !== 0;
+      const nDoc     = row.night ? marjGetDoctorById(row.night) : null;
+      const nName    = nDoc ? nDoc.name : null;
+      const nExcused = !!(nDoc && nDoc.excused);
+      const excusedBadge = '<span class="inline-flex items-center gap-1 bg-gray-100 text-gray-400 text-[11px] font-bold px-2 py-0.5 rounded-full mt-1"><span class="material-symbols-outlined text-[11px]">do_not_disturb</span>\u0645\u0639\u062a\u0630\u0631</span>';
+      return `
+      <tr class="${isAlt ? 'bg-surface-container-low/30' : ''} hover:bg-surface transition-colors">
+        <td class="p-4 md:p-6">
+          <div class="flex items-center gap-2 md:gap-4">
+            <div class="w-9 h-9 md:w-12 md:h-12 shrink-0 ${cls.bg} rounded-lg flex items-center justify-center">
+              <span class="material-symbols-outlined ${cls.text}">${esc(row.icon||'stethoscope')}</span>
+            </div>
+            <div class="font-bold text-on-surface text-sm sm:text-base md:text-lg">${esc(row.clinicName)}</div>
           </div>
-          <div class="font-bold text-on-surface text-sm sm:text-base md:text-lg">${esc(row.clinicName)}</div>
-        </div>
-      </td>
-      <td class="p-4 md:p-6 text-center">
-        <div class="font-bold ${nName ? 'text-primary' : 'text-gray-300'}">${nName ? esc(nName) : '—'}</div>
-      </td>
-    </tr>`;
-  }).join('');
+        </td>
+        <td class="p-4 md:p-6 text-center">
+          ${nName ? `<div class="font-bold ${nExcused ? 'text-gray-400 line-through' : 'text-primary'}">${esc(nName)}</div>${nExcused ? excusedBadge : ''}` : '<div class="font-bold text-gray-300">\u2014</div>'}
+        </td>
+      </tr>`;
+    }).join('');
+  }
 }
 
 function esc(s) {

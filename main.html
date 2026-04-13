@@ -38,6 +38,86 @@
     .aos-animate {
       pointer-events: auto;
     }
+
+    /* ===== Contact Modal ===== */
+    #contact-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    #contact-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #contact-modal {
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px 28px 24px;
+      width: min(90vw, 380px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+      transform: translateY(24px) scale(0.96);
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+      text-align: center;
+      position: relative;
+    }
+    #contact-modal-overlay.open #contact-modal {
+      transform: translateY(0) scale(1);
+    }
+    .modal-phone-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      background: #f5f5f5;
+      border: 2px solid transparent;
+      font-size: 1.2rem;
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 700;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: background 0.18s, border-color 0.18s, transform 0.12s;
+      letter-spacing: 0.04em;
+      direction: ltr;
+    }
+    .modal-phone-btn:hover {
+      background: #fff3f3;
+      border-color: #A31D1D;
+      transform: scale(1.02);
+    }
+    .modal-phone-btn.copied {
+      background: #ecfdf5;
+      border-color: #10b981;
+      color: #065f46;
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #555;
+      transition: background 0.15s;
+    }
+    .modal-close-btn:hover { background: #e0e0e0; }
   </style>
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
@@ -66,6 +146,8 @@
       </div>
       <div class="flex items-center gap-3">
         <button
+          id="nav-book-btn"
+          onclick="openContactModal()"
           class="hidden sm:block bg-primary-container text-white px-6 py-3 lg:py-2.5 rounded-lg font-bold text-sm hover:bg-red-900 transition-colors duration-200 active:opacity-80 scale-95">
           احجز موعدك
         </button>
@@ -121,6 +203,8 @@
             data-aos="fade-up" data-aos-delay="800">
 
             <button
+              id="hero-contact-btn"
+              onclick="openContactModal()"
               class="w-full sm:w-auto bg-primary-container text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-primary/20 hover:bg-red-900 transition-colors min-h-[56px]">
               تواصل معنا
             </button>
@@ -159,8 +243,8 @@
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">السبت</h3>
-                <button
-                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+                <a href="schedules.html?day=saturday"
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
               </div>
             </div>
             <!-- الأحد -->
@@ -173,8 +257,8 @@
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">الأحد</h3>
-                <button
-                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+                <a href="schedules.html?day=sunday"
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
               </div>
             </div>
             <!-- الإثنين -->
@@ -187,8 +271,8 @@
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">الإثنين</h3>
-                <button
-                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+                <a href="schedules.html?day=monday"
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
               </div>
             </div>
             <!-- الثلاثاء -->
@@ -201,8 +285,8 @@
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">الثلاثاء</h3>
-                <button
-                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+                <a href="schedules.html?day=tuesday"
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
               </div>
             </div>
           </div>
@@ -218,8 +302,8 @@
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">الأربعاء</h3>
-                <button
-                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+                <a href="schedules.html?day=wednesday"
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
               </div>
             </div>
             <!-- الخميس -->
@@ -232,8 +316,8 @@
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">الخميس</h3>
-                <button
-                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+                <a href="schedules.html?day=thursday"
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
               </div>
             </div>
             <!-- الجمعة -->
@@ -246,8 +330,8 @@
               </div>
               <div class="p-5 text-center flex flex-col justify-between flex-1">
                 <h3 class="text-2xl font-bold mb-4 font-headline">الجمعة</h3>
-                <button
-                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all">عرض</button>
+                <a href="schedules.html?day=friday"
+                  class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
               </div>
             </div>
           </div>
@@ -367,6 +451,30 @@
     </div>
 
   </footer>
+  <!-- Contact Modal -->
+  <div id="contact-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" onclick="handleOverlayClick(event)">
+    <div id="contact-modal">
+      <button class="modal-close-btn" onclick="closeContactModal()" aria-label="إغلاق">✕</button>
+      <span class="material-symbols-outlined text-4xl mb-3 block" style="color:#A31D1D;">phone_in_talk</span>
+      <h2 id="contact-modal-title" style="font-family:'Tajawal',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:6px;">تواصل معنا</h2>
+      <p style="font-size:0.82rem;color:#666;margin-bottom:18px;">اضغط على الرقم لنسخه</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
+        <button class="modal-phone-btn" id="phone-btn-1" onclick="copyPhone('0928667081','phone-btn-1')">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;">content_copy</span>
+          0928667081
+        </button>
+        <button class="modal-phone-btn" id="phone-btn-2" onclick="copyPhone('0922625986','phone-btn-2')">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;">content_copy</span>
+          0922625986
+        </button>
+      </div>
+      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px 14px;font-size:0.8rem;color:#92400e;line-height:1.6;">
+        <span class="material-symbols-outlined" style="font-size:0.95rem;vertical-align:middle;margin-left:4px;">schedule</span>
+        يرجى الملاحظة أن الرد على المكالمات يتم من الساعة الـ9 صباحاً إلى الـ7:30 مساءً
+      </div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>
     AOS.init({
@@ -399,6 +507,32 @@
     function escH(s) {
       if (!s) return '';
       return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // ===== Contact Modal =====
+    function openContactModal() {
+      document.getElementById('contact-modal-overlay').classList.add('open');
+    }
+    function closeContactModal() {
+      document.getElementById('contact-modal-overlay').classList.remove('open');
+    }
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('contact-modal-overlay')) closeContactModal();
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeContactModal();
+    });
+    function copyPhone(number, btnId) {
+      navigator.clipboard.writeText(number).then(function() {
+        const btn = document.getElementById(btnId);
+        const orig = btn.innerHTML;
+        btn.classList.add('copied');
+        btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:1.1rem;">check_circle</span> تم النسخ!';
+        setTimeout(function() {
+          btn.classList.remove('copied');
+          btn.innerHTML = orig;
+        }, 2000);
+      });
     }
   </script>
 </body>

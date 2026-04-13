@@ -260,16 +260,21 @@ function renderDoctorsList() {
   document.getElementById('doctors-empty').classList.toggle('hidden', doctors.length > 0);
   if (doctors.length === 0) { list.innerHTML = ''; return; }
   list.innerHTML = doctors.map(d => `
-    <div class="bg-white border border-gray-200 rounded-xl p-4 flex items-start gap-4 hover:border-red-200 transition">
-      <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0 text-[#A31D1D]">
-        <span class="material-symbols-outlined text-lg">person</span>
+    <div class="bg-white border ${d.excused ? 'border-gray-300 bg-gray-50' : 'border-gray-200'} rounded-xl p-4 flex items-start gap-4 hover:border-red-200 transition">
+      <div class="w-10 h-10 rounded-full ${d.excused ? 'bg-gray-100' : 'bg-red-50'} flex items-center justify-center shrink-0 ${d.excused ? 'text-gray-400' : 'text-[#A31D1D]'}">
+        <span class="material-symbols-outlined text-lg">${d.excused ? 'person_off' : 'person'}</span>
       </div>
       <div class="flex-1 min-w-0">
-        <p class="font-bold text-gray-900 text-sm truncate">${esc(d.name)}</p>
-        <p class="text-xs text-[#A31D1D] font-semibold mt-0.5">${esc(d.specialty)}</p>
-        <p class="text-xs text-gray-500 mt-1 line-clamp-2">${esc(d.description)}</p>
+        <p class="font-bold text-sm truncate ${d.excused ? 'line-through text-gray-400' : 'text-gray-900'}">${esc(d.name)}</p>
+        <p class="text-xs font-semibold mt-0.5 ${d.excused ? 'text-gray-400' : 'text-[#A31D1D]'}">${esc(d.specialty)}</p>
+        ${d.excused ? '<span class="inline-flex items-center gap-1 bg-gray-200 text-gray-500 text-[11px] font-bold px-2 py-0.5 rounded-full mt-1"><span class="material-symbols-outlined text-[11px]">do_not_disturb</span>معتذر</span>' : ''}
+        <p class="text-xs text-gray-400 mt-1 line-clamp-2 ${d.excused ? 'line-through' : ''}">${esc(d.description)}</p>
       </div>
       <div class="flex gap-2 shrink-0">
+        <button onclick="toggleExcused('${d.id}')" title="${d.excused ? 'إلغاء الاعتذار' : 'تعيين كمعتذر'}"
+          class="w-8 h-8 rounded-lg ${d.excused ? 'bg-green-50 text-green-600 hover:bg-green-100' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'} flex items-center justify-center transition">
+          <span class="material-symbols-outlined text-sm">${d.excused ? 'person_check' : 'do_not_disturb'}</span>
+        </button>
         <button onclick="editDoctor('${d.id}')"
           class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-100 transition">
           <span class="material-symbols-outlined text-sm">edit</span>
@@ -291,10 +296,10 @@ function saveDoctor() {
   const doctors = marjGetDoctors();
   if (id) {
     const idx = doctors.findIndex(d => d.id === id);
-    if (idx !== -1) doctors[idx] = { id, name, specialty:spec, description:desc };
+    if (idx !== -1) doctors[idx] = { id, name, specialty:spec, description:desc, excused: doctors[idx].excused || false };
     showToast('✅ تم تحديث بيانات الطبيب');
   } else {
-    doctors.push({ id:marjGenId(), name, specialty:spec, description:desc });
+    doctors.push({ id:marjGenId(), name, specialty:spec, description:desc, excused: false });
     showToast('✅ تمت إضافة الطبيب');
   }
   marjSaveDoctors(doctors);
@@ -313,6 +318,17 @@ function editDoctor(id) {
   document.getElementById('form-title').innerHTML =
     '<span class="material-symbols-outlined text-[#A31D1D]">edit</span> تعديل بيانات الطبيب';
   window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function toggleExcused(id) {
+  const doctors = marjGetDoctors();
+  const idx = doctors.findIndex(d => d.id === id);
+  if (idx === -1) return;
+  doctors[idx].excused = !doctors[idx].excused;
+  marjSaveDoctors(doctors);
+  renderDoctorsList();
+  if (currentTab === 'schedules') renderCurrentDay();
+  showToast(doctors[idx].excused ? '🔕 تم تعيين الطبيب كمعتذر' : '✅ تم إلغاء اعتذار الطبيب');
 }
 
 function deleteDoctor(id) {

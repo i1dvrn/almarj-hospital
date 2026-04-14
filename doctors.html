@@ -67,8 +67,8 @@
 <body class="bg-surface text-on-surface">
 
 <!-- Nav -->
-<nav class="bg-white/90 backdrop-blur-md top-0 sticky z-50 shadow-sm">
-  <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex justify-between items-center">
+<nav class="bg-white/50 backdrop-blur-md top-0 sticky z-50 shadow-sm">
+  <div class=" px-4 md:px-36 h-20 flex justify-between items-center  bg-white/100 backdrop-blur-md">
     <div class="flex items-center gap-2 md:gap-3">
       <img src="images/logo.jpg" class="w-10 h-10 object-cover rounded-lg" alt="شعار"/>
       <span class="text-lg md:text-xl font-bold text-gray-900 font-['Tajawal']">مستشفى المرج التخصصي</span>
@@ -78,11 +78,26 @@
       <a class="text-gray-600 hover:text-[#A31D1D] transition" href="schedules.html">الجداول</a>
       <a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1" href="doctors.html">الأطباء</a>
     </div>
-    <div class="flex items-center gap-3">
-      <button id="nav-book-btn" onclick="openContactModal()" class="hidden sm:block bg-primary-container text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:bg-red-900 transition">احجز موعدك</button>
-      <button class="block lg:hidden text-gray-900 p-2">
-        <span class="material-symbols-outlined text-3xl">menu</span>
-      </button>
+    <div class="flex items-center gap-2">
+      <!-- زر احجز موعدك: يظهر في الموبايل أيضاً -->
+      <button id="nav-book-btn" onclick="openContactModal()" class="block bg-primary-container text-white px-4 py-2 lg:px-6 lg:py-2.5 rounded-lg font-bold text-xs lg:text-sm hover:bg-red-900 transition-colors duration-200 active:opacity-80">احجز موعدك</button>
+    </div>
+  </div>
+  <!-- شريط التنقل - للموبايل فقط | 3 روابط نصية فقط -->
+  <div class="lg:hidden border-t">
+    <div class="flex items-center justify-around px-4 py-2.5 font-['Tajawal'] font-bold text-sm">
+      <a href="main.html"
+        class="px-5 py-0.2 rounded-lg text-gray-600 hover:text-[#A31D1D] transition-all duration-200">
+        الرئيسية
+      </a>
+      <a href="schedules.html"
+        class="px-5 py-0.2 rounded-lg text-gray-600 hover:text-[#A31D1D] transition-all duration-200">
+        الجداول
+      </a>
+      <a href="doctors.html"
+        class="px-5 py-0.2 rounded-lg text-[#A31D1D] transition-all duration-200">
+        الأطباء
+      </a>
     </div>
   </div>
 </nav>

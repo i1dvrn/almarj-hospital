@@ -9,6 +9,7 @@
   <script src="tailwind-config.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="db.js"></script>
   <style>
     body { font-family:'Tajawal',sans-serif; }
@@ -66,7 +67,7 @@
       <span class="text-xs opacity-70 hidden sm:flex items-center gap-1">
         <span class="material-symbols-outlined text-sm">lock</span> رابط سري
       </span>
-      <a href="main.html" class="flex items-center gap-1 text-xs bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg transition">
+      <a href="index.html" class="flex items-center gap-1 text-xs bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg transition">
         <span class="material-symbols-outlined text-sm">open_in_new</span>
         <span class="hidden sm:inline">الموقع</span>
       </a>
@@ -132,6 +133,21 @@
           </h2>
           <span id="doc-count" class="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full">0 طبيب</span>
         </div>
+        
+        <!-- Search & Filter Area -->
+        <div class="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-3" data-aos="fade-in">
+          <div class="relative">
+            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">search</span>
+            <input id="doc-search" type="text" placeholder="بحث باسم الدكتور..." 
+              class="w-full pr-10 pl-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-red-500 outline-none transition"
+              oninput="renderDoctorsList()"/>
+          </div>
+          <select id="doc-filter-specialty" class="w-full px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-red-500 outline-none transition"
+            onchange="renderDoctorsList()">
+            <option value="">جميع التخصصات / العيادات</option>
+          </select>
+        </div>
+
         <div id="doctors-list" class="space-y-3"></div>
         <div id="doctors-empty" class="text-center py-16 text-gray-400 hidden">
           <span class="material-symbols-outlined text-5xl block mb-3">person_off</span>
@@ -200,24 +216,24 @@ AOS.init({
 });
 
 // ===== Auth =====
-function doLogin() {
+async function doLogin() {
   const pw = document.getElementById('pw-input').value;
   if (pw === ADMIN_PASSWORD) {
     sessionStorage.setItem('marj_admin','1');
     document.getElementById('gate').style.display = 'none';
     document.getElementById('admin-shell').classList.remove('hidden');
-    initAdmin();
+    await initAdmin();
   } else {
     document.getElementById('pw-error').classList.remove('hidden');
     document.getElementById('pw-input').value = '';
     document.getElementById('pw-input').focus();
   }
 }
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   if (sessionStorage.getItem('marj_admin') === '1') {
     document.getElementById('gate').style.display = 'none';
     document.getElementById('admin-shell').classList.remove('hidden');
-    initAdmin();
+    await initAdmin();
   }
   document.getElementById('pw-input').focus();
 });
@@ -244,22 +260,45 @@ function switchTab(tab) {
   AOS.refresh();
 }
 
-function initAdmin() {
-  renderDoctorsList();
+async function initAdmin() {
+  await renderDoctorsList(true);
   renderDayTabs();
-  selectDay('saturday');
+  await selectDay('saturday');
 }
+
+let cacheDoctors = [];
 
 // ===========================
 //   DOCTORS
 // ===========================
-function renderDoctorsList() {
-  const doctors = marjGetDoctors();
+async function renderDoctorsList(refresh = false) {
+  if (refresh || cacheDoctors.length === 0) {
+    cacheDoctors = await marjGetDoctors();
+    updateSpecialtyFilter(cacheDoctors);
+  }
+
+  const query = document.getElementById('doc-search')?.value.toLowerCase().trim() || '';
+  const spec  = document.getElementById('doc-filter-specialty')?.value || '';
+
+  const filtered = cacheDoctors.filter(d => {
+    const matchesName = d.name.toLowerCase().includes(query);
+    const matchesSpec = !spec || d.specialty === spec;
+    return matchesName && matchesSpec;
+  });
+
   const list = document.getElementById('doctors-list');
-  document.getElementById('doc-count').textContent = doctors.length + ' طبيب';
-  document.getElementById('doctors-empty').classList.toggle('hidden', doctors.length > 0);
-  if (doctors.length === 0) { list.innerHTML = ''; return; }
-  list.innerHTML = doctors.map(d => `
+  const countEl = document.getElementById('doc-count');
+  
+  if (query || spec) {
+    countEl.textContent = `نتائج البحث: ${filtered.length} طبيب`;
+  } else {
+    countEl.textContent = cacheDoctors.length + ' طبيب';
+  }
+
+  document.getElementById('doctors-empty').classList.toggle('hidden', filtered.length > 0);
+  if (filtered.length === 0) { list.innerHTML = ''; return; }
+  
+  list.innerHTML = filtered.map(d => `
     <div class="bg-white border ${d.excused ? 'border-gray-300 bg-gray-50' : 'border-gray-200'} rounded-xl p-4 flex items-start gap-4 hover:border-red-200 transition">
       <div class="w-10 h-10 rounded-full ${d.excused ? 'bg-gray-100' : 'bg-red-50'} flex items-center justify-center shrink-0 ${d.excused ? 'text-gray-400' : 'text-[#A31D1D]'}">
         <span class="material-symbols-outlined text-lg">${d.excused ? 'person_off' : 'person'}</span>
@@ -287,13 +326,22 @@ function renderDoctorsList() {
     </div>`).join('');
 }
 
-function saveDoctor() {
+function updateSpecialtyFilter(doctors) {
+  const sel = document.getElementById('doc-filter-specialty');
+  if (!sel) return;
+  const current = sel.value;
+  const specialties = [...new Set(doctors.map(d => d.specialty).filter(Boolean))].sort();
+  sel.innerHTML = '<option value="">جميع التخصصات / العيادات</option>' +
+    specialties.map(s => `<option value="${esc(s)}" ${s===current?'selected':''}>${esc(s)}</option>`).join('');
+}
+
+async function saveDoctor() {
   const id   = document.getElementById('doc-id').value;
   const name = document.getElementById('doc-name').value.trim();
   const spec = document.getElementById('doc-specialty').value.trim();
   const desc = document.getElementById('doc-description').value.trim();
   if (!name || !spec || !desc) { showToast('⚠️ يرجى ملء جميع الحقول'); return; }
-  const doctors = marjGetDoctors();
+  let doctors = await marjGetDoctors();
   if (id) {
     const idx = doctors.findIndex(d => d.id === id);
     if (idx !== -1) doctors[idx] = { id, name, specialty:spec, description:desc, excused: doctors[idx].excused || false };
@@ -302,14 +350,14 @@ function saveDoctor() {
     doctors.push({ id:marjGenId(), name, specialty:spec, description:desc, excused: false });
     showToast('✅ تمت إضافة الطبيب');
   }
-  marjSaveDoctors(doctors);
+  await marjSaveDoctors(doctors);
   resetDoctorForm();
-  renderDoctorsList();
-  if (currentTab === 'schedules') renderCurrentDay();
+  await renderDoctorsList(true);
+  if (currentTab === 'schedules') await renderCurrentDay();
 }
 
-function editDoctor(id) {
-  const doc = marjGetDoctorById(id);
+async function editDoctor(id) {
+  const doc = await marjGetDoctorById(id);
   if (!doc) return;
   document.getElementById('doc-id').value = id;
   document.getElementById('doc-name').value = doc.name;
@@ -320,29 +368,31 @@ function editDoctor(id) {
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
-function toggleExcused(id) {
-  const doctors = marjGetDoctors();
+async function toggleExcused(id) {
+  let doctors = await marjGetDoctors();
   const idx = doctors.findIndex(d => d.id === id);
   if (idx === -1) return;
   doctors[idx].excused = !doctors[idx].excused;
-  marjSaveDoctors(doctors);
-  renderDoctorsList();
-  if (currentTab === 'schedules') renderCurrentDay();
+  await marjSaveDoctors(doctors);
+  await renderDoctorsList(true);
+  if (currentTab === 'schedules') await renderCurrentDay();
   showToast(doctors[idx].excused ? '🔕 تم تعيين الطبيب كمعتذر' : '✅ تم إلغاء اعتذار الطبيب');
 }
 
-function deleteDoctor(id) {
+async function deleteDoctor(id) {
   if (!confirm('هل أنت متأكد من حذف هذا الطبيب؟\nسيُزال من جميع الجداول أيضاً.')) return;
-  marjSaveDoctors(marjGetDoctors().filter(d => d.id !== id));
-  const schedules = marjGetSchedules();
+  const currentDocs = await marjGetDoctors();
+  await marjSaveDoctors(currentDocs.filter(d => d.id !== id));
+  
+  const schedules = await marjGetSchedules();
   for (const day of MARJ_DAYS) {
     (schedules[day] || []).forEach(row => {
       ['morning','evening','night'].forEach(p => { if (row[p] === id) row[p] = null; });
     });
   }
-  marjSaveSchedules(schedules);
-  renderDoctorsList();
-  if (currentTab === 'schedules') renderCurrentDay();
+  await marjSaveSchedules(schedules);
+  await renderDoctorsList(true);
+  if (currentTab === 'schedules') await renderCurrentDay();
   showToast('🗑️ تم حذف الطبيب');
 }
 
@@ -369,7 +419,7 @@ function renderDayTabs() {
     </button>`).join('');
 }
 
-function selectDay(day) {
+async function selectDay(day) {
   currentDay = day;
   MARJ_DAYS.forEach(d => {
     const btn = document.getElementById('daytab-'+d);
@@ -377,20 +427,22 @@ function selectDay(day) {
       ' shrink-0 px-5 py-3 rounded-xl text-sm font-bold transition-all whitespace-nowrap';
   });
   document.getElementById('sched-day-title').textContent = 'جدول يوم ' + MARJ_DAY_NAMES[day].ar;
-  renderCurrentDay();
+  await renderCurrentDay();
 }
 
-function renderCurrentDay() {
-  const rows = (marjGetSchedules()[currentDay] || []);
+async function renderCurrentDay() {
+  const allSchedules = await marjGetSchedules();
+  const rows = (allSchedules[currentDay] || []);
+  const doctors = await marjGetDoctors();
+  
   const container = document.getElementById('schedule-rows');
   const empty     = document.getElementById('schedule-empty');
   if (rows.length === 0) { container.innerHTML = ''; empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
-  container.innerHTML = rows.map((row, idx) => buildRowHTML(row, idx, rows.length)).join('');
+  container.innerHTML = rows.map((row, idx) => buildRowHTML(row, idx, rows.length, doctors)).join('');
 }
 
-function buildRowHTML(row, idx, total) {
-  const doctors = marjGetDoctors();
+function buildRowHTML(row, idx, total, doctors) {
   const opts = `<option value="">— فارغ —</option>` +
     doctors.map(d => `<option value="${d.id}">${esc(d.name)} (${esc(d.specialty)})</option>`).join('');
 
@@ -488,44 +540,44 @@ function buildRowHTML(row, idx, total) {
   </div>`;
 }
 
-function updateRowField(rowId, field, value) {
-  const schedules = marjGetSchedules();
+async function updateRowField(rowId, field, value) {
+  let schedules = await marjGetSchedules();
   const row = (schedules[currentDay]||[]).find(r => r.id === rowId);
-  if (row) { row[field] = value; marjSaveSchedules(schedules); showToast('💾 تم الحفظ'); }
+  if (row) { row[field] = value; await marjSaveSchedules(schedules); showToast('💾 تم الحفظ'); }
 }
 
-function addScheduleRow() {
-  const schedules = marjGetSchedules();
+async function addScheduleRow() {
+  let schedules = await marjGetSchedules();
   if (!schedules[currentDay]) schedules[currentDay] = [];
   schedules[currentDay].push({
     id: marjGenId(), clinicName:'عيادة جديدة',
     icon:'stethoscope', iconColor:'blue',
     morning:null, evening:null, night:null
   });
-  marjSaveSchedules(schedules);
-  renderCurrentDay();
+  await marjSaveSchedules(schedules);
+  await renderCurrentDay();
   showToast('✅ تمت إضافة صف جديد');
 }
 
-function deleteRow(rowId) {
+async function deleteRow(rowId) {
   if (!confirm('هل تريد حذف هذا الصف؟')) return;
-  const schedules = marjGetSchedules();
+  let schedules = await marjGetSchedules();
   schedules[currentDay] = (schedules[currentDay]||[]).filter(r => r.id !== rowId);
-  marjSaveSchedules(schedules);
-  renderCurrentDay();
+  await marjSaveSchedules(schedules);
+  await renderCurrentDay();
   showToast('🗑️ تم الحذف');
 }
 
-function moveRow(rowId, dir) {
-  const schedules = marjGetSchedules();
+async function moveRow(rowId, dir) {
+  let schedules = await marjGetSchedules();
   const rows = schedules[currentDay]||[];
   const idx = rows.findIndex(r => r.id === rowId);
   const ni = idx + dir;
   if (ni < 0 || ni >= rows.length) return;
   [rows[idx], rows[ni]] = [rows[ni], rows[idx]];
   schedules[currentDay] = rows;
-  marjSaveSchedules(schedules);
-  renderCurrentDay();
+  await marjSaveSchedules(schedules);
+  await renderCurrentDay();
 }
 
 // ===== Helpers =====

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
+  <link rel="icon" type="image/png" href="images/Favico.png">
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>جداول العيادات — مستشفى المرج التخصصي</title>
@@ -8,14 +9,16 @@
   <script src="tailwind-config.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Work+Sans:wght@300;400;500;600&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="db.js"></script>
   <style>
     .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
-    body { font-family:'Tajawal','Work Sans',sans-serif; }
+    body { font-family:'Tajawal','Work Sans',sans-serif; overflow-x: hidden; width: 100%; position: relative; }
+    html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
     h1,h2,h3 { font-family:'Tajawal','Plus Jakarta Sans',sans-serif; }
     .no-scrollbar::-webkit-scrollbar { display:none; }
     .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
-    html { scroll-behavior: smooth; }
   </style>
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
@@ -29,7 +32,7 @@
       <span class="text-lg md:text-xl font-bold text-gray-900 font-['Tajawal']">مستشفى المرج التخصصي</span>
     </div>
     <div class="hidden lg:flex items-center gap-8 font-['Tajawal'] font-bold text-sm">
-      <a class="text-gray-600 hover:text-[#A31D1D] transition" href="main.html">الرئيسية</a>
+      <a class="text-gray-600 hover:text-[#A31D1D] transition" href="index.html">الرئيسية</a>
       <a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1" href="schedules.html">الجداول</a>
       <a class="text-gray-600 hover:text-[#A31D1D] transition" href="doctors.html">الأطباء</a>
     </div>
@@ -41,7 +44,7 @@
   <!-- شريط التنقل - للموبايل فقط | 3 روابط نصية فقط -->
   <div class="lg:hidden border-t ">
     <div class="flex items-center justify-around px-4 py-2.5 font-['Tajawal'] font-bold text-sm">
-      <a href="main.html"
+      <a href="index.html"
         class="px-5 py-0.2 rounded-lg text-gray-600 hover:text-[#A31D1D] transition-all duration-200">
         الرئيسية
       </a>
@@ -60,8 +63,14 @@
 <main class="min-h-screen">
 
   <!-- Hero -->
-  <section class="bg-surface py-8 md:py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+  <section class="relative bg-surface-container-low py-12 md:py-16 overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute inset-0 opacity-5 pointer-events-none">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full blur-[120px]"></div>
+      <div class="absolute bottom-0 left-0 w-96 h-96 bg-tertiary rounded-full blur-[120px]"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 relative">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-r-4 border-primary-container pr-4 md:pr-6 mb-8 md:mb-12" data-aos="fade-right">
         <div>
           <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight leading-tight">
@@ -172,6 +181,8 @@
 <script>
 let selectedDay = 'saturday';
 let currentPage = 1;
+let allDoctors = [];     // لتخزين الأطباء
+let allSchedules = {};   // لتخزين الجداول
 
 // Parse URL parameter for day
 const urlParams = new URLSearchParams(window.location.search);
@@ -180,7 +191,6 @@ if (dayParam && MARJ_DAYS.includes(dayParam)) {
   selectedDay = dayParam;
 }
 
-// Init AOS
 AOS.init({
   duration: 800,
   easing: 'ease-in-out',
@@ -200,12 +210,10 @@ function renderDayTabs() {
     </button>`).join('');
 }
 
-function selectDay(day) {
+async function selectDay(day) {
   selectedDay = day;
   renderDayTabs();
-  renderSchedule(day);
-  
-  // Refresh AOS to re-trigger table animation if hidden/shown
+  await renderSchedule(day);
   AOS.refresh();
 }
 
@@ -223,19 +231,25 @@ function showPage(n) {
       btn.className = 'w-9 h-9 md:w-12 md:h-12 shrink-0 rounded-full font-bold flex items-center justify-center bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-all duration-200';
     }
   });
-
   AOS.refresh();
 }
 
 // ===== Render Schedule =====
-function renderSchedule(day) {
-  const allRows = (marjGetSchedules()[day] || []);
+async function renderSchedule(day) {
+  // جلب أحدث البيانات من Supabase
+  allSchedules = await marjGetSchedules();
+  allDoctors = await marjGetDoctors();
+  
+  // إنشاء Map للوصول السريع للطبيب بواسطة id
+  const doctorMap = new Map();
+  allDoctors.forEach(d => doctorMap.set(d.id, d));
+  
+  const allRows = allSchedules[day] || [];
   const empty   = document.getElementById('schedule-empty');
   const page1   = document.getElementById('page-1');
   const page2   = document.getElementById('page-2');
   const paging  = document.getElementById('pagination');
 
-  // Filter rows for each page
   const rowsDay = allRows.filter(r => r.morning || r.evening);
   const rowsNight = allRows.filter(r => r.night);
 
@@ -250,32 +264,24 @@ function renderSchedule(day) {
   empty.classList.add('hidden');
   paging.classList.remove('hidden');
 
-  // Auto-switch page if current is empty
   if (currentPage === 1 && rowsDay.length === 0) currentPage = 2;
   if (currentPage === 2 && rowsNight.length === 0) currentPage = 1;
-
-  showPage(currentPage);  // restore current page visibility
+  showPage(currentPage);
 
   // ---- PAGE 1: صباحية + مسائية ----
   if (rowsDay.length === 0) {
-    document.getElementById('tbody-day').innerHTML = `
-      <tr>
-        <td colspan="3" class="p-12 text-center text-gray-400">
-          <span class="material-symbols-outlined text-4xl block mb-2">wb_sunny</span>
-          <p class="font-bold">لا توجد عيادات صباحية أو مسائية اليوم</p>
-        </td>
-      </tr>`;
+    document.getElementById('tbody-day').innerHTML = `<tr><td colspan="3" class="p-12 text-center text-gray-400"><span class="material-symbols-outlined text-4xl block mb-2">wb_sunny</span><p class="font-bold">لا توجد عيادات صباحية أو مسائية اليوم</p></td></tr>`;
   } else {
     document.getElementById('tbody-day').innerHTML = rowsDay.map((row, idx) => {
       const cls      = marjGetIconClasses(row.iconColor);
       const isAlt    = idx % 2 !== 0;
-      const mDoc     = row.morning ? marjGetDoctorById(row.morning) : null;
-      const eDoc     = row.evening ? marjGetDoctorById(row.evening) : null;
+      const mDoc     = row.morning ? doctorMap.get(row.morning) : null;
+      const eDoc     = row.evening ? doctorMap.get(row.evening) : null;
       const mName    = mDoc ? mDoc.name : null;
       const eName    = eDoc ? eDoc.name : null;
       const mExcused = !!(mDoc && mDoc.excused);
       const eExcused = !!(eDoc && eDoc.excused);
-      const excusedBadge = '<span class="inline-flex items-center gap-1 bg-gray-100 text-gray-400 text-[11px] font-bold px-2 py-0.5 rounded-full mt-1"><span class="material-symbols-outlined text-[11px]">do_not_disturb</span>\u0645\u0639\u062a\u0630\u0631</span>';
+      const excusedBadge = '<span class="inline-flex items-center gap-1 bg-gray-100 text-gray-400 text-[11px] font-bold px-2 py-0.5 rounded-full mt-1"><span class="material-symbols-outlined text-[11px]">do_not_disturb</span>معتذر</span>';
       return `
       <tr class="${isAlt ? 'bg-surface-container-low/30' : ''} hover:bg-surface transition-colors">
         <td class="p-4 md:p-6">
@@ -285,34 +291,28 @@ function renderSchedule(day) {
             </div>
             <div class="font-bold text-on-surface text-sm sm:text-base md:text-lg">${esc(row.clinicName)}</div>
           </div>
-        </td>
+         </td>
         <td class="p-4 md:p-6 text-center">
-          ${mName ? `<div class="font-bold ${mExcused ? 'text-gray-400 line-through' : 'text-primary'}">${esc(mName)}</div>${mExcused ? excusedBadge : ''}` : '<div class="font-bold text-gray-300">\u2014</div>'}
-        </td>
+          ${mName ? `<div class="font-bold ${mExcused ? 'text-gray-400 line-through' : 'text-primary'}">${esc(mName)}</div>${mExcused ? excusedBadge : ''}` : '<div class="font-bold text-gray-300">—</div>'}
+         </td>
         <td class="p-4 md:p-6 text-center">
-          ${eName ? `<div class="font-bold ${eExcused ? 'text-gray-400 line-through' : 'text-primary'}">${esc(eName)}</div>${eExcused ? excusedBadge : ''}` : '<div class="font-bold text-gray-300">\u2014</div>'}
-        </td>
-      </tr>`;
+          ${eName ? `<div class="font-bold ${eExcused ? 'text-gray-400 line-through' : 'text-primary'}">${esc(eName)}</div>${eExcused ? excusedBadge : ''}` : '<div class="font-bold text-gray-300">—</div>'}
+         </td>
+       </tr>`;
     }).join('');
   }
 
   // ---- PAGE 2: ليلية فقط ----
   if (rowsNight.length === 0) {
-    document.getElementById('tbody-night').innerHTML = `
-      <tr>
-        <td colspan="2" class="p-12 text-center text-gray-400">
-          <span class="material-symbols-outlined text-4xl block mb-2">nights_stay</span>
-          <p class="font-bold">لا توجد عيادات ليلية اليوم</p>
-        </td>
-      </tr>`;
+    document.getElementById('tbody-night').innerHTML = `<tr><td colspan="2" class="p-12 text-center text-gray-400"><span class="material-symbols-outlined text-4xl block mb-2">nights_stay</span><p class="font-bold">لا توجد عيادات ليلية اليوم</p></td></tr>`;
   } else {
     document.getElementById('tbody-night').innerHTML = rowsNight.map((row, idx) => {
       const cls      = marjGetIconClasses(row.iconColor);
       const isAlt    = idx % 2 !== 0;
-      const nDoc     = row.night ? marjGetDoctorById(row.night) : null;
+      const nDoc     = row.night ? doctorMap.get(row.night) : null;
       const nName    = nDoc ? nDoc.name : null;
       const nExcused = !!(nDoc && nDoc.excused);
-      const excusedBadge = '<span class="inline-flex items-center gap-1 bg-gray-100 text-gray-400 text-[11px] font-bold px-2 py-0.5 rounded-full mt-1"><span class="material-symbols-outlined text-[11px]">do_not_disturb</span>\u0645\u0639\u062a\u0630\u0631</span>';
+      const excusedBadge = '<span class="inline-flex items-center gap-1 bg-gray-100 text-gray-400 text-[11px] font-bold px-2 py-0.5 rounded-full mt-1"><span class="material-symbols-outlined text-[11px]">do_not_disturb</span>معتذر</span>';
       return `
       <tr class="${isAlt ? 'bg-surface-container-low/30' : ''} hover:bg-surface transition-colors">
         <td class="p-4 md:p-6">
@@ -322,11 +322,11 @@ function renderSchedule(day) {
             </div>
             <div class="font-bold text-on-surface text-sm sm:text-base md:text-lg">${esc(row.clinicName)}</div>
           </div>
-        </td>
+         </td>
         <td class="p-4 md:p-6 text-center">
-          ${nName ? `<div class="font-bold ${nExcused ? 'text-gray-400 line-through' : 'text-primary'}">${esc(nName)}</div>${nExcused ? excusedBadge : ''}` : '<div class="font-bold text-gray-300">\u2014</div>'}
-        </td>
-      </tr>`;
+          ${nName ? `<div class="font-bold ${nExcused ? 'text-gray-400 line-through' : 'text-primary'}">${esc(nName)}</div>${nExcused ? excusedBadge : ''}` : '<div class="font-bold text-gray-300">—</div>'}
+         </td>
+       </tr>`;
     }).join('');
   }
 }
@@ -336,9 +336,11 @@ function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// Init
-renderDayTabs();
-renderSchedule(selectedDay);
+// بدء التشغيل (باستخدام async IIFE)
+(async function() {
+  await renderSchedule(selectedDay);
+  renderDayTabs();
+})();
 </script>
 </body>
 </html>

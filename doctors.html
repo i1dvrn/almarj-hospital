@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
+  <link rel="icon" type="image/png" href="images/Favico.png">
+
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>الأطباء — مستشفى المرج التخصصي</title>
@@ -8,6 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="tailwind-config.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="db.js"></script>
   <style>
     .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; vertical-align:middle; }
@@ -74,7 +78,7 @@
       <span class="text-lg md:text-xl font-bold text-gray-900 font-['Tajawal']">مستشفى المرج التخصصي</span>
     </div>
     <div class="hidden lg:flex items-center gap-8 font-['Tajawal'] font-bold text-sm">
-      <a class="text-gray-600 hover:text-[#A31D1D] transition" href="main.html">الرئيسية</a>
+      <a class="text-gray-600 hover:text-[#A31D1D] transition" href="index.html">الرئيسية</a>
       <a class="text-gray-600 hover:text-[#A31D1D] transition" href="schedules.html">الجداول</a>
       <a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1" href="doctors.html">الأطباء</a>
     </div>
@@ -86,7 +90,7 @@
   <!-- شريط التنقل - للموبايل فقط | 3 روابط نصية فقط -->
   <div class="lg:hidden border-t">
     <div class="flex items-center justify-around px-4 py-2.5 font-['Tajawal'] font-bold text-sm">
-      <a href="main.html"
+      <a href="index.html"
         class="px-5 py-0.2 rounded-lg text-gray-600 hover:text-[#A31D1D] transition-all duration-200">
         الرئيسية
       </a>
@@ -121,7 +125,7 @@
       </div>
     </div>
   </section>
-
+<Nav>
   <!-- Filters -->
   <section class="sticky top-20 z-40 bg-surface/80 backdrop-blur-sm border-b border-outline-variant/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-6 overflow-x-auto no-scrollbar">
@@ -130,7 +134,7 @@
       </div>
     </div>
   </section>
-
+</Nav>
   <!-- Doctors Grid -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
     <div id="doctors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
@@ -151,7 +155,7 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-center">
     <div class="p-6 md:p-8 rounded-2xl bg-tertiary-fixed text-on-tertiary-fixed-variant" data-aos="zoom-in" data-aos-delay="0">
       <span class="material-symbols-outlined text-4xl mb-4 block">groups</span>
-      <h4 class="text-3xl font-extrabold mb-2">50+</h4>
+      <h4 class="text-3xl font-extrabold mb-2">80+</h4>
       <p class="text-sm font-bold uppercase tracking-widest opacity-80">طبيب متخصص</p>
     </div>
     <div class="p-6 md:p-8 rounded-2xl bg-secondary-fixed text-on-secondary-fixed-variant" data-aos="zoom-in" data-aos-delay="200">
@@ -219,22 +223,27 @@ const PERIOD_BADGE = {
 };
 
 let activeFilter = 'all';
+let allDoctors = [];
+let allSchedules = {};
 
-function init() {
+async function init() {
   AOS.init({
     duration: 800,
     easing: 'ease-in-out',
     once: true
   });
 
-  const doctors = marjGetDoctors();
-  if (doctors.length === 0) {
+  // جلب البيانات من Supabase بشكل غير متزامن
+  allDoctors = await marjGetDoctors();
+  allSchedules = await marjGetSchedules();
+
+  if (allDoctors.length === 0) {
     document.getElementById('no-doctors').classList.remove('hidden');
     document.getElementById('filter-bar').style.display = 'none';
     return;
   }
-  renderFilters(doctors);
-  renderDoctors(doctors);
+  renderFilters(allDoctors);
+  renderDoctors(allDoctors);
 }
 
 function renderFilters(doctors) {
@@ -266,8 +275,6 @@ function filterBy(specialty) {
     if (match) visible++;
   });
   document.getElementById('doctors-empty').classList.toggle('hidden', visible > 0);
-  
-  // Refresh AOS after filtering
   AOS.refresh();
 }
 
@@ -277,17 +284,23 @@ function renderDoctors(doctors) {
 }
 
 function buildDocCard(d, idx) {
-  const schedule = marjGetDoctorSchedule(d.id);
+  // استخراج مواعيد الطبيب من allSchedules المجلوبة مسبقاً
+  const doctorSchedule = [];
+  for (const day in allSchedules) {
+    for (const row of allSchedules[day] || []) {
+      if (row.morning === d.id) doctorSchedule.push({ day, dayName: MARJ_DAY_NAMES[day]?.ar || day, period: 'morning' });
+      if (row.evening === d.id) doctorSchedule.push({ day, dayName: MARJ_DAY_NAMES[day]?.ar || day, period: 'evening' });
+      if (row.night === d.id) doctorSchedule.push({ day, dayName: MARJ_DAY_NAMES[day]?.ar || day, period: 'night' });
+    }
+  }
 
   let schedHTML = '';
-  if (schedule.length > 0) {
-    // group by day
+  if (doctorSchedule.length > 0) {
     const byDay = {};
-    schedule.forEach(s => {
+    doctorSchedule.forEach(s => {
       if (!byDay[s.day]) byDay[s.day] = { dayName: s.dayName, periods: [] };
       byDay[s.day].periods.push(s);
     });
-
     schedHTML = `
       <div class="space-y-3 mb-6">
         <h4 class="text-xs font-bold text-on-surface uppercase tracking-widest border-b border-surface-container-low pb-2 flex items-center gap-1">

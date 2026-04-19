@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>أداة إعادة الترتيب الشاملة</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: sans-serif; padding: 40px; text-align: center; background: #f4f4f9; }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto; }
+        button { background: #A31D1D; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        #status { margin-top: 20px; font-weight: bold; }
+        .log { text-align: right; font-size: 12px; margin-top: 20px; color: #666; max-height: 200px; overflow-y: auto; background: #eee; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>إعادة ترتيب العيادات</h1>
+        <p>سيتم تطبيق الترتيب الجديد على كافة أيام الأسبوع في قاعدة البيانات.</p>
+        <button id="startBtn">بدء عملية الترتيب الشامل</button>
+        <div id="status">جاهز للتنفيذ</div>
+        <div id="log" class="log"></div>
+    </div>
+
+    <script>
+        const MASTER_ORDER = [
+            "عيادة الباطنة (1)",
+            "عيادة الباطنة (2)",
+            "عيادة الجراحة (1)",
+            "عيادة الجراحة (2)",
+            "عيادة العظام (1)",
+            "عيادة العظام (2)",
+            "نساء وولادة (1)",
+            "نساء وولادة (2)",
+            "عيادة العيون",
+            "عيادة الجلدية",
+            "الأشعة والتصوير التلفزيوني",
+            "أذن وأنف وحنجرة",
+            "عيادة المسالك",
+            "عيادة القلب والإيكو",
+            "قلب وإيكو أطفال",
+            "باطنة مخ وأعصاب",
+            "جراحة مخ وأعصاب",
+            "عيادة الأطفال",
+            "عيادة الأمراض النفسية",
+            "نساء وولادة - مناوبة",
+            "عيادة الباطنة - مناوبة",
+            "عيادة الأطفال - مناوبة",
+            "عيادة العظام - مناوبة",
+            "جراحة عامة - مناوبة"
+        ];
+
+        const MARJ_SUPABASE_URL = 'https://hbouyznuyvzjcevsalis.supabase.co';
+        const MARJ_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhib3V5em51eXZ6amNldnNhbGlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNDQxNzksImV4cCI6MjA5MTcyMDE3OX0.MpjZ1CrorDYRE4EL1SxWQw7jM5ukuL4bwrA5NpDaq74';
+        const _supabase = supabase.createClient(MARJ_SUPABASE_URL, MARJ_SUPABASE_KEY);
+
+        const log = (msg) => {
+            const l = document.getElementById('log');
+            l.innerHTML += `<div>${msg}</div>`;
+            l.scrollTop = l.scrollHeight;
+        };
+
+        const setStatus = (msg) => document.getElementById('status').textContent = msg;
+
+        document.getElementById('startBtn').addEventListener('click', async () => {
+            document.getElementById('startBtn').disabled = true;
+            try {
+                setStatus('⏳ جاري جلب البيانات...');
+                const { data: schedules, error: getErr } = await _supabase.from('schedules').select('*');
+                if (getErr) throw getErr;
+
+                const days = ['saturday','sunday','monday','tuesday','wednesday','thursday','friday'];
+                
+                setStatus('🔄 جاري معالجة الترتيب لكل يوم...');
+                
+                for (const day of days) {
+                    log(`معالجة يوم: ${day}...`);
+                    const dayRows = schedules.filter(r => r.day === day);
+                    
+                    // الترتيب بناءً على القائمة المرجعية
+                    dayRows.sort((a, b) => {
+                        let indexA = MASTER_ORDER.indexOf(a.clinic_name);
+                        let indexB = MASTER_ORDER.indexOf(b.clinic_name);
+                        
+                        if (indexA === -1) indexA = 999;
+                        if (indexB === -1) indexB = 999;
+                        
+                        return indexA - indexB;
+                    });
+
+                    log(`تم الترتيب لـ ${dayRows.length} عيادة في يوم ${day}`);
+
+                    // حذف وإعادة إدخال لليوم الحالي (Surgical Update)
+                    log(`حفظ البيانات ليوم ${day}...`);
+                    await _supabase.from('schedules').delete().eq('day', day);
+                    
+                    if (dayRows.length > 0) {
+                        // إزالة الحقول التلقائية لإعادة الإنشاء
+                        const cleanedRows = dayRows.map((r, i) => ({
+                            id: `id_${Date.now()}_${day}_${i}_${Math.random().toString(36).substr(2, 5)}`,
+                            day: r.day,
+                            clinic_name: r.clinic_name,
+                            morning: r.morning,
+                            evening: r.evening,
+                            night: r.night
+                        }));
+                        
+                        const { error: insErr } = await _supabase.from('schedules').insert(cleanedRows);
+                        if (insErr) throw insErr;
+                    }
+                }
+
+                setStatus('✅ تم الانتهاء بنجاح!');
+                log('تم تحديث كافة الجداول بنجاح.');
+            } catch (err) {
+                console.error(err);
+                setStatus('❌ حدث خطأ: ' + err.message);
+                log('خطأ: ' + err.message);
+            }
+        });
+    </script>
+</body>
+</html>

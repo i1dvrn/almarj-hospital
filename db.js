@@ -1,6 +1,16 @@
 // ===================================================
-//   مستشفى المرج التخصصي — قاعدة البيانات المشتركة
+//   مستشفى المرج التخصصي — قاعدة البيانات (Supabase)
 // ===================================================
+
+const MARJ_SUPABASE_URL  = 'https://hbouyznuyvzjcevsalis.supabase.co';
+const MARJ_SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhib3V5em51eXZ6amNldnNhbGlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNDQxNzksImV4cCI6MjA5MTcyMDE3OX0.MpjZ1CrorDYRE4EL1SxWQw7jM5ukuL4bwrA5NpDaq74';
+
+// تهيئة Supabase — يجب أن يكون <script> الـ SDK محمّلاً قبل هذا الملف
+const _supabase = window.supabase.createClient(MARJ_SUPABASE_URL, MARJ_SUPABASE_KEY);
+
+// ─────────────────────────────────────────────────
+//   ثوابت الأيام والفترات والألوان
+// ─────────────────────────────────────────────────
 
 const MARJ_DAYS = ['saturday','sunday','monday','tuesday','wednesday','thursday','friday'];
 
@@ -14,7 +24,6 @@ const MARJ_DAY_NAMES = {
   friday:    { ar: 'الجمعة',   en: 'Friday'    }
 };
 
-// الفترات الثلاث
 const MARJ_PERIODS = [
   { key: 'morning', label: 'صباحية', labelShort: 'صباح', icon: 'wb_sunny',    color: 'amber'  },
   { key: 'evening', label: 'مسائية', labelShort: 'مساء', icon: 'wb_twilight', color: 'indigo' },
@@ -55,54 +64,202 @@ const MARJ_COLORS = {
   teal:   { bg: 'bg-teal-50',   text: 'text-teal-700'   }
 };
 
-function marjGetDoctors() {
-  try { return JSON.parse(localStorage.getItem('marj_doctors')) || []; }
-  catch { return []; }
+// ─────────────────────────────────────────────────
+//   دوال الأطباء
+// ─────────────────────────────────────────────────
+
+async function marjGetDoctors() {
+  const { data, error } = await _supabase.from('doctors').select('*').order('name');
+  if (error) { console.error('marjGetDoctors:', error.message); return []; }
+  return data || [];
 }
-function marjSaveDoctors(doctors) {
-  localStorage.setItem('marj_doctors', JSON.stringify(doctors));
+
+async function marjGetDoctorById(id) {
+  const { data, error } = await _supabase.from('doctors').select('*').eq('id', id).single();
+  if (error) return null;
+  return data;
 }
-function marjGetSchedules() {
-  try {
-    const raw = localStorage.getItem('marj_schedules');
-    if (raw) return JSON.parse(raw);
-  } catch {}
-  return MARJ_DAYS.reduce((a, d) => { a[d] = []; return a; }, {});
-}
-function marjSaveSchedules(schedules) {
-  localStorage.setItem('marj_schedules', JSON.stringify(schedules));
-}
-function marjGetDoctorById(id) {
-  return marjGetDoctors().find(d => d.id === id) || null;
-}
-function marjGetDoctorName(id) {
+
+async function marjGetDoctorName(id) {
   if (!id) return null;
-  const doc = marjGetDoctorById(id);
+  const doc = await marjGetDoctorById(id);
   return doc ? doc.name : null;
 }
-// يُعيد مواعيد الطبيب من الجداول
-function marjGetDoctorSchedule(doctorId) {
-  const schedules = marjGetSchedules();
-  const result = [];
+
+// إضافة طبيب جديد
+async function marjAddDoctor(doctor) {
+  doctor.id = doctor.id || marjGenId();
+  const { data, error } = await _supabase.from('doctors').insert([doctor]).select().single();
+  if (error) { console.error('marjAddDoctor:', error.message); return null; }
+  return data;
+}
+
+// تعديل طبيب موجود
+async function marjUpdateDoctor(id, updates) {
+  const { data, error } = await _supabase.from('doctors').update(updates).eq('id', id).select().single();
+  if (error) { console.error('marjUpdateDoctor:', error.message); return null; }
+  return data;
+}
+
+// حذف طبيب
+async function marjDeleteDoctor(id) {
+  const { error } = await _supabase.from('doctors').delete().eq('id', id);
+  if (error) { console.error('marjDeleteDoctor:', error.message); return false; }
+  return true;
+}
+
+// ─────────────────────────────────────────────────
+//   دوال الجداول
+// ─────────────────────────────────────────────────
+
+// يُعيد الجداول مرتبة حسب الـ id لضمان ثبات الترتيب
+async function marjGetSchedules() {
+  const { data, error } = await _supabase.from('schedules').select('*').order('row_index');
+  if (error) { console.error('marjGetSchedules:', error.message); }
+
+  // تحويل الصفوف المسطّحة إلى الهيكل القديم
+  const result = MARJ_DAYS.reduce((a, d) => { a[d] = []; return a; }, {});
+  for (const row of (data || [])) {
+    if (result[row.day] !== undefined) {
+      result[row.day].push({
+        id:          row.id,
+        clinicName:  row.clinic_name,
+        morning:     row.morning || null,
+        evening:     row.evening || null,
+        night:       row.night   || null
+      });
+    }
+  }
+  return result;
+}
+
+// إضافة صف جديد في الجدول
+async function marjAddScheduleRow(day, row) {
+  const record = {
+    id:          row.id || marjGenId(),
+    day:         day,
+    clinic_name: row.clinicName || '',
+    morning:     row.morning    || null,
+    evening:     row.evening    || null,
+    night:       row.night      || null
+  };
+  const { data, error } = await _supabase.from('schedules').insert([record]).select().single();
+  if (error) { console.error('marjAddScheduleRow:', error.message); return null; }
+  return data;
+}
+
+// تعديل صف موجود
+async function marjUpdateScheduleRow(id, updates) {
+  const record = {};
+  if (updates.clinicName !== undefined) record.clinic_name = updates.clinicName;
+  if (updates.morning    !== undefined) record.morning     = updates.morning;
+  if (updates.evening    !== undefined) record.evening     = updates.evening;
+  if (updates.night      !== undefined) record.night       = updates.night;
+
+  const { data, error } = await _supabase.from('schedules').update(record).eq('id', id).select().single();
+  if (error) { console.error('marjUpdateScheduleRow:', error.message); return null; }
+  return data;
+}
+
+// حذف صف
+async function marjDeleteScheduleRow(id) {
+  const { error } = await _supabase.from('schedules').delete().eq('id', id);
+  if (error) { console.error('marjDeleteScheduleRow:', error.message); return false; }
+  return true;
+}
+
+// حفظ جدول يوم واحد فقط (أسرع وأكثر أماناً ويحافظ على ترتيب الأيام الأخرى)
+async function marjSaveDaySchedule(day, rows) {
+  // حذف صفوف اليوم المعني فقط
+  await _supabase.from('schedules').delete().eq('day', day);
+
+  const newRows = rows.map(r => ({
+    id:          r.id || marjGenId(),
+    day:         day,
+    clinic_name: r.clinicName || '',
+    morning:     r.morning    || null,
+    evening:     r.evening    || null,
+    night:       r.night      || null
+  }));
+
+  if (newRows.length > 0) {
+    const { error } = await _supabase.from('schedules').insert(newRows);
+    if (error) { console.error('marjSaveDaySchedule:', error.message); return false; }
+  }
+  return true;
+}
+
+// حفظ كامل الجدول (يمسح القديم ويكتب الجديد) — للتوافق مع الكود القديم
+async function marjSaveSchedules(schedules) {
+  // حذف كل الصفوف القديمة
+  await _supabase.from('schedules').delete().neq('id', '___none___');
+
+  const rows = [];
   for (const day of MARJ_DAYS) {
     for (const row of (schedules[day] || [])) {
-      for (const p of MARJ_PERIODS) {
-        if (row[p.key] === doctorId) {
-          result.push({
-            day, dayName: MARJ_DAY_NAMES[day].ar,
-            period: p.key, periodLabel: p.labelShort,
-            periodIcon: p.icon, periodColor: p.color,
-            clinicName: row.clinicName
-          });
-        }
+      rows.push({
+        id:          row.id || marjGenId(),
+        day:         day,
+        clinic_name: row.clinicName || '',
+        morning:     row.morning    || null,
+        evening:     row.evening    || null,
+        night:       row.night      || null
+      });
+    }
+  }
+  if (rows.length > 0) {
+    const { error } = await _supabase.from('schedules').insert(rows);
+    if (error) { console.error('marjSaveSchedules:', error.message); return false; }
+  }
+  return true;
+}
+
+// حفظ كامل قائمة الأطباء (للتوافق مع الكود القديم)
+async function marjSaveDoctors(doctors) {
+  await _supabase.from('doctors').delete().neq('id', '___none___');
+  if (doctors.length > 0) {
+    const { error } = await _supabase.from('doctors').insert(doctors);
+    if (error) { console.error('marjSaveDoctors:', error.message); return false; }
+  }
+  return true;
+}
+
+// ─────────────────────────────────────────────────
+//   دوال مساعدة
+// ─────────────────────────────────────────────────
+
+// يُعيد مواعيد طبيب معين من كل الجداول
+async function marjGetDoctorSchedule(doctorId) {
+  const { data, error } = await _supabase
+    .from('schedules')
+    .select('*')
+    .or(`morning.eq.${doctorId},evening.eq.${doctorId},night.eq.${doctorId}`);
+
+  if (error) { console.error('marjGetDoctorSchedule:', error.message); return []; }
+
+  const result = [];
+  for (const row of (data || [])) {
+    for (const p of MARJ_PERIODS) {
+      if (row[p.key] === doctorId) {
+        result.push({
+          day:          row.day,
+          dayName:      MARJ_DAY_NAMES[row.day]?.ar || row.day,
+          period:       p.key,
+          periodLabel:  p.labelShort,
+          periodIcon:   p.icon,
+          periodColor:  p.color,
+          clinicName:   row.clinic_name
+        });
       }
     }
   }
   return result;
 }
+
 function marjGetIconClasses(color) {
   return MARJ_COLORS[color] || MARJ_COLORS['blue'];
 }
+
 function marjGenId() {
   return 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
 }

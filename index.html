@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <link rel="icon" type="image/png" href="images/Favico.png" >
+
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>مستشفى المرج التخصصي</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Tajawal:wght@300;400;500;700;800&amp;family=Work+Sans:wght@300;400;500;600&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="tailwind-config.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="db.js"></script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+    body {
+      font-family: 'Tajawal', sans-serif;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    [data-aos] {
+      pointer-events: none;
+    }
+    .aos-animate {
+      pointer-events: auto;
+    }
+    #contact-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    #contact-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #contact-modal {
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px 28px 24px;
+      width: min(90vw, 380px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+      transform: translateY(24px) scale(0.96);
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+      text-align: center;
+      position: relative;
+    }
+    #contact-modal-overlay.open #contact-modal {
+      transform: translateY(0) scale(1);
+    }
+    .modal-phone-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      background: #f5f5f5;
+      border: 2px solid transparent;
+      font-size: 1.2rem;
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 700;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: background 0.18s, border-color 0.18s, transform 0.12s;
+      letter-spacing: 0.04em;
+      direction: ltr;
+    }
+    .modal-phone-btn:hover {
+      background: #fff3f3;
+      border-color: #A31D1D;
+      transform: scale(1.02);
+    }
+    .modal-phone-btn.copied {
+      background: #ecfdf5;
+      border-color: #10b981;
+      color: #065f46;
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #555;
+      transition: background 0.15s;
+    }
+    .modal-close-btn:hover { background: #e0e0e0; }
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+</head>
+<body class="bg-surface text-on-surface">
+
+<nav class="bg-white/50 backdrop-blur-md docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none">
+  <div class="mx-auto px-4 md:px-36 h-20 flex justify-between items-center border-white/30 bg-white/100 backdrop-blur-md">
+    <div class="flex items-center gap-2 md:gap-3">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white">
+        <img class="material-symbols-outlined object-cover" src="images/logo.jpg">
+      </div>
+      <div class="text-lg md:text-xl font-bold text-gray-900 dark:text-white flex flex-col leading-tight font-['Tajawal']">
+        <span style="font-size: medium;">مستشفى المرج التخصصي</span>
+      </div>
+    </div>
+    <div class="hidden lg:flex items-center gap-8 font-['Tajawal'] font-bold text-sm tracking-tight">
+      <a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1 transition-all duration-200" href="main.html">الرئيسية</a>
+      <a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors" href="schedules.html">الجداول</a>
+      <a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors" href="doctors.html">الأطباء</a>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="openContactModal()" class="block bg-primary-container text-white px-4 py-1.5 lg:px-6 lg:py-2.5 rounded-lg font-bold text-xs lg:text-sm hover:bg-red-900 transition-colors duration-200 active:opacity-80">احجز موعدك</button>
+    </div>
+  </div>
+  <div class="lg:hidden border-t">
+    <div class="flex items-cءenter justify-around px-4 py-2.5 font-['Tajawal'] font-bold text-sm">
+      <a href="index.html" class="px-5 py-0.2 rounded-lg text-[#A31D1D] transition-all">الرئيسية</a>
+      <a href="schedules.html" class="px-5 py-0.2 rounded-lg text-gray-600 hover:text-[#A31D1D]">الجداول</a>
+      <a href="doctors.html" class="px-5 py-0.2 rounded-lg text-gray-600 hover:text-[#A31D1D]">الأطباء</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-surface">
+    <div class="relative md:hidden" data-aos="fade-down" data-aos-duration="1000">
+      <img src="images/heropicMO.jpg" alt="مستشفى المرج - جوال" class="w-full h-auto aspect-[1024/500] object-cover">
+      <div class="absolute bottom-4 right-4 inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/95 backdrop-blur-md text-primary font-extrabold text-xs uppercase tracking-wider shadow-md border border-white/20 z-10">
+        <span class="material-symbols-outlined text-base">verified_user</span>
+        رعاية طبية متميزة
+      </div>
+    </div>
+    <div class="hidden md:block absolute inset-0 z-0" data-aos="fade" data-aos-duration="1500">
+      <img src="images/new-image.png" class="w-full h-full object-cover">
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+      <div class="flex flex-col items-center lg:items-start text-center lg:text-right py-10 md:py-20 lg:h-[600px] lg:justify-center">
+        <div class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-fixed text-primary font-bold text-xs uppercase tracking-wider mb-6" data-aos="fade-down" data-aos-delay="200">
+          <span class="material-symbols-outlined text-sm">verified_user</span>
+          رعاية طبية متميزة
+        </div>
+        <h1 class="text-3xl md:text-5xl lg:text-7xl font-extrabold text-on-background leading-tight lg:leading-[1.2] font-headline" data-aos="fade-up" data-aos-delay="400">
+          مستشفى <span style="color: rgb(48, 109, 170);">المرج</span>
+          <br> التخصصــــــــــــــــــــــي
+        </h1>
+        <p class="text-base sm:text-lg md:text-xl text-secondary leading-relaxed max-w-lg font-body mt-6" data-aos="fade-up" data-aos-delay="600">
+          نقدم رعاية صحية عالمية المستوى بأحدث التقنيات الطبية ونخبة من الاستشاريين المتخصصين لضمان سلامتك وراحتك.
+        </p>
+        <div class="flex flex-col sm:flex-row flex-wrap gap-4 pt-8 w-full sm:w-auto" data-aos="fade-up" data-aos-delay="800">
+          <button onclick="openContactModal()" class="w-full sm:w-auto bg-primary-container text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-primary/20 hover:bg-red-900 transition-colors min-h-[56px]">
+            تواصل معنا
+          </button>
+          <div class="flex items-center gap-2 text-brown-700 font-medium mt-2" style="color: brown;">
+            <a href="https://maps.app.goo.gl/WuBFgkdh83DZXgm37" target="_blank">
+              <span class="material-symbols-outlined text-lg">location_on</span>
+              المرج - حي الـ700، مقابل مسجد أبوبكر الصديق
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clinic Schedules Section -->
+  <section class="py-24 bg-surface-container-low">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4 sm:gap-0 mb-8 md:mb-12">
+        <div class="text-center sm:text-right">
+          <h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline">جداول العيادات</h2>
+          <p class="text-secondary mt-2 text-sm md:text-base">مواعيد عمل العيادات التخصصية خلال الأسبوع</p>
+        </div>
+        <a class="text-primary-container font-bold flex items-center gap-1 hover:underline min-h-[44px] py-2" href="schedules.html">
+          عرض كافة التخصصات
+          <span class="material-symbols-outlined">arrow_back</span>
+        </a>
+      </div>
+      <div class="flex flex-col gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col" data-aos="fade-up" data-aos-delay="0">
+            <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+              <img src="images/saturday.jpg" alt="السبت" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="p-5 text-center flex flex-col justify-between flex-1">
+              <h3 class="text-2xl font-bold mb-4 font-headline">السبت</h3>
+              <a href="schedules.html?day=saturday" class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
+            </div>
+          </div>
+          <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col" data-aos="fade-up" data-aos-delay="100">
+            <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+              <img src="images/sunday.jpg" alt="الأحد" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="p-5 text-center flex flex-col justify-between flex-1">
+              <h3 class="text-2xl font-bold mb-4 font-headline">الأحد</h3>
+              <a href="schedules.html?day=sunday" class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
+            </div>
+          </div>
+          <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col" data-aos="fade-up" data-aos-delay="200">
+            <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+              <img src="images/monday.jpg" alt="الإثنين" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="p-5 text-center flex flex-col justify-between flex-1">
+              <h3 class="text-2xl font-bold mb-4 font-headline">الإثنين</h3>
+              <a href="schedules.html?day=monday" class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
+            </div>
+          </div>
+          <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col" data-aos="fade-up" data-aos-delay="300">
+            <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+              <img src="images/tuesday.jpg" alt="الثلاثاء" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="p-5 text-center flex flex-col justify-between flex-1">
+              <h3 class="text-2xl font-bold mb-4 font-headline">الثلاثاء</h3>
+              <a href="schedules.html?day=tuesday" class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full lg:w-3/4 lg:mx-auto">
+          <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col" data-aos="fade-up" data-aos-delay="0">
+            <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+              <img src="images/wednesday.jpg" alt="الأربعاء" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="p-5 text-center flex flex-col justify-between flex-1">
+              <h3 class="text-2xl font-bold mb-4 font-headline">الأربعاء</h3>
+              <a href="schedules.html?day=wednesday" class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
+            </div>
+          </div>
+          <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col" data-aos="fade-up" data-aos-delay="100">
+            <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+              <img src="images/thursday.jpg" alt="الخميس" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="p-5 text-center flex flex-col justify-between flex-1">
+              <h3 class="text-2xl font-bold mb-4 font-headline">الخميس</h3>
+              <a href="schedules.html?day=thursday" class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
+            </div>
+          </div>
+          <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group flex flex-col" data-aos="fade-up" data-aos-delay="200">
+            <div class="aspect-square bg-surface-container-high relative w-full overflow-hidden">
+              <img src="images/friday.jpg" alt="الجمعة" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="p-5 text-center flex flex-col justify-between flex-1">
+              <h3 class="text-2xl font-bold mb-4 font-headline">الجمعة</h3>
+              <a href="schedules.html?day=friday" class="w-full py-3 md:py-2.5 min-h-[48px] md:min-h-0 rounded-lg border-2 border-primary-container text-primary-container font-bold text-sm hover:bg-primary-container hover:text-white transition-all flex items-center justify-center">عرض</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Elite Doctors Section -->
+  <section class="py-24 bg-surface">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4 sm:gap-0 mb-8 md:mb-12">
+        <div class="text-center sm:text-right">
+          <h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline">نخبة من الأطباء</h2>
+          <p class="text-secondary mt-2 text-sm md:text-base">تضم مستشفى المرج فريقاً طبياً من أكفأ الاستشاريين والأخصائيين في مختلف المجالات الطبية</p>
+        </div>
+        <a class="text-primary-container font-bold flex items-center gap-1 hover:underline min-h-[44px] py-2" href="doctors.html">
+          عرض جميع الأطباء
+          <span class="material-symbols-outlined">arrow_back</span>
+        </a>
+      </div>
+      <div id="home-doctors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+      <div id="home-doctors-empty" class="hidden text-center py-10 text-gray-400">
+        <p>لم يتم إضافة أطباء بعد</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location Map Section -->
+  <section class="py-16 md:py-24 bg-surface-container-low overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+        <div class="bg-white p-8 md:p-12 lg:p-16 flex flex-col justify-center rounded-t-2xl lg:rounded-t-none lg:rounded-r-2xl">
+          <h2 class="text-2xl md:text-3xl font-extrabold text-on-background font-headline mb-12">تواصل معنا</h2>
+          <div class="space-y-6 md:space-y-8">
+            <div class="flex items-center sm:items-start gap-4">
+              <div class="w-12 h-12 bg-primary-fixed text-primary-container rounded-full flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">location_on</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg">الموقع</h4>
+                <p class="text-secondary text-sm md:text-base">المرج / حي الـ700 مقابل مسجد ابوبكر الصديق</p>
+              </div>
+            </div>
+            <div class="flex items-center sm:items-start gap-4">
+              <div class="w-12 h-12 bg-primary-fixed text-primary-container rounded-full flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">call</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg">الهاتف</h4>
+                <p class="text-secondary text-sm md:text-base">092-8667081<br />092-2625986</p>
+              </div>
+            </div>
+            <div class="flex items-center sm:items-start gap-4">
+              <div class="w-12 h-12 bg-primary-fixed text-primary-container rounded-full flex items-center justify-center flex-shrink-0">
+                <i class="fa-brands fa-facebook"></i>
+              </div>
+              <div class="overflow-hidden break-all">
+                <h4 class="font-bold text-lg">فيسبوك</h4>
+                <p class="text-secondary text-sm md:text-base"><a href="https://www.facebook.com/AlmarjHospital" target="_blank" style="color: cornflowerblue;">www.facebook.com/AlmarjHospital</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="h-64 sm:h-80 md:h-[400px] lg:h-auto rounded-b-2xl lg:rounded-b-none lg:rounded-l-2xl overflow-hidden">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1169.4510415770053!2d20.837573096953804!3d32.49319773590454!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x138211122418410b%3A0xe31667a410a3a5c9!2z2YXYs9iq2LTZgdmJINin2YTZhdix2Kwg2KfZhNiq2K7Ytdi12Yo!5e0!3m2!1sen!2sly!4v1775728449470!5m2!1sen!2sly" class="w-full h-full border-0" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="bg-[#f8f9fa] py-10 px-4 sm:px-6">
+  <div class="max-w-7xl mx-auto text-center space-y-6">
+    <div class="flex items-center justify-center gap-2 flex-wrap">
+      <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900">مستشفى المرج التخصصي</h2>
+      <img src="images/footerlogo.jpg" alt="شعار مستشفى المرج التخصصي" class="w-9 h-9 sm:w-10 sm:h-10 object-contain rounded-full" loading="lazy">
+    </div>
+    <p class="text-gray-600 text-sm sm:text-base md:text-lg">من أجل رعاية طبية متميزة بكل حب واحترافية</p>
+  </div>
+  <div class="max-w-7xl mx-auto mt-8 md:mt-12 pt-6 border-t border-gray-200 text-center">
+    <p class="text-gray-500 text-xs sm:text-sm">© 2026 جميع الحقوق محفوظة | تم التطوير بواسطة <a href="#" class="text-brown-600 hover:underline ml-1">منتصر العقيلي</a></p>
+  </div>
+</footer>
+
+<div id="contact-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" onclick="handleOverlayClick(event)">
+  <div id="contact-modal">
+    <button class="modal-close-btn" onclick="closeContactModal()" aria-label="إغلاق">✕</button>
+    <span class="material-symbols-outlined text-4xl mb-3 block" style="color:#A31D1D;">phone_in_talk</span>
+    <h2 id="contact-modal-title" style="font-family:'Tajawal',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:6px;">تواصل معنا</h2>
+    <p style="font-size:0.82rem;color:#666;margin-bottom:18px;">اضغط على الرقم لنسخه</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
+      <button class="modal-phone-btn" id="phone-btn-1" onclick="copyPhone('0928667081','phone-btn-1')">
+        <span class="material-symbols-outlined" style="font-size:1.1rem;">content_copy</span> 0928667081
+      </button>
+      <button class="modal-phone-btn" id="phone-btn-2" onclick="copyPhone('0922625986','phone-btn-2')">
+        <span class="material-symbols-outlined" style="font-size:1.1rem;">content_copy</span> 0922625986
+      </button>
+    </div>
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px 14px;font-size:0.8rem;color:#92400e;line-height:1.6;">
+      <span class="material-symbols-outlined" style="font-size:0.95rem;vertical-align:middle;margin-left:4px;">schedule</span>
+      يرجى الملاحظة أن الرد على المكالمات يتم من الساعة الـ9 صباحاً إلى الـ7:30 مساءً
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true,
+    mirror: false
+  });
+
+  // دالة عرض الأطباء في الصفحة الرئيسية (باستخدام async/await)
+  async function loadHomeDoctors() {
+    const grid = document.getElementById('home-doctors-grid');
+    const empty = document.getElementById('home-doctors-empty');
+    try {
+      const doctors = await marjGetDoctors();
+      const firstFour = doctors.slice(0, 4);
+      if (firstFour.length === 0) {
+        grid.classList.add('hidden');
+        empty.classList.remove('hidden');
+        return;
+      }
+      grid.innerHTML = firstFour.map((d, idx) => `
+        <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group p-6" data-aos="fade-up" data-aos-delay="${idx * 150}">
+          <span class="text-primary-container text-xs font-bold uppercase tracking-widest block mb-1">${escH(d.description)}</span>
+          <h4 class="text-xl font-bold mt-1">${escH(d.name)}</h4>
+          <div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-end">
+            <a href="doctors.html" class="text-primary-container text-sm font-bold">عرض المواعيد</a>
+          </div>
+        </div>
+      `).join('');
+      grid.classList.remove('hidden');
+      empty.classList.add('hidden');
+      AOS.refresh();
+    } catch (err) {
+      console.error('خطأ في تحميل الأطباء:', err);
+      grid.classList.add('hidden');
+      empty.classList.remove('hidden');
+    }
+  }
+
+  function escH(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // Contact Modal Functions
+  function openContactModal() {
+    document.getElementById('contact-modal-overlay').classList.add('open');
+  }
+  function closeContactModal() {
+    document.getElementById('contact-modal-overlay').classList.remove('open');
+  }
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('contact-modal-overlay')) closeContactModal();
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeContactModal();
+  });
+  function copyPhone(number, btnId) {
+    navigator.clipboard.writeText(number).then(function() {
+      const btn = document.getElementById(btnId);
+      const orig = btn.innerHTML;
+      btn.classList.add('copied');
+      btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:1.1rem;">check_circle</span> تم النسخ!';
+      setTimeout(function() {
+        btn.classList.remove('copied');
+        btn.innerHTML = orig;
+      }, 2000);
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', loadHomeDoctors);
+</script>
+</body>
+</html>

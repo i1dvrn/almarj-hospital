@@ -225,6 +225,64 @@ async function marjSaveDoctors(doctors) {
 }
 
 // ─────────────────────────────────────────────────
+//   دوال التحليلات (Analytics)
+// ─────────────────────────────────────────────────
+
+/**
+ * تتبع زيارة جديدة. يتم حساب الزيارة مرة واحدة لكل جلسة متصفح في اليوم.
+ */
+async function marjTrackVisit() {
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    const sessionKey = `marj_visit_${today}`;
+    
+    // منع احتساب الزيارة المتكررة في نفس الجلسة
+    if (sessionStorage.getItem(sessionKey)) return;
+
+    // استدعاء الوظيفة التي أنشأناها في Supabase (RPC)
+    // ملاحظة: يجب أن تكون الوظيفة increment_visitor_count موجودة في Supabase
+    const { error } = await _supabase.rpc('increment_visitor_count', { target_date: today });
+    
+    if (error) {
+      // إذا فشل الـ RPC (ربما غير موجود)، نحاول التحديث اليدوي كبديل
+      console.warn('RPC failed, falling back to manual update:', error.message);
+      const { data: existing } = await _supabase.from('visitor_stats').select('count').eq('date', today).single();
+      
+      if (existing) {
+        await _supabase.from('visitor_stats').update({ count: existing.count + 1 }).eq('date', today);
+      } else {
+        await _supabase.from('visitor_stats').insert([{ date: today, count: 1 }]);
+      }
+    }
+    
+    sessionStorage.setItem(sessionKey, '1');
+  } catch (err) {
+    console.error('marjTrackVisit Error:', err);
+  }
+}
+
+/**
+ * جلب إحصائيات الزوار لآخر عدد من الأيام.
+ */
+async function marjGetVisitorStats(days = 7) {
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+  const dateStr = startDate.toISOString().split('T')[0];
+
+  const { data, error } = await _supabase
+    .from('visitor_stats')
+    .select('*')
+    .gte('date', dateStr)
+    .order('date', { ascending: true });
+
+  if (error) {
+    console.error('marjGetVisitorStats:', error.message);
+    return [];
+  }
+  return data || [];
+}
+
+// ─────────────────────────────────────────────────
 //   دوال مساعدة
 // ─────────────────────────────────────────────────
 

@@ -85,6 +85,10 @@
         class="tab-inactive flex items-center gap-2 px-6 py-4 text-sm transition-all duration-200">
         <span class="material-symbols-outlined text-base">calendar_month</span> الجداول
       </button>
+      <button onclick="switchTab('analytics')" id="tab-analytics"
+        class="tab-inactive flex items-center gap-2 px-6 py-4 text-sm transition-all duration-200">
+        <span class="material-symbols-outlined text-base">monitoring</span> التحليلات
+      </button>
     </div>
   </div>
 
@@ -202,6 +206,49 @@
     </div>
   </div>
 
+  <!-- ======================== ANALYTICS TAB ======================== -->
+  <div id="panel-analytics" class="hidden max-w-5xl mx-auto px-4 py-6 md:py-8" data-aos="fade-up">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">زوار اليوم</p>
+        <h3 id="stat-today" class="text-3xl font-black text-[#A31D1D]">0</h3>
+        <p class="text-[10px] text-gray-400 mt-1">تحديث حي</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">الأسبوع الماضي</p>
+        <h3 id="stat-week" class="text-3xl font-black text-gray-900">0</h3>
+        <p class="text-[10px] text-gray-400 mt-1">إجمالي الزيارات</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">أعلى يوم</p>
+        <h3 id="stat-peak" class="text-3xl font-black text-blue-600">0</h3>
+        <p id="stat-peak-date" class="text-[10px] text-gray-400 mt-1">—</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden mb-8">
+      <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <h2 class="font-bold text-gray-900">مراقبة الزوار (آخر 10 أيام)</h2>
+        <button onclick="renderAnalytics()" class="text-[#A31D1D] hover:rotate-180 transition-transform duration-500">
+          <span class="material-symbols-outlined text-xl">refresh</span>
+        </button>
+      </div>
+      <div class="p-6 md:p-10">
+        <div id="chart-container" class="h-64 w-full flex items-end gap-2 md:gap-4 border-b border-gray-100 pb-2">
+          <!-- Bars will be injected here -->
+        </div>
+        <div id="chart-labels" class="flex justify-between mt-2 px-1">
+          <!-- Labels will be injected here -->
+        </div>
+      </div>
+    </div>
+    
+    <div class="bg-amber-50 border border-amber-100 rounded-xl p-4 flex gap-3 text-sm text-amber-800">
+      <span class="material-symbols-outlined text-amber-500 shrink-0">analytics</span>
+      <p>يتم احتساب كل جلسة متصفح فريدة كزيارة واحدة يومياً لضمان دقة الإحصائيات.</p>
+    </div>
+  </div>
+
 </div><!-- /admin-shell -->
 
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -251,12 +298,14 @@ function showToast(msg) {
 let currentTab = 'doctors';
 function switchTab(tab) {
   currentTab = tab;
-  ['doctors','schedules'].forEach(t => {
-    document.getElementById('panel-'+t).classList.toggle('hidden', t !== tab);
-    document.getElementById('tab-'+t).className =
-      (t===tab?'tab-active':'tab-inactive') +
+  ['doctors','schedules','analytics'].forEach(t => {
+    const panel = document.getElementById('panel-'+t);
+    const tabBtn = document.getElementById('tab-'+t);
+    if (panel) panel.classList.toggle('hidden', t !== tab);
+    if (tabBtn) tabBtn.className = (t===tab?'tab-active':'tab-inactive') +
       ' flex items-center gap-2 px-6 py-4 text-sm transition-all duration-200';
   });
+  if (tab === 'analytics') renderAnalytics();
   AOS.refresh();
 }
 
@@ -264,6 +313,7 @@ async function initAdmin() {
   await renderDoctorsList(true);
   renderDayTabs();
   await selectDay('saturday');
+  renderAnalytics(); // التحميل المبدئي للإحصائيات
 }
 
 let cacheDoctors = [];
@@ -578,6 +628,61 @@ async function moveRow(rowId, dir) {
   schedules[currentDay] = rows;
   await marjSaveSchedules(schedules);
   await renderCurrentDay();
+}
+
+// ===========================
+//   ANALYTICS / STATISTICS
+// ===========================
+async function renderAnalytics() {
+  const stats = await marjGetVisitorStats(10); // آخر 10 أيام
+  const container = document.getElementById('chart-container');
+  const labelContainer = document.getElementById('chart-labels');
+  
+  if (!stats || stats.length === 0) {
+    container.innerHTML = '<div class="w-full h-full flex items-center justify-center text-gray-400">لا توجد بيانات متاحة حالياً</div>';
+    return;
+  }
+
+  const maxVisits = Math.max(...stats.map(s => s.count), 10);
+  const todayStr = new Date().toISOString().split('T')[0];
+  
+  // Summary Stats
+  const todayStat = stats.find(s => s.date === todayStr);
+  document.getElementById('stat-today').textContent = todayStat ? todayStat.count : 0;
+  
+  const totalWeek = stats.reduce((acc, curr) => acc + curr.count, 0);
+  document.getElementById('stat-week').textContent = totalWeek;
+  
+  const peak = [...stats].sort((a,b) => b.count - a.count)[0];
+  document.getElementById('stat-peak').textContent = peak ? peak.count : 0;
+  document.getElementById('stat-peak-date').textContent = peak ? formatDate(peak.date) : '—';
+
+  // Chart Rendering
+  container.innerHTML = stats.map(s => {
+    const height = (s.count / maxVisits) * 100;
+    const isToday = s.date === todayStr;
+    return `
+      <div class="group relative flex-1 flex flex-col items-center">
+        <div class="absolute -top-8 bg-gray-900 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+          ${s.count} زائر
+        </div>
+        <div class="${isToday ? 'bg-[#A31D1D]' : 'bg-gray-200 group-hover:bg-red-200'} w-full rounded-t-lg transition-all duration-500" 
+             style="height: ${height}%; min-height: 4px;"></div>
+      </div>`;
+  }).join('');
+
+  labelContainer.innerHTML = stats.map((s, idx) => {
+    if (idx % 2 !== 0 && stats.length > 5) return '<span></span>';
+    return `<span class="text-[10px] text-gray-400 font-bold">${formatDate(s.date, true)}</span>`;
+  }).join('');
+}
+
+function formatDate(dateStr, short = false) {
+  const date = new Date(dateStr);
+  if (short) {
+    return date.getDate() + '/' + (date.getMonth() + 1);
+  }
+  return new Intl.DateFormat('ar-EG', { day: 'numeric', month: 'long' }).format(date);
 }
 
 // ===== Helpers =====

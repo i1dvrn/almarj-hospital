@@ -1,299 +1,445 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
-<head>
-  <link rel="icon" type="image/png" href="images/Favico.png">
 
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>الأطباء — مستشفى المرج التخصصي</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script src="tailwind-config.js"></script>
-  
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="db.js"></script>
-  <style>
-    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; vertical-align:middle; }
-    body { font-family:'Tajawal','Work Sans',sans-serif; }
-    h1,h2,h3 { font-family:'Tajawal','Plus Jakarta Sans',sans-serif; }
-    .no-scrollbar::-webkit-scrollbar { display:none; }
-    .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
-    .doc-card { display:flex; }
-    .doc-card.hidden-card { display:none; }
-    /* Period badges */
-    .badge-morning { background:#fffbeb; color:#b45309; border:1px solid #fde68a; }
-    .badge-evening { background:#eef2ff; color:#4338ca; border:1px solid #c7d2fe; }
-    .badge-night   { background:#1e293b; color:#94a3b8; border:1px solid #334155; }
-    html { scroll-behavior: smooth; }
-    /* ===== Contact Modal ===== */
-    #contact-modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(4px);
-      z-index: 9999;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-    #contact-modal-overlay.open { opacity: 1; pointer-events: auto; }
-    #contact-modal {
-      background: #fff; border-radius: 20px;
-      padding: 32px 28px 24px; width: min(90vw, 380px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
-      transform: translateY(24px) scale(0.96);
-      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
-      text-align: center; position: relative;
-    }
-    #contact-modal-overlay.open #contact-modal { transform: translateY(0) scale(1); }
-    .modal-phone-btn {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%; padding: 14px 20px; border-radius: 12px;
-      background: #f5f5f5; border: 2px solid transparent;
-      font-size: 1.2rem; font-family: 'Tajawal', sans-serif;
-      font-weight: 700; color: #1a1a1a; cursor: pointer;
-      transition: background 0.18s, border-color 0.18s, transform 0.12s;
-      letter-spacing: 0.04em; direction: ltr;
-    }
-    .modal-phone-btn:hover { background: #fff3f3; border-color: #A31D1D; transform: scale(1.02); }
-    .modal-phone-btn.copied { background: #ecfdf5; border-color: #10b981; color: #065f46; }
-    .modal-close-btn {
-      position: absolute; top: 14px; left: 14px;
-      background: #f0f0f0; border: none; border-radius: 50%;
-      width: 32px; height: 32px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; color: #555; transition: background 0.15s;
-    }
-    .modal-close-btn:hover { background: #e0e0e0; }
-  </style>
-  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<head>
+    <link rel="icon" type="image/png" href="images/Favico.png">
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الأطباء — مستشفى المرج التخصصي</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600&family=Tajawal:wght@400;500;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="tailwind-config.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        body {
+            font-family: 'Tajawal', 'Work Sans', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .doc-card {
+            display: flex;
+        }
+
+        .doc-card.hidden-card {
+            display: none;
+        }
+
+        /* Period badges */
+        .badge-morning {
+            background: #fffbeb;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        .badge-evening {
+            background: #eef2ff;
+            color: #4338ca;
+            border: 1px solid #c7d2fe;
+        }
+
+        .badge-night {
+            background: #1e293b;
+            color: #94a3b8;
+            border: 1px solid #334155;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Smooth fade-in for doctors grid after data loads */
+        #doctors-main-content {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+
+        #doctors-main-content.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== Contact Modal ===== */
+        #contact-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        #contact-modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #contact-modal {
+            background: #fff;
+            border-radius: 20px;
+            padding: 32px 28px 24px;
+            width: min(90vw, 380px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+            transform: translateY(24px) scale(0.96);
+            transition: transform 0.3s cubic-bezier(.34, 1.56, .64, 1);
+            text-align: center;
+            position: relative;
+        }
+
+        #contact-modal-overlay.open #contact-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-phone-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 12px;
+            background: #f5f5f5;
+            border: 2px solid transparent;
+            font-size: 1.2rem;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 700;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: background 0.18s, border-color 0.18s, transform 0.12s;
+            letter-spacing: 0.04em;
+            direction: ltr;
+        }
+
+        .modal-phone-btn:hover {
+            background: #fff3f3;
+            border-color: #A31D1D;
+            transform: scale(1.02);
+        }
+
+        .modal-phone-btn.copied {
+            background: #ecfdf5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+
+        .modal-whatsapp-btn:hover {
+            background: #1da851 !important;
+            transform: scale(1.02);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #555;
+            transition: background 0.15s;
+        }
+
+        .modal-close-btn:hover {
+            background: #e0e0e0;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
+
 <body class="bg-surface text-on-surface">
 
-<!-- Nav -->
-<nav class="bg-white/50 backdrop-blur-md docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none">
-  <div class="mx-auto px-4 md:px-36 h-20 flex justify-between items-center border-white/30 bg-white/100 backdrop-blur-md">
-    <div class="flex items-center gap-2 md:gap-3">
-      <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white">
-        <img class="material-symbols-outlined object-cover" src="images/logo.jpg">
-      </div>
-      <div class="text-lg md:text-xl font-bold text-gray-900 dark:text-white flex flex-col leading-tight font-['Tajawal']">
-        <span style="font-size: medium;">مستشفى المرج التخصصي</span>
-      </div>
-    </div>
-    <div class="hidden lg:flex items-center gap-8 font-['Tajawal'] font-bold text-sm tracking-tight">
-      <a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors" href="index.html">الرئيسية</a>
-      <a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors" href="schedules.html">الجداول</a>
-      <a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1 transition-all duration-200" href="doctors.html">الأطباء</a>
-    </div>
-    <div class="flex items-center gap-2">
-      <button onclick="openContactModal()" class="block bg-primary-container text-white px-4 py-1.5 lg:px-6 lg:py-2.5 rounded-lg font-bold text-xs lg:text-sm hover:bg-red-900 transition-colors duration-200 active:opacity-80">احجز موعدك</button>
-    </div>
-  </div>
-  <div class="lg:hidden border-t">
-    <div class="flex items-cءenter justify-around px-4 py-2.5 font-['Tajawal'] font-bold text-sm">
-      <a href="index.html" class="px-5 py-0.2 rounded-lg text-gray-600 hover:text-[#A31D1D]">الرئيسية</a>
-      <a href="schedules.html" class="px-5 py-0.2 rounded-lg text-gray-600 hover:text-[#A31D1D]">الجداول</a>
-      <a href="doctors.html" class="px-5 py-0.2 rounded-lg text-[#A31D1D] transition-all">الأطباء</a>
-    </div>
-  </div>
-</nav>
+    <!-- Nav -->
+    <nav class="bg-white/50 backdrop-blur-md docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none">
+        <div
+            class="mx-auto px-4 md:px-36 h-20 flex justify-between items-center border-white/30 bg-white/100 backdrop-blur-md">
+            <div class="flex items-center gap-2 md:gap-3">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white">
+                    <img class="material-symbols-outlined object-cover" src="images/logo.jpg">
+                </div>
+                <div
+                    class="text-lg md:text-xl font-bold text-gray-900 dark:text-white flex flex-col leading-tight font-['Tajawal']">
+                    <span style="font-size: medium;">مستشفى المرج التخصصي</span>
+                </div>
+            </div>
+            <div class="hidden lg:flex items-center gap-8 font-['Tajawal'] font-bold text-sm tracking-tight">
+                <a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors"
+                    href="index.html">الرئيسية</a>
+                <a class="text-gray-600 dark:text-gray-400 hover:text-[#A31D1D] transition-colors"
+                    href="schedules.html">الجداول</a>
+                <a class="text-[#A31D1D] border-b-2 border-[#A31D1D] pb-1 transition-all duration-200"
+                    href="doctors.html">الأطباء</a>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="openContactModal()"
+                    class="block bg-primary-container text-white px-4 py-1.5 lg:px-6 lg:py-2.5 rounded-lg font-bold text-xs lg:text-sm hover:bg-red-900 transition-colors duration-200 active:opacity-80">احجز
+                    موعدك</button>
+            </div>
+        </div>
+        <div class="lg:hidden border-t">
+            <div class="flex items-cءenter justify-around px-4 py-2.5 font-['Tajawal'] font-bold text-sm">
+                <a href="index.html" class="px-5 py-0.2 rounded-lg text-gray-600 hover:text-[#A31D1D]">الرئيسية</a>
+                <a href="schedules.html" class="px-5 py-0.2 rounded-lg text-gray-600 hover:text-[#A31D1D]">الجداول</a>
+                <a href="doctors.html" class="px-5 py-0.2 rounded-lg text-[#A31D1D] transition-all">الأطباء</a>
+            </div>
+        </div>
+    </nav>
 
-<main class="min-h-screen">
-  <!-- Hero -->
-  <section class="relative bg-surface-container-low py-12 md:py-20 overflow-hidden">
-    <div class="absolute inset-0 opacity-5 pointer-events-none">
-      <div class="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full blur-[120px]"></div>
-      <div class="absolute bottom-0 left-0 w-96 h-96 bg-tertiary rounded-full blur-[120px]"></div>
-    </div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 relative">
-      <div class="max-w-3xl border-r-4 border-primary-container pr-4 md:pr-6 mb-8 md:mb-12" data-aos="fade-right">
-        <h1 class="text-3xl md:text-5xl font-extrabold text-on-surface mb-4 leading-tight tracking-tight">
-          نخبة الكوادر الطبية المتخصصة
-        </h1>
-        <p class="text-base md:text-lg text-secondary leading-relaxed font-medium">
-          نلتزم في مستشفى المرج التخصصي بتقديم أعلى مستويات الرعاية الصحية من خلال فريق متميز من الأطباء
-          والاستشاريين في كافة التخصصات الطبية
-        </p>
-      </div>
-    </div>
-  </section>
-<Nav>
-  <!-- Filters -->
-  <section class="sticky top-20 z-40 bg-surface/80 backdrop-blur-sm border-b border-outline-variant/10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-6 overflow-x-auto no-scrollbar">
-      <div id="filter-bar" class="flex flex-nowrap lg:flex-wrap items-center gap-2 md:gap-3 min-w-max lg:min-w-0 pb-2 lg:pb-0">
-        <span class="text-sm font-bold text-secondary ml-2 whitespace-nowrap">تصفية حسب التخصص:</span>
-      </div>
-    </div>
-  </section>
-</Nav>
-  <!-- Doctors Grid -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
-    <div id="doctors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-    <div id="doctors-empty" class="hidden text-center py-20 text-gray-400">
-      <span class="material-symbols-outlined text-6xl block mb-4">person_off</span>
-      <p class="text-xl font-bold">لا يوجد أطباء في هذا التخصص</p>
-    </div>
-    <div id="no-doctors" class="hidden text-center py-20 text-gray-400">
-      <span class="material-symbols-outlined text-6xl block mb-4">group_off</span>
-      <p class="text-xl font-bold">لم يتم إضافة أطباء بعد</p>
-      <p class="text-sm mt-2">يمكن إضافة الأطباء من لوحة التحكم</p>
-    </div>
-  </section>
-</main>
+    <main class="min-h-screen">
+        <!-- Hero -->
+        <section class="relative bg-surface-container-low py-12 md:py-20 overflow-hidden">
+            <div class="absolute inset-0 opacity-5 pointer-events-none">
+                <div class="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full blur-[120px]"></div>
+                <div class="absolute bottom-0 left-0 w-96 h-96 bg-tertiary rounded-full blur-[120px]"></div>
+            </div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 relative">
+                <div class="max-w-3xl border-r-4 border-primary-container pr-4 md:pr-6 mb-8 md:mb-12"
+                    data-aos="fade-right">
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-on-surface mb-4 leading-tight tracking-tight">
+                        نخبة الكوادر الطبية المتخصصة
+                    </h1>
+                    <p class="text-base md:text-lg text-secondary leading-relaxed font-medium">
+                        نلتزم في مستشفى المرج التخصصي بتقديم أعلى مستويات الرعاية الصحية من خلال فريق متميز من الأطباء
+                        والاستشاريين في كافة التخصصات الطبية
+                    </p>
+                </div>
+            </div>
+        </section>
+        <Nav>
+            <!-- Filters -->
+            <section class="sticky top-20 z-40 bg-surface/80 backdrop-blur-sm border-b border-outline-variant/10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-6 overflow-x-auto no-scrollbar">
+                    <div id="filter-bar"
+                        class="flex flex-nowrap lg:flex-wrap items-center gap-2 md:gap-3 min-w-max lg:min-w-0 pb-2 lg:pb-0">
+                        <span class="text-sm font-bold text-secondary ml-2 whitespace-nowrap">تصفية حسب التخصص:</span>
+                    </div>
+                </div>
+            </section>
+        </Nav>
+        <!-- Doctors Grid -->
+        <section id="doctors-main-content" class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
+            <div id="doctors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            <div id="doctors-empty" class="hidden text-center py-20 text-gray-400">
+                <span class="material-symbols-outlined text-6xl block mb-4">person_off</span>
+                <p class="text-xl font-bold">لا يوجد أطباء في هذا التخصص</p>
+            </div>
+            <div id="no-doctors" class="hidden text-center py-20 text-gray-400">
+                <span class="material-symbols-outlined text-6xl block mb-4">group_off</span>
+                <p class="text-xl font-bold">لم يتم إضافة أطباء بعد</p>
+                <p class="text-sm mt-2">يمكن إضافة الأطباء من لوحة التحكم</p>
+            </div>
+        </section>
+    </main>
 
-<!-- Stats -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20">
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-center">
-    <div class="p-6 md:p-8 rounded-2xl bg-tertiary-fixed text-on-tertiary-fixed-variant" data-aos="zoom-in" data-aos-delay="0">
-      <span class="material-symbols-outlined text-4xl mb-4 block">groups</span>
-      <h4 class="text-3xl font-extrabold mb-2">80+</h4>
-      <p class="text-sm font-bold uppercase tracking-widest opacity-80">طبيب متخصص</p>
+    <!-- Stats -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-center">
+            <div class="p-6 md:p-8 rounded-2xl bg-tertiary-fixed text-on-tertiary-fixed-variant" data-aos="zoom-in"
+                data-aos-delay="0">
+                <span class="material-symbols-outlined text-4xl mb-4 block">groups</span>
+                <h4 class="text-3xl font-extrabold mb-2">80+</h4>
+                <p class="text-sm font-bold uppercase tracking-widest opacity-80">طبيب متخصص</p>
+            </div>
+            <div class="p-6 md:p-8 rounded-2xl bg-secondary-fixed text-on-secondary-fixed-variant" data-aos="zoom-in"
+                data-aos-delay="200">
+                <span class="material-symbols-outlined text-4xl mb-4 block">clinical_notes</span>
+                <h4 class="text-3xl font-extrabold mb-2">24/7</h4>
+                <p class="text-sm font-bold uppercase tracking-widest opacity-80">رعاية الطوارئ</p>
+            </div>
+            <div class="p-6 md:p-8 rounded-2xl bg-primary-fixed text-on-primary-fixed-variant" data-aos="zoom-in"
+                data-aos-delay="400">
+                <span class="material-symbols-outlined text-4xl mb-4 block">workspace_premium</span>
+                <h4 class="text-3xl font-extrabold mb-2">15+</h4>
+                <p class="text-sm font-bold uppercase tracking-widest opacity-80">قسم طبي متخصص</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#f8f9fa] py-10 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto text-center space-y-6">
+            <div class="flex items-center justify-center gap-2 flex-wrap">
+                <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900">مستشفى المرج التخصصي</h2>
+                <img src="images/footerlogo.jpg" class="w-9 h-9 object-contain rounded-full" loading="lazy" />
+            </div>
+            <p class="text-gray-600 text-sm sm:text-base md:text-lg">من أجل رعاية طبية متميزة بكل حب واحترافية</p>
+        </div>
+        <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-gray-200 text-center">
+            <p class="text-gray-500 text-xs sm:text-sm">
+                © 2026 جميع الحقوق محفوظة
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title"
+        onclick="handleOverlayClick(event)">
+        <div id="contact-modal">
+            <button class="modal-close-btn" onclick="closeContactModal()" aria-label="إغلاق">✕</button>
+            <span class="material-symbols-outlined text-4xl mb-3 block" style="color:#A31D1D;">phone_in_talk</span>
+            <h2 id="contact-modal-title"
+                style="font-family:'Tajawal',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:6px;">تواصل معنا
+            </h2>
+            <div style="margin-top:14px;margin-bottom:14px;">
+                <a href="https://wa.me/218928667081" target="_blank" class="modal-whatsapp-btn"
+                    style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px 20px;border-radius:12px;background:#25D366;color:#fff;font-size:1.2rem;font-family:'Tajawal',sans-serif;font-weight:700;text-decoration:none;transition:background 0.2s, transform 0.12s;">
+                    <i class="fa-brands fa-whatsapp" style="font-size:1.4rem;"></i> حجز موعد عبر الواتساب
+                </a>
+            </div>
+            <p style="font-size:0.82rem;color:#666;margin-bottom:18px;">أو اضغط على الرقم لنسخه</p>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
+                <button class="modal-phone-btn" id="phone-btn-1" onclick="copyPhone('0928667081','phone-btn-1')">
+                    <span class="material-symbols-outlined" style="font-size:1.1rem;">content_copy</span>
+                    0928667081
+                </button>
+                <button class="modal-phone-btn" id="phone-btn-2" onclick="copyPhone('0922625986','phone-btn-2')">
+                    <span class="material-symbols-outlined" style="font-size:1.1rem;">content_copy</span>
+                    0922625986
+                </button>
+            </div>
+            <div
+                style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px 14px;font-size:0.8rem;color:#92400e;line-height:1.6;">
+                <span class="material-symbols-outlined"
+                    style="font-size:0.95rem;vertical-align:middle;margin-left:4px;">schedule</span>
+                يرجى الملاحظة أن الرد على المكالمات يتم من الساعة الـ9 صباحاً إلى الـ7:30 مساءً
+            </div>
+        </div>
     </div>
-    <div class="p-6 md:p-8 rounded-2xl bg-secondary-fixed text-on-secondary-fixed-variant" data-aos="zoom-in" data-aos-delay="200">
-      <span class="material-symbols-outlined text-4xl mb-4 block">clinical_notes</span>
-      <h4 class="text-3xl font-extrabold mb-2">24/7</h4>
-      <p class="text-sm font-bold uppercase tracking-widest opacity-80">رعاية الطوارئ</p>
-    </div>
-    <div class="p-6 md:p-8 rounded-2xl bg-primary-fixed text-on-primary-fixed-variant" data-aos="zoom-in" data-aos-delay="400">
-      <span class="material-symbols-outlined text-4xl mb-4 block">workspace_premium</span>
-      <h4 class="text-3xl font-extrabold mb-2">15+</h4>
-      <p class="text-sm font-bold uppercase tracking-widest opacity-80">قسم طبي متخصص</p>
-    </div>
-  </div>
-</section>
 
-<!-- Footer -->
-<footer class="bg-[#f8f9fa] py-10 px-4 sm:px-6">
-  <div class="max-w-7xl mx-auto text-center space-y-6">
-    <div class="flex items-center justify-center gap-2 flex-wrap">
-      <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900">مستشفى المرج التخصصي</h2>
-      <img src="images/footerlogo.jpg" class="w-9 h-9 object-contain rounded-full" loading="lazy"/>
-    </div>
-    <p class="text-gray-600 text-sm sm:text-base md:text-lg">من أجل رعاية طبية متميزة بكل حب واحترافية</p>
-  </div>
-  <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-gray-200 text-center">
-    <p class="text-gray-500 text-xs sm:text-sm">
-      © 2026 جميع الحقوق محفوظة
-    </p>
-  </div>
-</footer>
+    <script>
+        // Period badge config
+        const PERIOD_BADGE = {
+            morning: { cls: 'badge-morning', icon: 'wb_sunny', label: 'صباح' },
+            evening: { cls: 'badge-evening', icon: 'wb_twilight', label: 'مساء' },
+            night: { cls: 'badge-night', icon: 'nights_stay', label: 'ليل' }
+        };
 
-<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        let activeFilter = 'all';
+        let allDoctors = [];
+        let allSchedules = {};
 
-<!-- Contact Modal -->
-<div id="contact-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" onclick="handleOverlayClick(event)">
-  <div id="contact-modal">
-    <button class="modal-close-btn" onclick="closeContactModal()" aria-label="إغلاق">✕</button>
-    <span class="material-symbols-outlined text-4xl mb-3 block" style="color:#A31D1D;">phone_in_talk</span>
-    <h2 id="contact-modal-title" style="font-family:'Tajawal',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:6px;">تواصل معنا</h2>
-    <p style="font-size:0.82rem;color:#666;margin-bottom:18px;">اضغط على الرقم لنسخه</p>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
-      <button class="modal-phone-btn" id="phone-btn-1" onclick="copyPhone('0928667081','phone-btn-1')">
-        <span class="material-symbols-outlined" style="font-size:1.1rem;">content_copy</span>
-        0928667081
-      </button>
-      <button class="modal-phone-btn" id="phone-btn-2" onclick="copyPhone('0922625986','phone-btn-2')">
-        <span class="material-symbols-outlined" style="font-size:1.1rem;">content_copy</span>
-        0922625986
-      </button>
-    </div>
-    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px 14px;font-size:0.8rem;color:#92400e;line-height:1.6;">
-      <span class="material-symbols-outlined" style="font-size:0.95rem;vertical-align:middle;margin-left:4px;">schedule</span>
-      يرجى الملاحظة أن الرد على المكالمات يتم من الساعة الـ9 صباحاً إلى الـ7:30 مساءً
-    </div>
-  </div>
-</div>
+        async function init() {
+            // جلب البيانات من Supabase بشكل غير متزامن
+            allDoctors = await marjGetDoctors();
+            allSchedules = await marjGetSchedules();
 
-<script>
-// Period badge config
-const PERIOD_BADGE = {
-  morning: { cls: 'badge-morning', icon: 'wb_sunny',    label: 'صباح' },
-  evening: { cls: 'badge-evening', icon: 'wb_twilight', label: 'مساء' },
-  night:   { cls: 'badge-night',   icon: 'nights_stay', label: 'ليل'  }
-};
+            if (allDoctors.length === 0) {
+                document.getElementById('no-doctors').classList.remove('hidden');
+                document.getElementById('filter-bar').style.display = 'none';
+            } else {
+                renderFilters(allDoctors);
+                renderDoctors(allDoctors);
+            }
 
-let activeFilter = 'all';
-let allDoctors = [];
-let allSchedules = {};
+            // تهيئة AOS بعد رسم المحتوى لضمان أنيميشن سلس
+            AOS.init({
+                duration: 700,
+                easing: 'ease-out',
+                once: true,
+                offset: 60
+            });
 
-async function init() {
-  AOS.init({
-    duration: 800,
-    easing: 'ease-in-out',
-    once: true
-  });
+            // إظهار المحتوى بسلاسة
+            requestAnimationFrame(() => {
+                document.getElementById('doctors-main-content').classList.add('loaded');
+            });
+        }
 
-  // جلب البيانات من Supabase بشكل غير متزامن
-  allDoctors = await marjGetDoctors();
-  allSchedules = await marjGetSchedules();
-
-  if (allDoctors.length === 0) {
-    document.getElementById('no-doctors').classList.remove('hidden');
-    document.getElementById('filter-bar').style.display = 'none';
-    return;
-  }
-  renderFilters(allDoctors);
-  renderDoctors(allDoctors);
-}
-
-function renderFilters(doctors) {
-  const specialties = [...new Set(doctors.map(d => d.specialty).filter(Boolean))].sort();
-  const bar = document.getElementById('filter-bar');
-  const all  = `<button onclick="filterBy('all')" id="filter-all"
+        function renderFilters(doctors) {
+            const specialties = [...new Set(doctors.map(d => d.specialty).filter(Boolean))].sort();
+            const bar = document.getElementById('filter-bar');
+            const all = `<button onclick="filterBy('all')" id="filter-all"
     class="px-5 py-3 md:py-2 rounded-full bg-primary-container text-white text-sm font-semibold shadow-md transition-all whitespace-nowrap">
     كل التخصصات</button>`;
-  const btns = specialties.map(s => `
-    <button onclick="filterBy('${escJ(s)}')" id="filter-${escJ(s).replace(/\s/g,'_')}"
+            const btns = specialties.map(s => `
+    <button onclick="filterBy('${escJ(s)}')" id="filter-${escJ(s).replace(/\s/g, '_')}"
       class="px-5 py-3 md:py-2 rounded-full bg-surface-container-lowest text-on-surface hover:bg-primary-container/10 text-sm font-semibold transition-all whitespace-nowrap">
       ${esc(s)}</button>`).join('');
-  bar.innerHTML = '<span class="text-sm font-bold text-secondary ml-2 whitespace-nowrap">تصفية حسب التخصص:</span>' + all + btns;
-}
+            bar.innerHTML = '<span class="text-sm font-bold text-secondary ml-2 whitespace-nowrap">تصفية حسب التخصص:</span>' + all + btns;
+        }
 
-function filterBy(specialty) {
-  activeFilter = specialty;
-  document.querySelectorAll('#filter-bar button').forEach(btn => {
-    btn.className = 'px-5 py-3 md:py-2 rounded-full bg-surface-container-lowest text-on-surface hover:bg-primary-container/10 text-sm font-semibold transition-all whitespace-nowrap';
-  });
-  const key = specialty === 'all' ? 'filter-all' : 'filter-' + specialty.replace(/\s/g,'_');
-  const active = document.getElementById(key);
-  if (active) active.className = 'px-5 py-3 md:py-2 rounded-full bg-primary-container text-white text-sm font-semibold shadow-md transition-all whitespace-nowrap';
+        function filterBy(specialty) {
+            activeFilter = specialty;
+            document.querySelectorAll('#filter-bar button').forEach(btn => {
+                btn.className = 'px-5 py-3 md:py-2 rounded-full bg-surface-container-lowest text-on-surface hover:bg-primary-container/10 text-sm font-semibold transition-all whitespace-nowrap';
+            });
+            const key = specialty === 'all' ? 'filter-all' : 'filter-' + specialty.replace(/\s/g, '_');
+            const active = document.getElementById(key);
+            if (active) active.className = 'px-5 py-3 md:py-2 rounded-full bg-primary-container text-white text-sm font-semibold shadow-md transition-all whitespace-nowrap';
 
-  let visible = 0;
-  document.querySelectorAll('[data-specialty]').forEach(card => {
-    const match = specialty === 'all' || card.dataset.specialty === specialty;
-    card.classList.toggle('hidden-card', !match);
-    if (match) visible++;
-  });
-  document.getElementById('doctors-empty').classList.toggle('hidden', visible > 0);
-  AOS.refresh();
-}
+            let visible = 0;
+            document.querySelectorAll('[data-specialty]').forEach(card => {
+                const match = specialty === 'all' || card.dataset.specialty === specialty;
+                card.classList.toggle('hidden-card', !match);
+                if (match) visible++;
+            });
+            document.getElementById('doctors-empty').classList.toggle('hidden', visible > 0);
+            AOS.refresh();
+        }
 
-function renderDoctors(doctors) {
-  document.getElementById('doctors-grid').innerHTML = doctors.map((d, idx) => buildDocCard(d, idx)).join('');
-  AOS.refresh();
-}
+        function renderDoctors(doctors) {
+            document.getElementById('doctors-grid').innerHTML = doctors.map((d, idx) => buildDocCard(d, idx)).join('');
+            AOS.refresh();
+        }
 
-function buildDocCard(d, idx) {
-  // استخراج مواعيد الطبيب من allSchedules المجلوبة مسبقاً
-  const doctorSchedule = [];
-  for (const day in allSchedules) {
-    for (const row of allSchedules[day] || []) {
-      if (row.morning === d.id) doctorSchedule.push({ day, dayName: MARJ_DAY_NAMES[day]?.ar || day, period: 'morning' });
-      if (row.evening === d.id) doctorSchedule.push({ day, dayName: MARJ_DAY_NAMES[day]?.ar || day, period: 'evening' });
-      if (row.night === d.id) doctorSchedule.push({ day, dayName: MARJ_DAY_NAMES[day]?.ar || day, period: 'night' });
-    }
-  }
+        function buildDocCard(d, idx) {
+            // استخراج مواعيد الطبيب من allSchedules المجلوبة مسبقاً
+            const doctorSchedule = [];
+            for (const day in allSchedules) {
+                for (const row of allSchedules[day] || []) {
+                    if (row.morning === d.id) doctorSchedule.push({ day, dayName: MARJ_DAY_NAMES[day]?.ar || day, period: 'morning' });
+                    if (row.evening === d.id) doctorSchedule.push({ day, dayName: MARJ_DAY_NAMES[day]?.ar || day, period: 'evening' });
+                    if (row.night === d.id) doctorSchedule.push({ day, dayName: MARJ_DAY_NAMES[day]?.ar || day, period: 'night' });
+                }
+            }
 
-  let schedHTML = '';
-  if (doctorSchedule.length > 0) {
-    const byDay = {};
-    doctorSchedule.forEach(s => {
-      if (!byDay[s.day]) byDay[s.day] = { dayName: s.dayName, periods: [] };
-      byDay[s.day].periods.push(s);
-    });
-    schedHTML = `
+            let schedHTML = '';
+            if (doctorSchedule.length > 0) {
+                const byDay = {};
+                doctorSchedule.forEach(s => {
+                    if (!byDay[s.day]) byDay[s.day] = { dayName: s.dayName, periods: [] };
+                    byDay[s.day].periods.push(s);
+                });
+                schedHTML = `
       <div class="space-y-3 mb-6">
         <h4 class="text-xs font-bold text-on-surface uppercase tracking-widest border-b border-surface-container-low pb-2 flex items-center gap-1">
           <span class="material-symbols-outlined text-sm text-gray-400">calendar_month</span>
@@ -305,8 +451,8 @@ function buildDocCard(d, idx) {
               <span class="text-xs font-bold text-gray-600 bg-gray-100 px-2 py-1 rounded-md whitespace-nowrap shrink-0">${esc(group.dayName)}</span>
               <div class="flex flex-wrap gap-1.5">
                 ${group.periods.map(s => {
-                  const b = PERIOD_BADGE[s.period] || PERIOD_BADGE['morning'];
-                  return `<span class="${b.cls} inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold whitespace-nowrap">
+                    const b = PERIOD_BADGE[s.period] || PERIOD_BADGE['morning'];
+                    return `<span class="${b.cls} inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold whitespace-nowrap">
                     <span class="material-symbols-outlined text-[10px]">${b.icon}</span>${b.label}
                   </span>`;
                 }).join('')}
@@ -314,11 +460,11 @@ function buildDocCard(d, idx) {
             </div>`).join('')}
         </div>
       </div>`;
-  } else {
-    schedHTML = `<div class="mb-6"><p class="text-xs text-gray-400 italic">لم يُجدوَل بعد</p></div>`;
-  }
+            } else {
+                schedHTML = `<div class="mb-6"><p class="text-xs text-gray-400 italic">لم يُجدوَل بعد</p></div>`;
+            }
 
-  return `
+            return `
     <div class="doc-card bg-surface-container-lowest rounded-xl p-6 md:p-8
       shadow-[0_10px_30px_-15px_rgba(25,28,29,0.08)]
       flex flex-col transition-all duration-300 hover:translate-y-[-8px] hover:shadow-xl
@@ -335,47 +481,48 @@ function buildDocCard(d, idx) {
         احجز استشارة
       </button>
     </div>`;
-}
+        }
 
-function esc(s) {
-  if (!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function escJ(s) {
-  if (!s) return '';
-  return String(s).replace(/'/g,"\\'");
-}
+        function esc(s) {
+            if (!s) return '';
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+        function escJ(s) {
+            if (!s) return '';
+            return String(s).replace(/'/g, "\\'");
+        }
 
-window.addEventListener('DOMContentLoaded', () => {
-  init();
-  marjTrackVisit(); // تسجيل الزيارة
-});
+        window.addEventListener('DOMContentLoaded', () => {
+            init();
+            marjTrackVisit(); // تسجيل الزيارة
+        });
 
-// ===== Contact Modal =====
-function openContactModal() {
-  document.getElementById('contact-modal-overlay').classList.add('open');
-}
-function closeContactModal() {
-  document.getElementById('contact-modal-overlay').classList.remove('open');
-}
-function handleOverlayClick(e) {
-  if (e.target === document.getElementById('contact-modal-overlay')) closeContactModal();
-}
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeContactModal();
-});
-function copyPhone(number, btnId) {
-  navigator.clipboard.writeText(number).then(function() {
-    const btn = document.getElementById(btnId);
-    const orig = btn.innerHTML;
-    btn.classList.add('copied');
-    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:1.1rem;">check_circle</span> تم النسخ!';
-    setTimeout(function() {
-      btn.classList.remove('copied');
-      btn.innerHTML = orig;
-    }, 2000);
-  });
-}
-</script>
+        // ===== Contact Modal =====
+        function openContactModal() {
+            document.getElementById('contact-modal-overlay').classList.add('open');
+        }
+        function closeContactModal() {
+            document.getElementById('contact-modal-overlay').classList.remove('open');
+        }
+        function handleOverlayClick(e) {
+            if (e.target === document.getElementById('contact-modal-overlay')) closeContactModal();
+        }
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeContactModal();
+        });
+        function copyPhone(number, btnId) {
+            navigator.clipboard.writeText(number).then(function () {
+                const btn = document.getElementById(btnId);
+                const orig = btn.innerHTML;
+                btn.classList.add('copied');
+                btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:1.1rem;">check_circle</span> تم النسخ!';
+                setTimeout(function () {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = orig;
+                }, 2000);
+            });
+        }
+    </script>
 </body>
+
 </html>
